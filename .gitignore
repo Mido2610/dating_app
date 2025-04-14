@@ -47,3 +47,9 @@ app.*.map.json
 
 #  Ignore enviroment file
 backend/.env
+
+# Ignore generated files by Freezed
+*.freezed.dart
+
+# Ignore generated files by json_serializable or similar tools
+*.g.dart
