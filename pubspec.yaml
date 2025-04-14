@@ -50,6 +50,10 @@ dependencies:
   flutter_gen: ^5.10.0
   font_awesome_flutter: ^10.8.0
   flutter_svg: ^2.0.17
+  # DI
+  get_it: ^8.0.3
+  # setup routes, navigator
+  get: ^4.7.2
 
 dev_dependencies:
   flutter_test:
