@@ -1,9 +1,6 @@
-abstract class UserRepository {
-  Future<void> loginWithEmail(String email, String password);
-}
+import 'package:dating_app/features/auth/data/models/base_response.dart';
+import 'package:dating_app/features/auth/data/models/user/register_request.dart';
 
-class UserRepositoryImpl implements UserRepository {
-  @override
-  Future<void> loginWithEmail(String email, String password) async {
-  }
+abstract class UserRepository {
+  Future<BaseResponse> register({required RegisterRequest registerRequest});
 }
