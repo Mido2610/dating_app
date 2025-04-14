@@ -1,28 +1,48 @@
-const _ = require('lodash');
-const userService = require('../services/user_service.js');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const generateJwtSecret = require("../utils/secretGenerator.js");
+const userService = require("../services/user_service.js");
 
 const registerUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    if (_.isEmpty(email) || _.isEmpty(password)) {
-      return res.status(400).json({ message: 'Email and password are required' });
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const existingUser = await userService.findUserByEmail(email);
     if (existingUser) {
-      return res.status(409).json({ message: 'User already exists' });
+      return res.status(409).json({ message: "User already exists" });
     }
 
-    const user = await userService.createUser({ email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    return res.status(201).json(_.pick(user, ['_id', 'email']));
+    const user = await userService.createUser({
+      email,
+      password: hashedPassword,
+    });
+
+    const jwtSecret = generateJwtSecret();
+
+    const token = jwt.sign({ id: user._id, email: user.email }, jwtSecret, {
+      expiresIn: "1h",
+    });
+
+    return res.status(201).json({
+      code: 201,
+      message: "Register successfully",
+      data: {
+        token,
+        user: { id: user._id, email: user.email },
+      },
+    });
   } catch (err) {
-    console.error('Error in registerUser:', err.message);
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports = {
-  registerUser
+  registerUser,
 };
