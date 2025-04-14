@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const logger = require('../utils/logger.js');
 
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -13,6 +14,7 @@ const authenticate = (req, res, next) => {
     req.user = decoded; // Attach user info to request
     next();
   } catch (err) {
+    logger.error('Token verification failed:', err);
     return res.status(401).json({ message: 'Invalid token' });
   }
 };

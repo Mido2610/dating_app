@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const generateJwtSecret = require("../utils/secretGenerator.js");
 const userService = require("../services/user_service.js");
+const logger = require("../utils/logger.js");
 
 const registerUser = async (req, res) => {
   try {
@@ -39,6 +40,7 @@ const registerUser = async (req, res) => {
       },
     });
   } catch (err) {
+    logger.error("Error registering user:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };
