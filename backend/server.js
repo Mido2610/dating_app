@@ -1,7 +1,10 @@
-require('dotenv').config();
-const express = require('express');
-const connectDB = require('./config/db');
-const userRoutes = require('./routes/user_router');
+import dotenv from "dotenv";
+import express from "express";
+import connectDB from "./config/db.js";
+import userRoutes from "./routes/user_router.js";
+
+dotenv.config();
+
 const app = express();
 
 // Kết nối MongoDB
@@ -11,7 +14,7 @@ connectDB();
 app.use(express.json());
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/', userRoutes);
 
 // Khởi động server
 const PORT = process.env.PORT || 3000;

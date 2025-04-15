@@ -1,5 +1,5 @@
-// utils/secretGenerator.js
-const crypto = require("crypto");
+import crypto from "crypto";
+import { fileURLToPath } from "url";
 
 /**
  * @returns {string}
@@ -8,8 +8,9 @@ function generateJwtSecret() {
   return crypto.randomBytes(32).toString("base64");
 }
 
-if (require.main === module) {
+// Kiểm tra nếu tệp được chạy trực tiếp
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   console.log('Generated JWT_SECRET:', generateJwtSecret());
 }
 
-module.exports = generateJwtSecret;
+export default generateJwtSecret;

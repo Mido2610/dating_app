@@ -78,7 +78,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const RegisterWithEmailScreen(),
+                          builder: (_) => RegisterWithEmailPage.provider(),
                         ),
                       );
                     },

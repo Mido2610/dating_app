@@ -1,5 +1,4 @@
-// filepath: /Users/kietnguyen/dating-app/dating_app/backend/utils/logger.js
-const { createLogger, format, transports } = require("winston");
+import { createLogger, format, transports } from "winston";
 
 const logger = createLogger({
   level: "error", // Chỉ log các lỗi cấp độ "error" trở lên
@@ -14,4 +13,4 @@ const logger = createLogger({
   ],
 });
 
-module.exports = logger;
+export default logger;

@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const _ = require('lodash');
+import _ from 'lodash';
+import User from '../models/user.js';
 
 const createUser = async (userData) => {
   const pickedData = _.pick(userData, ['email', 'password']);
@@ -11,7 +11,7 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email });
 };
 
-module.exports = {
+export default {
   createUser,
-  findUserByEmail
+  findUserByEmail,
 };

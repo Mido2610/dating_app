@@ -1,14 +1,14 @@
-const express = require('express');
+import express from "express";
+import userController from "../controllers/user_controller.js";
+import authMiddleware from "../middlewares/auth_middleware.js";
+
 const router = express.Router();
-const userController = require('../controllers/user_controller');
-const authMiddleware = require('../middlewares/auth_middleware');
 
-// Đúng: không cần middleware
-router.post('/register', userController.registerUser);
+// register
+router.post('/auth/register', userController.registerUser);
 
-// Protected route example
-router.get('/profile', authMiddleware, (req, res) => {
-  res.status(200).json({ message: 'Access granted', user: req.user });
+router.get("/profile", authMiddleware, (req, res) => {
+  res.status(200).json({ message: "Access granted", user: req.user });
 });
 
-module.exports = router;
+export default router;
