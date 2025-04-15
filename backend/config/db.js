@@ -1,13 +1,16 @@
-import mongoose from "mongoose";
 
 const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log("✅ MongoDB connected");
-  } catch (err) {
-    console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1); // Dừng app nếu không kết nối được
-  }
+  require('dotenv').config(); // load biến môi trường từ .env
+
+  const mongoose = require('mongoose');
+  const uri = process.env.MONGODB_URI;
+  
+  mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch((err) => console.error('❌ MongoDB connection failed:', err));
 };
 
 export default connectDB;
