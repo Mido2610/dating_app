@@ -1,6 +1,6 @@
 import '../../../../../core/utils/colors.dart';
 import '../../../../../core/utils/image_resource.dart';
-import '../login/login_with_email_screen.dart';
+import '../login/login_with_email_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const EmailLoginScreen(),
+                          builder: (_) => EmailLoginPage.provider(),
                         ),
                       );
                     },

@@ -56,6 +56,7 @@ dependencies:
   get: ^4.7.2
   package_info_plus: ^8.3.0
   fluttertoast: ^8.2.12
+  protobuf: ^4.0.0
 
 dev_dependencies:
   flutter_test:

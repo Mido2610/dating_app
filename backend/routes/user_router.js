@@ -7,6 +7,9 @@ const router = express.Router();
 // register
 router.post('/auth/register', userController.registerUser);
 
+// login
+router.post('/auth/login', userController.loginUser);
+
 router.get("/profile", authMiddleware, (req, res) => {
   res.status(200).json({ message: "Access granted", user: req.user });
 });

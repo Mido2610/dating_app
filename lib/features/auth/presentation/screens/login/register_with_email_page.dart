@@ -46,7 +46,6 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
       listener: (context, state) {
         state.mapOrNull(
           registerSuccess: (stateSuccess) {
-            // Handle successful registration
             showToastTop(
               context,
               message: stateSuccess.successMessage,
