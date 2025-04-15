@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+
 class ThemeColor {
   static const primary = Color(0xffFF4151);
   static const secondPrimary = Color(0xff09B331);

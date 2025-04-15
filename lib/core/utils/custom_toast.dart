@@ -31,7 +31,7 @@ mixin CustomToast {
         color: ThemeColor.white,
         boxShadow: [
           BoxShadow(
-            color: ThemeColor.black,
+            color: ThemeColor.grey.withAlpha(Color.getAlphaFromOpacity(0.1)),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),

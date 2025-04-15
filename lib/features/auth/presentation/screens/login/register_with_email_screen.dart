@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/features/auth/presentation/blocs/register/register_bloc.dart';
+import 'package:dating_app/features/auth/presentation/screens/discover/discover_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/colors.dart';
@@ -32,7 +33,6 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
 
   @override
   void dispose() {
-    // Dispose controllers to free up resources
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -52,6 +52,9 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
               message: stateSuccess.successMessage,
               toastType: ToastType.success,
             );
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => DiscoverScreen()));
           },
         );
       },
