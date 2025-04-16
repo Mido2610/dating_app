@@ -48,8 +48,8 @@ class _OtpPageState extends State<OtpPage> with CodeAutoFill {
         currentIndex = 4;
       });
 
-      // TODO: Gửi OTP đi xác minh
-      print("Auto-filled OTP: $receivedCode");
+      //  Gửi OTP đi xác minh
+      debugPrint("Auto-filled OTP: $receivedCode");
     }
   }
 
@@ -62,9 +62,9 @@ class _OtpPageState extends State<OtpPage> with CodeAutoFill {
 
       if (currentIndex == 4) {
         final code = otp.join('');
-        print("Manually entered OTP: $code");
+        debugPrint("Manually entered OTP: $code");
 
-        // TODO: Gửi OTP đi xác minh
+        //  Gửi OTP đi xác minh
       }
     }
   }
@@ -86,8 +86,8 @@ class _OtpPageState extends State<OtpPage> with CodeAutoFill {
     });
     _startCountdown();
 
-    // TODO: Gửi lại mã OTP
-    print("Resent code");
+    //  Gửi lại mã OTP
+    debugPrint("Resent code");
   }
 
   Widget _buildOtpBox(int index) {
@@ -189,8 +189,9 @@ class _OtpPageState extends State<OtpPage> with CodeAutoFill {
                 ),
                 itemBuilder: (_, index) {
                   if (index == 9) return const SizedBox(); // empty
-                  if (index == 11)
+                  if (index == 11) {
                     return _buildKeyboardButton('', isDelete: true);
+                  }
                   return _buildKeyboardButton('${index == 10 ? 0 : index + 1}');
                 },
               ),
