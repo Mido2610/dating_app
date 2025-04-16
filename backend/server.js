@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/user_router.js";
+import otpRoutes from "./routes/otp_routes.js";
 import logger from "./utils/logger.js";
 
 dotenv.config();
@@ -50,7 +51,8 @@ const checkDB = (req, res, next) => {
 app.use(checkDB);
 
 // Routes chính
-app.use("/", userRoutes);
+app.use("/api", userRoutes);
+app.use("/api/otp", otpRoutes);
 
 // Error handling middleware
 app.use((err, req, res) => {

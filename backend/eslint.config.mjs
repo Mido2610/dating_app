@@ -7,10 +7,10 @@ export default [
   {
     files: ['**/*.js'],
     languageOptions: {
-      ecmaVersion: 2021, // Sử dụng ES2021
-      sourceType: 'module', // Hỗ trợ import/export
+      ecmaVersion: 2021,
+      sourceType: 'module',
       globals: {
-        require: 'readonly', // Định nghĩa các biến toàn cục
+        require: 'readonly',
         process: 'readonly',
         module: 'readonly',
         console: 'readonly',
@@ -23,19 +23,25 @@ export default [
     settings: {
       'import/resolver': {
         node: {
-          extensions: ['.js', '.json'], // Hỗ trợ các file .js và .json
+          extensions: ['.js', '.json'],
+          moduleDirectory: ['node_modules', 'src/'],
         },
       },
     },
     rules: {
-      'import/no-unresolved': 'error', // Báo lỗi nếu import sai hoặc thiếu
-      'import/named': 'error', // Kiểm tra các export được sử dụng đúng cách
+      'import/no-unresolved': [
+        'error',
+        {
+          ignore: ['^firebase-admin/']
+        }
+      ],
+      'import/named': 'error',
       'import/namespace': 'error',
       'import/default': 'error',
       'import/export': 'error',
       'import/first': 'error',
-      'import/no-extraneous-dependencies': 'error', // Báo lỗi nếu sử dụng module chưa được import
-      'no-undef': 'error', // Báo lỗi nếu biến chưa được định nghĩa
+      'import/no-extraneous-dependencies': 'error',
+      'no-undef': 'error',
       'no-unused-vars': 'warn',
       'no-console': 'off',
     },
