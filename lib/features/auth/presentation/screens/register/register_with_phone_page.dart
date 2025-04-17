@@ -1,4 +1,6 @@
 import 'package:dating_app/core/utils/colors.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/add_photo_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/first_name_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/otp_page.dart';
 import 'package:dating_app/widgets/button_common.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +69,7 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
                   debugPrint(fullPhoneNumber);
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const OtpPage(),
+                      builder: (context) => const FirstNamePage(),
                     ),
                   );
                 },

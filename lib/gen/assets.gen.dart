@@ -17,11 +17,14 @@ class $AssetsImagesGen {
 class $AssetsImagesSvgGen {
   const $AssetsImagesSvgGen();
 
+  /// File path: assets/images/svg/calendar.svg
+  String get calendar => 'assets/images/svg/calendar.svg';
+
   /// File path: assets/images/svg/trademark.svg
   String get trademark => 'assets/images/svg/trademark.svg';
 
   /// List of all assets
-  List<String> get values => [trademark];
+  List<String> get values => [calendar, trademark];
 }
 
 class Assets {

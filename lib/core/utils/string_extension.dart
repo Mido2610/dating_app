@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dating_app/core/utils/image_resource.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 extension StringExtension on String {
   String get removeAllSpace => replaceAll(RegExp(r'\s+'), '');
@@ -55,4 +56,47 @@ extension StringExtension on String {
       ),
     );
   }
+
+  Widget showSVGAsset({
+    Key? key,
+    bool matchTextDirection = false,
+    AssetBundle? bundle,
+    String? package,
+    double? width,
+    double? height,
+    Alignment alignment = Alignment.center,
+    bool allowDrawingOutsideViewBox = false,
+    WidgetBuilder? placeholderBuilder,
+    Color? color,
+    BlendMode colorBlendMode = BlendMode.srcIn,
+    String? semanticsLabel,
+    bool excludeFromSemantics = false,
+    Clip clipBehavior = Clip.hardEdge,
+    bool cacheColorFilter = false,
+    SvgTheme? theme,
+    BoxFit boxFit = BoxFit.contain,
+  }) {
+    return SvgPicture.asset(
+      this,
+      key: key,
+      matchTextDirection: matchTextDirection,
+      bundle: bundle,
+      package: package,
+      width: width,
+      height: height,
+      alignment: alignment,
+      allowDrawingOutsideViewBox: allowDrawingOutsideViewBox,
+      placeholderBuilder: placeholderBuilder,
+      semanticsLabel: semanticsLabel,
+      excludeFromSemantics: excludeFromSemantics,
+      clipBehavior: clipBehavior,
+      theme: theme,
+      fit: boxFit,
+      colorFilter: color != null
+          ? ColorFilter.mode(color, colorBlendMode)
+          : null,
+    );
+  }
+
+  DateTime get toDateTime => DateTime.tryParse(this) ?? DateTime.now();
 }
