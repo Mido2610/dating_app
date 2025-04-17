@@ -73,7 +73,7 @@ const otpService = {
 };
 
 // Clean up old attempts periodically
-setInterval(() => {
+globalThis.setInterval(() => {
   const now = Date.now();
   for (const [phone, data] of otpAttempts.entries()) {
     if (now - data.lastAttempt > RESEND_DELAY * 1000 * 2) {
