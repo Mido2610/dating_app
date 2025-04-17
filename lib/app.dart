@@ -1,4 +1,5 @@
 import 'package:dating_app/config/app/app_routes.dart';
+import 'package:dating_app/core/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -14,7 +15,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Dating App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.pink),
       getPages: AppRoutes.routes,
       initialRoute: '/',
       defaultTransition: Transition.fadeIn,
@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      theme: ThemeApp().getThemeApp(context),
     );
   }
 }

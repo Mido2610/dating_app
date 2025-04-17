@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-
 class ThemeColor {
   static const primary = Color(0xffFF4151);
   static const secondPrimary = Color(0xff09B331);
@@ -15,6 +14,11 @@ class ThemeColor {
   static const input = Color(0xffF1F1F1);
   static const transparent = Colors.transparent;
   static const grey = Colors.grey;
+  static const redSolid = Color(0xffFF303C);
+
+  // gradient button
+  static const gradientTop = Color(0xffF9555F);
+  static const gradientBottom = Color(0xffE30A0D);
 }
 
 Color get randomColor {

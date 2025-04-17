@@ -3,7 +3,7 @@ import 'package:dating_app/features/auth/presentation/blocs/login/login_bloc.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../discover/discover_screen.dart';
-import 'register_with_email_page.dart';
+import '../register/register_with_email_page.dart';
 import 'package:flutter/material.dart';
 
 class EmailLoginPage extends StatefulWidget {
