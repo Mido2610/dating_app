@@ -2,7 +2,6 @@ import crypto from "crypto";
 import twilio from "twilio";
 import User from "../user/user.schema";
 import logger from "../../utils/logger";
-import admin from "../../config/firebaseAdminConfig";
 
 const twilioClient =
   process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
@@ -55,6 +54,7 @@ async function sendSMS(phoneNumber: string, message: string): Promise<boolean> {
 interface SendOTPResult {
   verificationId: string;
   resendDelay: number;
+  otpCode: string;
 }
 
 interface VerifyOTPResult {
@@ -106,6 +106,7 @@ const otpService = {
       return {
         verificationId,
         resendDelay: RESEND_DELAY,
+        otpCode
       };
     } catch (error) {
       logger.error("Error in sendOTP:", error);
@@ -151,21 +152,11 @@ const otpService = {
         logger.info(`Created new user with phone: ${phoneNumber}`);
       }
       
-      let userRecord;
-      try {
-        userRecord = await admin.auth().getUserByPhoneNumber(phoneNumber);
-      } catch (error) {
-        if ((error as any).code === "auth/user-not-found") {
-          userRecord = await admin.auth().createUser({
-            phoneNumber: phoneNumber,
-          });
-        } else {
-          throw error;
-        }
-      }
-
+      // Ensure user._id exists and convert to string
+      const userId = user._id ? user._id.toString() : '';
+      
       return {
-        id: user._id?.toString() || userRecord.uid,
+        id: userId,
         phoneNumber: user.phone,
       };
     } catch (error) {

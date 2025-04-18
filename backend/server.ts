@@ -12,6 +12,17 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+// Thêm middleware CORS
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  if (req.method === 'OPTIONS') {
+      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+      return res.status(200).json({});
+  }
+  next();
+});
+
 // Health check route - place first
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({
@@ -32,8 +43,8 @@ app.get('/api/otp/debug', (req: Request, res: Response) => {
   res.json({
     message: 'OTP Debug route working',
     routes: {
-      sendOTP: '/api/otp/send',
-      verifyOTP: '/api/otp/verify'
+      sendOTP: '/api/otp/send-otp',
+      verifyOTP: '/api/otp/verify-otp'
     },
     timestamp: new Date().toISOString()
   });

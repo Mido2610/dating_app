@@ -19,7 +19,7 @@ mixin CustomToast {
     fToast.init(context);
     fToast.removeCustomToast();
     if (kDebugMode) {
-      toastDuration = const Duration(seconds: 10);
+      toastDuration = const Duration(seconds: 5);
     }
     Widget toast = Container(
       constraints: const BoxConstraints(maxWidth: 375),

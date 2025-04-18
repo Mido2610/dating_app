@@ -78,9 +78,9 @@ class _SelectUserBirthDayPageState extends State<SelectUserBirthDayPage> {
                     String formattedDate = DateFormat(
                       'dd/MM/yyyy',
                     ).format(selectedDate!);
-                    print("Selected date: $formattedDate");
+                    debugPrint("Selected date: $formattedDate");
                   } else {
-                    print("No date selected");
+                    debugPrint("No date selected");
                   }
                   Navigator.of(context).push(
                     MaterialPageRoute(

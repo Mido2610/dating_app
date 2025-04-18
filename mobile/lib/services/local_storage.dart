@@ -50,6 +50,22 @@ class LocalStorage {
   Future<void> setJWT(String jwt) async {
     await _sharedPrefs.setString(LocalStorageKey.jwt, jwt);
   }
+  
+  // Lấy verificationId từ local storage
+  String getVerificationId() {
+    final verificationId = _sharedPrefs.getString(LocalStorageKey.verificationId);
+    return verificationId ?? '';
+  }
+
+  // Lưu verificationId vào local storage
+  Future<void> setVerificationId(String verificationId) async {
+    await _sharedPrefs.setString(LocalStorageKey.verificationId, verificationId);
+  }
+
+  // Xóa verificationId khỏi local storage
+  Future<void> removeVerificationId() async {
+    await _sharedPrefs.remove(LocalStorageKey.verificationId);
+  }
 
   String getRandomString({required int stringLength}) {
     const ch = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
@@ -66,4 +82,5 @@ class LocalStorage {
 class LocalStorageKey {
   static const String user = 'USER';
   static const String jwt = 'JWT';
+  static const String verificationId = 'VERIFICATION_ID';
 }

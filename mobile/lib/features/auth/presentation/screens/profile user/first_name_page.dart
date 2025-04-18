@@ -28,7 +28,7 @@ class _FirstNamePageState extends State<FirstNamePage> with CustomToast{
   void _onContinue() {
     final name = _firstNameController.text;
     if (name.isNotEmpty) {
-      print("First name: $name");
+      debugPrint("First name: $name");
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const SelectUserBirthDayPage()),
       );

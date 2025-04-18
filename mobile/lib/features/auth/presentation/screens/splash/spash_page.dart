@@ -155,7 +155,7 @@ class _SplashPageState extends State<SplashPage> {
               maxWidth: double.infinity,
               onTapButton: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => PhoneInputPage()),
+                  MaterialPageRoute(builder: (context) => PhoneInputPage.provider()),
                 );
               },
               titleButton: 'Create an account',

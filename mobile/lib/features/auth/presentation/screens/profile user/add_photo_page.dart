@@ -36,7 +36,7 @@ class _AddPhotoToProfilePageState extends State<AddPhotoToProfilePage> {
             Navigator.of(context).pop();
             final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
             if (pickedFile != null) {
-              print("Picked image from camera: ${pickedFile.path}");
+              debugPrint("Picked image from camera: ${pickedFile.path}");
               completer.complete(File(pickedFile.path)); // Trả về ảnh qua Completer
             } else {
               completer.complete(null); // Không có ảnh được chọn
@@ -46,7 +46,7 @@ class _AddPhotoToProfilePageState extends State<AddPhotoToProfilePage> {
             Navigator.of(context).pop();
             final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
             if (pickedFile != null) {
-              print("Picked image from gallery: ${pickedFile.path}");
+              debugPrint("Picked image from gallery: ${pickedFile.path}");
               completer.complete(File(pickedFile.path)); // Trả về ảnh qua Completer
             } else {
               completer.complete(null); // Không có ảnh được chọn
@@ -56,13 +56,13 @@ class _AddPhotoToProfilePageState extends State<AddPhotoToProfilePage> {
       );
       final selectedImage = await completer.future; // Chờ giá trị từ Completer
       if (selectedImage != null) {
-        print("Returning selected image: $selectedImage");
+        debugPrint("Returning selected image: $selectedImage");
       } else {
-        print("No image selected.");
+        debugPrint("No image selected.");
       }
       return selectedImage;
     } catch (e) {
-      print("Error picking image: $e");
+      debugPrint("Error picking image: $e");
       return null;
     }
   }
@@ -79,7 +79,7 @@ class _AddPhotoToProfilePageState extends State<AddPhotoToProfilePage> {
       ),
       itemCount: profileImages.length, // Luôn hiển thị 6 ô
       itemBuilder: (context, index) {
-          print("Building item at index $index: ${profileImages[index]}");
+          debugPrint("Building item at index $index: ${profileImages[index]}");
         if (profileImages[index] != null) {
           // Hiển thị ảnh nếu đã thêm
           return Stack(
@@ -124,8 +124,8 @@ class _AddPhotoToProfilePageState extends State<AddPhotoToProfilePage> {
               if (pickedFile != null) {
                 setState(() {
             profileImages[index] = pickedFile;
-            print("Image added at index $index: ${pickedFile.path}");
-            print("Current profileImages: $profileImages");
+            debugPrint("Image added at index $index: ${pickedFile.path}");
+            debugPrint("Current profileImages: $profileImages");
                 });
               }
             },

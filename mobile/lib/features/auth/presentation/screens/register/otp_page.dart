@@ -1,26 +1,47 @@
+import 'package:dating_app/core/di/inection.dart';
+import 'package:dating_app/core/utils/colors.dart';
+import 'package:dating_app/core/utils/custom_toast.dart';
+import 'package:dating_app/core/utils/styles.dart';
+import 'package:dating_app/features/auth/data/repository/user_repository.dart';
+import 'package:dating_app/features/auth/presentation/blocs/otp/otp_bloc.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/first_name_page.dart';
+import 'package:dating_app/widgets/text_field_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import 'dart:async';
 
+import '../../../../../core/utils/platform.dart';
+
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  final String phoneNumber;
+
+  const OtpPage({super.key, required this.phoneNumber});
+
+  static BlocProvider<OtpBloc> provider({required String phoneNumber}) {
+    return BlocProvider(
+      create: (context) => OtpBloc(userRepository: getIt<UserRepository>()),
+      child: OtpPage(phoneNumber: phoneNumber),
+    );
+  }
 
   @override
   State<OtpPage> createState() => _OtpPageState();
 }
 
-class _OtpPageState extends State<OtpPage> with CodeAutoFill {
-  List<String> otp = ['', '', '', ''];
-  int currentIndex = 0;
-  int secondsRemaining = 60;
+class _OtpPageState extends State<OtpPage> with CustomToast {
+  late String _currentOtp;
+  late int secondsRemaining;
   Timer? countdownTimer;
 
   @override
   void initState() {
+    _currentOtp = '';
+    secondsRemaining = 60;
     super.initState();
     _startCountdown();
-    _listenForSms();
+    _listenForOtp();
   }
 
   void _startCountdown() {
@@ -28,185 +49,170 @@ class _OtpPageState extends State<OtpPage> with CodeAutoFill {
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (secondsRemaining == 0) {
         timer.cancel();
-      } else {
-        setState(() => secondsRemaining--);
+        return;
       }
+      setState(() => secondsRemaining--);
     });
   }
 
-  void _listenForSms() async {
+  void _listenForOtp() async {
+    if (!getIt<Platform>().isAndroid()) {
+      return;
+    }
+    // Chỉ áp dụng cho Android
+    await SmsAutoFill().getAppSignature;
+
     await SmsAutoFill().listenForCode();
-    listenForCode();
-  }
-
-  @override
-  void codeUpdated() {
-    final receivedCode = code!; // Retrieve the code from the mixin
-    if (receivedCode.length >= 4) {
-      setState(() {
-        otp = receivedCode.substring(0, 4).split('');
-        currentIndex = 4;
-      });
-
-      //  Gửi OTP đi xác minh
-      debugPrint("Auto-filled OTP: $receivedCode");
-    }
-  }
-
-  void _handleKeyTap(String value) {
-    if (currentIndex < 4) {
-      setState(() {
-        otp[currentIndex] = value;
-        currentIndex++;
-      });
-
-      if (currentIndex == 4) {
-        final code = otp.join('');
-        debugPrint("Manually entered OTP: $code");
-
-        //  Gửi OTP đi xác minh
-      }
-    }
-  }
-
-  void _handleDelete() {
-    if (currentIndex > 0) {
-      setState(() {
-        currentIndex--;
-        otp[currentIndex] = '';
-      });
-    }
-  }
-
-  void _resendCode() {
-    setState(() {
-      otp = ['', '', '', ''];
-      currentIndex = 0;
-      secondsRemaining = 60;
-    });
-    _startCountdown();
-
-    //  Gửi lại mã OTP
-    debugPrint("Resent code");
-  }
-
-  Widget _buildOtpBox(int index) {
-    final filled = otp[index].isNotEmpty;
-    return Container(
-      width: 60,
-      height: 60,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: filled ? Colors.pink : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: filled ? Colors.pink : Colors.black26,
-          width: 1.5,
-        ),
-      ),
-      child: Text(
-        otp[index],
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: filled ? Colors.white : Colors.black,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildKeyboardButton(String value, {bool isDelete = false}) {
-    return GestureDetector(
-      onTap: () => isDelete ? _handleDelete() : _handleKeyTap(value),
-      child: Container(
-        alignment: Alignment.center,
-        child:
-            isDelete
-                ? const Icon(Icons.backspace_outlined)
-                : Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-      ),
-    );
   }
 
   @override
   void dispose() {
-    cancel();
     countdownTimer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                '00:${secondsRemaining.toString().padLeft(2, '0')}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                "Type the verification code\nwe've sent you",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: Colors.black54),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(4, _buildOtpBox),
-              ),
-              const SizedBox(height: 40),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 12,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 24,
-                  childAspectRatio: 1.5,
-                ),
-                itemBuilder: (_, index) {
-                  if (index == 9) return const SizedBox(); // empty
-                  if (index == 11) {
-                    return _buildKeyboardButton('', isDelete: true);
-                  }
-                  return _buildKeyboardButton('${index == 10 ? 0 : index + 1}');
-                },
-              ),
-              const SizedBox(height: 24),
-              GestureDetector(
-                onTap: secondsRemaining == 0 ? _resendCode : null,
-                child: Text(
-                  "Send again",
-                  style: TextStyle(
-                    color: secondsRemaining == 0 ? Colors.pink : Colors.grey,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
+    return BlocListener<OtpBloc, OtpState>(
+      listener: (context, state) {
+        state.mapOrNull(
+          success: (successState) {
+            showToastTop(
+              context,
+              message: successState.successMessage,
+              toastType: ToastType.success,
+            );
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => FirstNamePage()));
+          },
+          error: (errorState) {
+            showToastTop(
+              context,
+              message: errorState.errorMessage,
+              toastType: ToastType.warning,
+            );
+          },
+        );
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: BlocBuilder<OtpBloc, OtpState>(
+              builder: (context, state) {
+                // Tự động cập nhật UI từ state của bloc
+                state.maybeMap(
+                  loaded: (loadedState) {
+                    if (loadedState.data.smsCode.isNotEmpty &&
+                        loadedState.data.smsCode != _currentOtp) {
+                      _currentOtp = loadedState.data.smsCode;
+                    }
+                  },
+                  orElse: () {},
+                );
+
+                return state.maybeMap(
+                  orElse: () {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '00:${secondsRemaining.toString().padLeft(2, '0')}',
+                          style: ThemeTextStyle.bold24,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          "Nhập mã xác thực được gửi đến\n${widget.phoneNumber}",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // OTP TextField
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              PinFieldAutoFill(
+                                currentCode: _currentOtp,
+                                codeLength: 6,
+                                autoFocus: true,
+                                cursor: Cursor(
+                                  width: 2,
+                                  height: 24,
+                                  color: ThemeColor.E94057,
+                                  enabled: true,
+                                ),
+                                decoration: BoxLooseDecoration(
+                                  textStyle: ThemeTextStyle.bold22,
+                                  strokeColorBuilder: FixedColorBuilder(
+                                    ThemeColor.input,
+                                  ),
+                                  bgColorBuilder: FixedColorBuilder(
+                                    ThemeColor.input,
+                                  ),
+                                  radius: const Radius.circular(8),
+                                ),
+                                onCodeChanged: (String? otpCode) {
+                                  if (otpCode != null) {
+                                    context.read<OtpBloc>().add(
+                                      OtpEvent.changeRequestOtp(
+                                        otpCode: otpCode,
+                                      ),
+                                    );
+                                  }
+                                },
+                                onCodeSubmitted: (String code) {
+                                  if (code.length == 6) {
+                                    context.read<OtpBloc>().add(
+                                      OtpEvent.verifyOtp(otpCode: code),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 40),
+                        GestureDetector(
+                          onTap:
+                              secondsRemaining == 0
+                                  ? () => context.read<OtpBloc>().add(
+                                    OtpEvent.sendOtp(
+                                      phoneNumber: widget.phoneNumber,
+                                    ),
+                                  )
+                                  : null,
+                          child: Text(
+                            "Gửi lại mã",
+                            style: TextStyle(
+                              color:
+                                  secondsRemaining == 0
+                                      ? ThemeColor.E94057
+                                      : ThemeColor.grey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),

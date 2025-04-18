@@ -31,12 +31,13 @@ export const sendOTP = async (req: Request, res: Response): Promise<Response> =>
       });
     }
 
-    const { verificationId } = await otpService.sendOTP(phoneNumber);
+    const { verificationId, otpCode } = await otpService.sendOTP(phoneNumber);
 
     return res.status(200).json({
       code: 200,
       message: "Verification code sent successfully",
-      verificationId
+      verificationId,
+      smsCode: otpCode
     });
 
   } catch (error) {
