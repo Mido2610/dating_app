@@ -15,6 +15,8 @@ export default [
         module: 'readonly',
         console: 'readonly',
         __dirname: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
     },
     plugins: {
