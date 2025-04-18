@@ -6,6 +6,11 @@ message User {
   string id = 1;
   string email = 2;
   string password = 3;
+  string fullName = 4;
+  string gender = 5;
+  int64 birthday = 6;
+  repeated string interests = 7;
+  repeated string photos = 8;
 }
 
 message AccessToken {
@@ -33,6 +38,10 @@ message RegisterRequest {
   string email = 1;
   string password = 2;
   string fullName = 3;
+  string gender = 4;
+  int64 birthday = 5;
+  repeated string interests = 6;
+  repeated string photos = 7;
 }
 
 message RegisterResponse {
