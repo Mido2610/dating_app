@@ -1,3 +1,4 @@
+import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/birthday_page.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class FirstNamePage extends StatefulWidget {
   State<FirstNamePage> createState() => _FirstNamePageState();
 }
 
-class _FirstNamePageState extends State<FirstNamePage> {
+class _FirstNamePageState extends State<FirstNamePage> with CustomToast{
   late TextEditingController _firstNameController;
 
   @override
@@ -32,10 +33,7 @@ class _FirstNamePageState extends State<FirstNamePage> {
         MaterialPageRoute(builder: (context) => const SelectUserBirthDayPage()),
       );
     } else {
-      // Show an error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your first name')),
-      );
+      showToastTop(context, message: "Please enter your first name", toastType: ToastType.warning);
     }
   }
 

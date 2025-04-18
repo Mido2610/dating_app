@@ -1,18 +1,15 @@
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 
 enum ToastType { information, warning, success }
 
 mixin CustomToast {
   final FToast fToast = FToast();
 
-  /// snackbar type information by default
   void showToastTop(
     BuildContext context, {
     required String message,
@@ -31,7 +28,7 @@ mixin CustomToast {
         color: ThemeColor.white,
         boxShadow: [
           BoxShadow(
-            color: ThemeColor.grey.withAlpha(Color.getAlphaFromOpacity(0.1)),
+            color: ThemeColor.grey.withAlpha(Color.getAlphaFromOpacity(.1)),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -101,9 +98,8 @@ mixin CustomToast {
       fadeDuration: Duration(milliseconds: 500),
       toastDuration: toastDuration,
       positionedToastBuilder: (context, child, toastGravity) {
-        toastGravity = ToastGravity.TOP;
         return Positioned(
-          top: 0,
+          top: 30,
           left: 0,
           right: 0,
           child: Container(
