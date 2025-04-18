@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import User from '../models/user.js';
+import User from './user.route';
 
 const createUser = async (userData) => {
   const pickedData = _.pick(userData, ['email', 'password']);

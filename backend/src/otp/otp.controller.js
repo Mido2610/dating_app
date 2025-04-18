@@ -1,5 +1,5 @@
-import otpService from '../services/otp_service.js';
-import logger from '../utils/logger.js';
+import otpService from './otp.service.js';
+import logger from '../../utils/logger.js';
 
 const sendOTP = async (req, res) => {
   try {

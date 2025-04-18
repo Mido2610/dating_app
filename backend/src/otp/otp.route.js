@@ -1,5 +1,5 @@
 import express from 'express';
-import otpController from '../controllers/otp_controller.js';
+import otpController from './otp.controller.js';
 
 const router = express.Router();
 

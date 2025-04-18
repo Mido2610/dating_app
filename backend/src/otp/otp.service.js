@@ -1,5 +1,5 @@
-import admin from '../config/firebase.js';
-import logger from '../utils/logger.js';
+import admin from 'firebase-admin';
+import logger from '../../utils/logger.js';
 
 const RESEND_DELAY = 60; // 60 seconds
 const otpAttempts = new Map(); // Store attempts count and timestamp

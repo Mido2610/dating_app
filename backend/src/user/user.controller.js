@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import userService from "../services/user_service.js";
-import logger from "../utils/logger.js";
-import generateJwtSecret from "../utils/secretGenerator.js";
+import userService from "./user.service";
+import generateJwtSecret from "../../utils/secretGenerator";
+import logger from "../../utils/logger";
 
 const registerUser = async (req, res) => {
   try {
