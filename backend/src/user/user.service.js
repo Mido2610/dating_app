@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import User from './user.route';
+const _ = require('lodash');
+const User = require('./user.route.js');
 
 const createUser = async (userData) => {
   const pickedData = _.pick(userData, ['email', 'password']);
@@ -11,7 +11,7 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email });
 };
 
-export default {
+module.exports = {
   createUser,
   findUserByEmail,
 };

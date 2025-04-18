@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
-import express from "express";
-import userRoutes from "./routes/user_router.js";
+const dotenv = require("dotenv");
+const express = require("express");
+const userRoutes = require("./src/user/user.route");
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ app.get("/server-info", (req, res) => {
   res.json({
     status: "✅ Server is running without MongoDB",
     time: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development"
+    environment: process.env.NODE_ENV || "development",
   });
 });
 
@@ -27,4 +27,4 @@ app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
 
-export default app;
+module.exports = app;

@@ -1,5 +1,5 @@
-import admin from 'firebase-admin';
-import { Buffer } from 'node:buffer';
+const admin = require('firebase-admin');
+const { Buffer } = require('node:buffer');
 
 try {
   if (!admin.apps.length) {
@@ -34,4 +34,4 @@ try {
   throw error;
 }
 
-export default admin;
+module.exports = admin;

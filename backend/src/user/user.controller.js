@@ -1,8 +1,8 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import userService from "./user.service";
-import generateJwtSecret from "../../utils/secretGenerator";
-import logger from "../../utils/logger";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const logger = require("../../utils/logger.js");
+const generateJwtSecret = require("../../utils/secretGenerator.js");
+const userService = require("./user.service.js");
 
 const registerUser = async (req, res) => {
   try {
@@ -84,7 +84,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default {
+module.exports = {
   registerUser,
   loginUser,
 };

@@ -1,6 +1,6 @@
-import express from "express";
-import authMiddleware from "../../middlewares/auth_middleware.js";
-import userController from "./user.controller.js";
+const express = require("express");
+const authMiddleware = require("../../middlewares/auth_middleware.js");
+const userController = require("./user.controller.js");
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.get("/profile", authMiddleware, (req, res) => {
   res.status(200).json({ message: "Access granted", user: req.user });
 });
 
-export default router;
+module.exports = router;

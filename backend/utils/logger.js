@@ -1,4 +1,4 @@
-import { createLogger, format, transports } from "winston";
+const { createLogger, format, transports } = require("winston");
 
 const logger = createLogger({
   level: "error", // Chỉ log các lỗi cấp độ "error" trở lên
@@ -13,4 +13,4 @@ const logger = createLogger({
   ],
 });
 
-export default logger;
+module.exports = logger;

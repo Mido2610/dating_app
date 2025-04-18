@@ -1,9 +1,9 @@
-import dotenv from "dotenv";
-import express from "express";
-import connectDB from "./config/db.js";
-import userRoutes from "./routes/user_router.js";
-import otpRoutes from "./routes/otp_routes.js";
-import logger from "./utils/logger.js";
+const dotenv = require("dotenv");
+const express = require("express");
+const connectDB = require("./config/db.js");
+const logger = require("./utils/logger.js");
+const userRoutes = require("./src/user/user.route.js");
+const otpRoutes = require("./src/otp/otp.route.js");
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ app.get("/api/health", (req, res) => {
   res.json({
     status: "✅ Server is running",
     time: new Date().toISOString(),
-    environment: process.env.VERCEL_ENV || "development"
+    environment: process.env.VERCEL_ENV || "development",
   });
 });
 
@@ -39,10 +39,10 @@ connectDB()
 
 // Middleware kiểm tra DB trước khi xử lý routes yêu cầu DB
 const checkDB = (req, res, next) => {
-  if (!dbConnection && req.path !== '/api/health' && req.path !== '/') {
+  if (!dbConnection && req.path !== "/api/health" && req.path !== "/") {
     return res.status(503).json({
       status: "error",
-      message: "Database connection is not ready"
+      message: "Database connection is not ready",
     });
   }
   next();
@@ -52,7 +52,7 @@ app.use(checkDB);
 
 // Routes chính
 app.use("/api", userRoutes);
-app.use("/api/otp", otpRoutes);
+app.use("/api", otpRoutes);
 
 // Error handling middleware
 app.use((err, req, res) => {
@@ -60,7 +60,7 @@ app.use((err, req, res) => {
   res.status(err.status || 500).json({
     status: "error",
     message: err.message || "Internal server error",
-    error: process.env.NODE_ENV === "development" ? err : {}
+    error: process.env.NODE_ENV === "development" ? err : {},
   });
 });
 
@@ -68,7 +68,7 @@ app.use((err, req, res) => {
 app.use("*", (req, res) => {
   res.status(404).json({
     status: "error",
-    message: "Route not found"
+    message: "Route not found",
   });
 });
 
@@ -80,4 +80,4 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-export default app;
+module.exports = app;

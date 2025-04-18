@@ -1,5 +1,5 @@
-import admin from 'firebase-admin';
-import logger from '../../utils/logger.js';
+const admin = require('firebase-admin');
+const logger = require('../../utils/logger.js');
 
 const RESEND_DELAY = 60; // 60 seconds
 const otpAttempts = new Map(); // Store attempts count and timestamp
@@ -12,7 +12,7 @@ const otpService = {
       const now = Date.now();
       
       if (attempts.count > 0 && (now - attempts.lastAttempt) < (RESEND_DELAY * 1000)) {
-        const remainingTime = Math.ceil((RESEND_DELAY - (now - attempts.lastAttempt)/1000));
+        const remainingTime = Math.ceil((RESEND_DELAY - (now - attempts.lastAttempt) / 1000));
         throw new Error(`Please wait ${remainingTime} seconds before requesting a new code`);
       }
 
@@ -82,4 +82,4 @@ globalThis.setInterval(() => {
   }
 }, 60000); // Clean every minute
 
-export default otpService;
+module.exports = otpService;

@@ -1,5 +1,5 @@
-import otpService from './otp.service.js';
-import logger from '../../utils/logger.js';
+const otpService = require('./otp.service.js');
+const logger = require('../../utils/logger.js');
 
 const sendOTP = async (req, res) => {
   try {
@@ -91,7 +91,7 @@ const verifyOTP = async (req, res) => {
   }
 };
 
-export default {
+module.exports = {
   sendOTP,
   verifyOTP
 };

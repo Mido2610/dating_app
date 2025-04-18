@@ -1,5 +1,4 @@
-import crypto from "crypto";
-import { fileURLToPath } from "url";
+const crypto = require("crypto");
 
 /**
  * @returns {string}
@@ -9,8 +8,8 @@ function generateJwtSecret() {
 }
 
 // Kiểm tra nếu tệp được chạy trực tiếp
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (require.main === module) {
   console.log('Generated JWT_SECRET:', generateJwtSecret());
 }
 
-export default generateJwtSecret;
+module.exports = generateJwtSecret;
