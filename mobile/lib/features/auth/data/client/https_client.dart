@@ -12,7 +12,7 @@ class HttpsClient {
 
   String get _baseUrl {
     if (kDebugMode) {
-      return 'http://192.168.1.8:3000'; // Base URL cho môi trường phát triển
+      return 'http://localhost:3000'; // Base URL cho môi trường phát triển
     }
     return 'https://your-production-url.com/api/users'; // Base URL cho môi trường production
   }

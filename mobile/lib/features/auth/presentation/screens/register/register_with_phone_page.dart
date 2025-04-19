@@ -86,7 +86,7 @@ class _PhoneInputPageState extends State<PhoneInputPage> with CustomToast {
                     hintText: 'Enter your number without leading 0',
                   ),
                   initialCountryCode: 'VN',
-                  disableLengthCheck: false,
+                  disableLengthCheck: true,
                   onChanged: (phone) {
                     String number = phone.completeNumber;
                     if (number.startsWith('+84') &&

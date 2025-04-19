@@ -13,6 +13,16 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Middleware
 app.use(express_1.default.json());
+// Thêm middleware CORS
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === 'OPTIONS') {
+        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        return res.status(200).json({});
+    }
+    next();
+});
 // Health check route - place first
 app.get('/api/health', (req, res) => {
     res.json({
@@ -31,8 +41,8 @@ app.get('/api/otp/debug', (req, res) => {
     res.json({
         message: 'OTP Debug route working',
         routes: {
-            sendOTP: '/api/otp/send',
-            verifyOTP: '/api/otp/verify'
+            sendOTP: '/api/otp/send-otp',
+            verifyOTP: '/api/otp/verify-otp'
         },
         timestamp: new Date().toISOString()
     });

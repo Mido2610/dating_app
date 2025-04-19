@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import otpService from './otp.service';
 import logger from '../../utils/logger';
+import * as proto from '../protos/generated/user_pb';
+import { ProtoConverter, sendProtoResponse } from '../../utils/proto-utils';
 
 /**
  * Send OTP to phone number
@@ -15,55 +17,67 @@ export const sendOTP = async (req: Request, res: Response): Promise<Response> =>
     const phoneNumber = req.body.phoneNumber || req.body.phone;
 
     if (!phoneNumber) {
-      return res.status(400).json({ 
+      const response = ProtoConverter.toSendOtpResponse({
         code: 400,
         message: "Phone number is required",
         verificationId: ""
       });
+      
+      return sendProtoResponse(res.status(400), response);
     }
 
     const phoneRegex = /^\+[1-9]\d{1,14}$/;
     if (!phoneRegex.test(phoneNumber)) {
-      return res.status(400).json({ 
+      const response = ProtoConverter.toSendOtpResponse({
         code: 400,
         message: "Invalid phone number format. Must be in E.164 format (e.g. +84123456789)",
         verificationId: ""
       });
+      
+      return sendProtoResponse(res.status(400), response);
     }
 
     const { verificationId, otpCode } = await otpService.sendOTP(phoneNumber);
 
-    return res.status(200).json({
+    const response = ProtoConverter.toSendOtpResponse({
       code: 200,
       message: "Verification code sent successfully",
       verificationId,
       smsCode: otpCode
     });
+    
+    return sendProtoResponse(res.status(200), response);
 
   } catch (error) {
     logger.error('Error in sendOTP:', error);
     
     if (error instanceof Error && error.message.includes('Please wait')) {
-      return res.status(429).json({ 
+      const response = ProtoConverter.toSendOtpResponse({
         code: 429,
         message: error.message,
         verificationId: ""
       });
+      
+      return sendProtoResponse(res.status(429), response);
     }
     
     if (error instanceof Error && error.message === 'Invalid phone number format') {
-      return res.status(400).json({
+      const response = ProtoConverter.toSendOtpResponse({
         code: 400,
         message: error.message,
         verificationId: ""
       });
+      
+      return sendProtoResponse(res.status(400), response);
     }
 
-    return res.status(500).json({
+    const response = ProtoConverter.toSendOtpResponse({
       code: 500,
       message: "Failed to send verification code",
       verificationId: ""
     });
+    
+    return sendProtoResponse(res.status(500), response);
   }
 };
 
@@ -77,20 +91,24 @@ export const verifyOTP = async (req: Request, res: Response): Promise<Response> 
     const { verificationId, smsCode } = req.body;
 
     if (!verificationId || !smsCode) {
-      return res.status(400).json({
+      const response = ProtoConverter.toVerifyOtpResponse({
         code: 400,
         message: "Verification ID and SMS code are required",
         user: null
       });
+      
+      return sendProtoResponse(res.status(400), response);
     }
 
     const user = await otpService.verifyOTP(verificationId, smsCode);
 
-    return res.status(200).json({
+    const response = ProtoConverter.toVerifyOtpResponse({
       code: 200,
       message: "Phone number verified successfully",
       user
     });
+    
+    return sendProtoResponse(res.status(200), response);
 
   } catch (error) {
     logger.error('Error in verifyOTP:', error);
@@ -106,10 +124,12 @@ export const verifyOTP = async (req: Request, res: Response): Promise<Response> 
       errorMessage = error.message;
     }
 
-    return res.status(statusCode).json({
+    const response = ProtoConverter.toVerifyOtpResponse({
       code: statusCode,
       message: errorMessage,
       user: null
     });
+    
+    return sendProtoResponse(res.status(statusCode), response);
   }
 }; 

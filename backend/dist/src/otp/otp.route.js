@@ -38,13 +38,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const otpController = __importStar(require("./otp.controller"));
+const proto = __importStar(require("../protos/generated/user_pb"));
+const proto_utils_1 = require("../../utils/proto-utils");
 const router = express_1.default.Router();
-// Routes match proto definitions
-router.post("/send", (req, res, next) => {
-    console.log('📡 OTP Send Route hit');
+// Routes for OTP verification
+router.post("/send-otp", (0, proto_utils_1.parseProtoBody)(proto.user.SendOtpRequest), (req, res, next) => {
+    console.log('📡 OTP Send Route hit with data:', req.body);
     return otpController.sendOTP(req, res);
 });
-router.post("/verify", otpController.verifyOTP);
-console.log('🔄 OTP Routes registered at /send and /verify');
+router.post("/verify-otp", (0, proto_utils_1.parseProtoBody)(proto.user.VerifyOtpRequest), otpController.verifyOTP);
+console.log('🔄 OTP Routes registered at /api/otp/send-otp and /api/otp/verify-otp');
 exports.default = router;
 //# sourceMappingURL=otp.route.js.map

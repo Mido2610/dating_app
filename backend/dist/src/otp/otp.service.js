@@ -7,7 +7,6 @@ const crypto_1 = __importDefault(require("crypto"));
 const twilio_1 = __importDefault(require("twilio"));
 const user_schema_1 = __importDefault(require("../user/user.schema"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-const firebaseAdminConfig_1 = __importDefault(require("../../config/firebaseAdminConfig"));
 const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
     ? (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
     : null;
@@ -68,6 +67,7 @@ const otpService = {
             return {
                 verificationId,
                 resendDelay: RESEND_DELAY,
+                otpCode
             };
         }
         catch (error) {
@@ -103,22 +103,10 @@ const otpService = {
                 await user.save();
                 logger_1.default.info(`Created new user with phone: ${phoneNumber}`);
             }
-            let userRecord;
-            try {
-                userRecord = await firebaseAdminConfig_1.default.auth().getUserByPhoneNumber(phoneNumber);
-            }
-            catch (error) {
-                if (error.code === "auth/user-not-found") {
-                    userRecord = await firebaseAdminConfig_1.default.auth().createUser({
-                        phoneNumber: phoneNumber,
-                    });
-                }
-                else {
-                    throw error;
-                }
-            }
+            // Ensure user._id exists and convert to string
+            const userId = user._id ? user._id.toString() : '';
             return {
-                id: user._id?.toString() || userRecord.uid,
+                id: userId,
                 phoneNumber: user.phone,
             };
         }

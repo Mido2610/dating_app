@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import userRoutes from './src/user/user.route';
 import otpRoutes from './src/otp/otp.route';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -9,6 +10,15 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
+// Handle raw protobuf format
+app.use((req, res, next) => {
+  if (req.headers['content-type'] === 'application/protobuf') {
+    bodyParser.raw({ type: 'application/protobuf' })(req, res, next);
+  } else {
+    next();
+  }
+});
 
 // Main routes
 app.use('/', userRoutes);

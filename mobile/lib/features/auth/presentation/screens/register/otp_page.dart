@@ -167,18 +167,21 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
                                 ),
                                 onCodeChanged: (String? otpCode) {
                                   if (otpCode != null) {
+                                    setState(() {
+                                      _currentOtp = otpCode;
+                                    });
+
                                     context.read<OtpBloc>().add(
                                       OtpEvent.changeRequestOtp(
                                         otpCode: otpCode,
                                       ),
                                     );
-                                  }
-                                },
-                                onCodeSubmitted: (String code) {
-                                  if (code.length == 6) {
-                                    context.read<OtpBloc>().add(
-                                      OtpEvent.verifyOtp(otpCode: code),
-                                    );
+
+                                    if (otpCode.length == 6) {
+                                      context.read<OtpBloc>().add(
+                                        OtpEvent.verifyOtp(otpCode: otpCode),
+                                      );
+                                    }
                                   }
                                 },
                               ),

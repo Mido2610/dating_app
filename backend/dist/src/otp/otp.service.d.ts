@@ -1,6 +1,7 @@
 interface SendOTPResult {
     verificationId: string;
     resendDelay: number;
+    otpCode: string;
 }
 interface VerifyOTPResult {
     id: string;
