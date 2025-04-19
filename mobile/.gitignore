@@ -124,3 +124,6 @@ GoogleService-Info.plist
 # Package related
 .pub-cache/
 .pub/
+
+# FVM
+.fvm/flutter_sdk
