@@ -43,8 +43,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with ApiError {
     if (response == null) {
       return;
     }
-    await _userService.setJwt(response.loginResult.accessToken.token);
-    await _userService.setUser(response.loginResult.user);
+    await _userService.setJwt(response.token);
+    await _userService.setUser(response.user);
 
     httpsClient.setJwtInHeader();
   }

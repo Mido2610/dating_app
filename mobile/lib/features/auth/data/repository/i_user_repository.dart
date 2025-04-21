@@ -32,26 +32,26 @@ class IUserRepository implements UserRepository {
   }
 
   @override
-  Future<SendOtpResponse> sendOtp({
-    required SendOtpRequest sendOtpRequest,
+  Future<SendEmailOtpResponse> sendOtp({
+    required SendEmailOtpRequest sendOtpRequest,
   }) async {
     final json = await _httpsClient.post(
       EndPoint.sendOtp,
       body: protoToRequest(sendOtpRequest),
     );
-    return SendOtpResponse.create()
+    return SendEmailOtpResponse.create()
       ..mergeFromProto3Json(json, ignoreUnknownFields: true);
   }
 
   @override
-  Future<VerifyOtpResponse> verifyOtp({
-    required VerifyOtpRequest verifyOtpRequest,
+  Future<VerifyEmailOtpResponse> verifyOtp({
+    required VerifyEmailOtpRequest verifyOtpRequest,
   }) async {
     final json = await _httpsClient.post(
       EndPoint.verifyOtp,
       body: protoToRequest(verifyOtpRequest),
     );
-    return VerifyOtpResponse.create()
+    return VerifyEmailOtpResponse.create()
       ..mergeFromProto3Json(json, ignoreUnknownFields: true);
   }
 }
