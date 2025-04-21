@@ -1,6 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
 import { ROLE } from './enum.utils';
-import { IAuditLog } from '../interface/audit.interface';
+import { IAuditLog } from '../interfaces/audit.interface';
 
 export type CatchAsyncType = {
   controller: ControllerType;
