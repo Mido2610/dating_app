@@ -1,7 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
-import { toString } from 'lodash';
 import { CatchAsyncType } from '../common/utils/type.util';
-import { ROLE } from '../common/utils/enum.utils';
+import { ROLE } from '../common/utils/enum.util';
 import logger from '../common/utils/logger';
 
 const handleErrors = (callback: grpc.sendUnaryData<any>, error: any) => {
@@ -21,9 +20,6 @@ const CatchAsync = ({
     roles?: ROLE[]
   ) => {
     try {
-      // if (validation) {
-      //   validation(call);
-      // }
       if (authorization) {
         await authorization(call, callback, roles || []);
       }

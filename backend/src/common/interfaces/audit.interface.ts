@@ -1,5 +1,5 @@
 import * as grpc from "@grpc/grpc-js";
-import { ROLE } from "../utils/enum.utils";
+import { ROLE } from "../utils/enum.util";
 
 /**
  * Interface for audit logging functionality

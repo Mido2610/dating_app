@@ -1,5 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import { ROLE } from './enum.utils';
+import { ROLE } from './enum.util';
 import { IAuditLog } from '../interfaces/audit.interface';
 
 export type CatchAsyncType = {
@@ -22,5 +22,5 @@ export type AuthorizationType = (
 ) => Promise<void>;
 
 export type ValidationType = (
-  call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any>
+  call: grpc.ServerUnaryCall<any, any>
 ) => void;
