@@ -36,19 +36,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_loader_1 = __importDefault(require("../proto/loaders/user.loader"));
-const catchAsync_middleware_1 = __importDefault(require("src/middlewares/catchAsync.middleware"));
-const validation_middleware_1 = __importDefault(require("src/middlewares/validation.middleware"));
-const UserValidation = __importStar(require("./user.validation"));
+const express_1 = __importDefault(require("express"));
 const user_controller_1 = __importDefault(require("./user.controller"));
-const UserRoute = {
-    service: user_loader_1.default.UserRoutes.service,
-    implementation: {
-        registerUser: (0, catchAsync_middleware_1.default)({
-            validation: (0, validation_middleware_1.default)(UserValidation.registerUser),
-            controller: user_controller_1.default.registerUser,
-        }),
-    }
-};
-exports.default = UserRoute;
+const catchAsync_middleware_1 = __importDefault(require("../middlewares/catchAsync.middleware"));
+const validation_middleware_1 = require("../middlewares/validation.middleware");
+const UserValidation = __importStar(require("./user.validation"));
+const router = express_1.default.Router();
+// Public routes
+router.post('/register', (0, validation_middleware_1.validateRequest)(UserValidation.registerUser), (0, catchAsync_middleware_1.default)(user_controller_1.default.register));
+exports.default = router;
 //# sourceMappingURL=user.route.js.map

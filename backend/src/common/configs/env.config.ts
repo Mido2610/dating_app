@@ -9,7 +9,8 @@ const envVarsSchema: Joi.ObjectSchema = Joi.object()
     NODE_ENV: Joi.string()
       .valid('production', 'development', 'test', 'local')
       .default('development'),
-    PORT: Joi.number().default(3000),
+    GRPC_PORT: Joi.number().default(50051),
+    REST_PORT: Joi.number().default(3000),
     MONGODB_URI: Joi.string().required().description('MongoDB URI'),
     
     // Firebase configuration
@@ -42,14 +43,19 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-const exportedValues = {
+export const config = {
   env: envVars.NODE_ENV,
-  port: envVars.PORT,
+  rest: {
+    port: envVars.REST_PORT || 3000
+  },
+  grpc: {
+    port: envVars.GRPC_PORT || 50051
+  },
   mongoose: {
     uri: envVars.MONGODB_URI,
     options: {
-        maxPoolSize: envVars.MONGODB_CONNECTION_POOL_SIZE,
-      },
+      maxPoolSize: envVars.MONGODB_CONNECTION_POOL_SIZE,
+    },
   },
   firebase: {
     apiKey: envVars.FIREBASE_API_KEY,
@@ -73,13 +79,4 @@ const exportedValues = {
   },
 };
 
-export const {
-  env,
-  port,
-  mongoose,
-  firebase,
-  twilio,
-  email,
-} = exportedValues;
-
-export default exportedValues;
+export default config;

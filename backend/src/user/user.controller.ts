@@ -1,43 +1,16 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import logger from '../common/utils/logger';
-import { IUser } from './user.interface';
-import generateJwtSecret from '../common/utils/secretGenerator';
-import { RegisterRequest } from 'src/proto/generated/user/RegisterRequest';
-import * as grpc from '@grpc/grpc-js';
-import { RegisterResponse } from 'src/proto/generated/user/RegisterResponse';
-import UserService from './user.service';
-import { ControllerType } from '../common/utils/type.util';
+import AuthService from './user.service';
+import { generateOTPCode } from '../common/utils/otpGenerator';
 
-class UserController {
-  registerUser: ControllerType = async (
-    call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any>,
-    callback: grpc.sendUnaryData<any>
-  ) => {
-    try {
-      // Type guard to check if call is a ServerUnaryCall
-      if ('request' in call) {
-        const request = call.request as RegisterRequest;
-        
-        // Register the user through the service layer
-        await UserService.registerUser(request);
-        
-        // Return success response
-        callback(null, { 
-          code: grpc.status.OK, 
-          message: 'User registered successfully',
-        });
-      } else {
-        throw new Error('Invalid request type');
-      }
-    } catch (error) {
-      logger.error('Error registering user:', error);
-      callback({
-        code: grpc.status.INTERNAL,
-      }, null);
-    }
-  }
+class AuthController {
+  register = async (req: Request, res: Response) => {
+    const user = await AuthService.register(req.body);
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data: user
+    });
+  };
 }
 
-export default new UserController();
+export default new AuthController();

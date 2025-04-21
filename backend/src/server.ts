@@ -1,37 +1,27 @@
 import mongoose from 'mongoose';
-import * as grpc from '@grpc/grpc-js';
-import * as config from './common/configs/env.config';
-import server from './routes';
+import { config } from './common/configs/env.config';
+import app from './app';
 
-function main() {
-  mongoose.set('strictQuery', false);
-  mongoose
-    .connect(config.mongoose.uri, config.mongoose.options)
-    .then(() => {
-      console.log('Connected to MongoDB');
+async function main() {
+  try {
+    // Connect to MongoDB
+    await mongoose.connect(config.mongoose.uri, config.mongoose.options);
+    console.log('Connected to MongoDB');
 
-      server.bindAsync(
-        `0.0.0.0:${config.port}`,
-        grpc.ServerCredentials.createInsecure(),
-        (error) => {
-          if (error) {
-            console.error(`process is running on this ${config.port}.`);
-            console.error(error);
-          } else {
-            console.log(`Starting gRPC server on port: ${config.port}`);
-          }
-        }
-      );
-    })
-    .catch((error) => {
-      console.error('Error connecting to MongoDB:', error);
+    // Start HTTP server
+    app.listen(config.rest.port, () => {
+      console.log(`HTTP Server running at port ${config.rest.port}`);
     });
+
+  } catch (error) {
+    console.error('Server startup failed:', error);
+    process.exit(1);
+  }
 }
 
 main();
 
 process.on('SIGINT', () => {
-  console.log(`Exit grpc server on port ${config.port}`);
-  server.forceShutdown();
+  console.log('Server shutting down');
   process.exit(1);
 });

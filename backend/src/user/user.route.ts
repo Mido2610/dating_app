@@ -1,16 +1,16 @@
-import UserLoader from '../proto/loaders/user.loader';
+import express from 'express';
+import AuthController from './user.controller';
 import CatchAsync from '../middlewares/catchAsync.middleware';
-import Validation from '../middlewares/validation.middleware';
-import UserController from './user.controller';
-import * as UserValidation from '../user/user.validation';
+import { validateRequest } from '../middlewares/validation.middleware';
+import authenticate from '../middlewares/authorization.middleware';
+import * as UserValidation from './user.validation';
 
-const UserRoute = {
-    service: UserLoader.UserRoutes.service,
-    implementation: {
-        registerUser: CatchAsync({
-            validation: Validation(UserValidation.registerUser),
-            controller: UserController.registerUser,
-        }),
-    }
-}
-export default UserRoute; 
+const router = express.Router();
+
+// Public routes
+router.post('/register', 
+  validateRequest(UserValidation.registerUser),
+  CatchAsync(AuthController.register)
+);
+
+export default router; 

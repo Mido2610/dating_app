@@ -1,13 +1,8 @@
 import mongoose, { Schema } from "mongoose";
-import { IUser } from "./user.interface";
+import { IAuth } from "./user.interface";
 
-const UserSchema: Schema<IUser> = new Schema<IUser>(
+const AuthSchema: Schema<IAuth> = new Schema<IAuth>(
   {
-    phone: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     email: {
       type: String,
       required: false,
@@ -45,6 +40,6 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
   }
 );
 
-const User = mongoose.model<IUser>("User", UserSchema);
+const User = mongoose.model<IAuth>("User", AuthSchema);
 
 export default User;

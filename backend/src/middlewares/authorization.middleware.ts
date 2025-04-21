@@ -28,4 +28,4 @@ const authenticate = (req: AuthenticatedRequest, res: Response, next: NextFuncti
   }
 };
 
-export default authenticate; 
+export default authenticate;

@@ -1,34 +1,26 @@
-import * as grpc from '@grpc/grpc-js';
-import { CatchAsyncType } from '../common/utils/type.util';
-import { ROLE } from '../common/utils/enum.util';
+import { Request, Response, NextFunction } from 'express';
 import logger from '../common/utils/logger';
 
-const handleErrors = (callback: grpc.sendUnaryData<any>, error: any) => {
-  const { code, message, stack } = error || {};
+interface AsyncRequestHandler {
+  (req: Request, res: Response, next: NextFunction): Promise<any>;
+}
+
+const handleErrors = (res: Response, error: any) => {
+  const { status = 500, message, stack } = error;
   logger.error(`Error occurred: ${stack}`);
-  callback({ code, message });
+  
+  res.status(status).json({
+    success: false,
+    message: message || 'Internal server error'
+  });
 };
 
-const CatchAsync = ({
-  validation,
-  authorization,
-  controller,
-}: CatchAsyncType) => {
-  return async (
-    call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any>,
-    callback: grpc.sendUnaryData<any>,
-    roles?: ROLE[]
-  ) => {
+const CatchAsync = (controller: AsyncRequestHandler) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (authorization) {
-        await authorization(call, callback, roles || []);
-      }
-      await controller(call, callback);
+      await controller(req, res, next);
     } catch (error) {
-      // TODO: send logger to slack
-      handleErrors(callback, error);
-    } finally {
-      /* empty */
+      handleErrors(res, error);
     }
   };
 };

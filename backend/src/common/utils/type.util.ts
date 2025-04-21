@@ -10,7 +10,7 @@ export type CatchAsyncType = {
 };
 
 export type ControllerType = (
-  call: grpc.ServerUnaryCall<any, any> | grpc.ServerReadableStream<any, any>,
+  call: grpc.ServerUnaryCall<any, any>,
   callback: grpc.sendUnaryData<any>,
   auditLog?: IAuditLog
 ) => Promise<void>;

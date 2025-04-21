@@ -1,42 +1,37 @@
 import Joi from "joi";
-import { JoiCustomPhone, objectId } from "../common/utils/validation.utli";
 
 export const registerUser = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(8).required(),
-  phone: JoiCustomPhone(),
-  name: Joi.string().optional(),
+  password: Joi.string().min(8).required()
 });
 
-export const loginUser = Joi.object({
-  email: Joi.string().required().messages({
-    "any.required": "Email is required",
-  }),
-  password: Joi.string().required().messages({
-    "any.required": "Password is required",
-  }),
+export const login = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required()
 });
 
-export const updateUser = Joi.object({
-  email: Joi.string().email().optional().messages({
-    "string.email": "Invalid email format",
-  }),
-  phone: Joi.string()
-    .pattern(/^\+?[0-9]{10,15}$/)
-    .optional()
-    .messages({
-      "string.pattern.base": "Invalid phone number format",
-    }),
-  name: Joi.string().optional(),
-  bio: Joi.string().optional(),
-  status: Joi.string()
-    .valid("active", "inactive", "banned")
-    .optional()
-    .messages({
-      "any.only": "Invalid status value",
-    }),
+export const sendEmailOtp = Joi.object({
+  email: Joi.string().email().required()
 });
 
-export const logout = Joi.object({
-  cdpUserId: Joi.custom(objectId).required(),
+export const verifyEmailOtp = Joi.object({
+  verificationId: Joi.string().required(),
+  otpCode: Joi.string().length(6).required(),
+  email: Joi.string().email().required()
+});
+
+export const updateProfile = Joi.object({
+  name: Joi.string().min(2).max(50),
+  avatar: Joi.string().uri(),
+  bio: Joi.string().max(500),
+  interests: Joi.array().items(Joi.string()),
+  gender: Joi.string().valid('male', 'female', 'other'),
+  birthday: Joi.date().iso()
+}).min(1); // Require at least one field to update
+
+export const changePassword = Joi.object({
+  currentPassword: Joi.string().required(),
+  newPassword: Joi.string().min(8).required(),
+  confirmPassword: Joi.string().valid(Joi.ref('newPassword')).required()
+    .messages({ 'any.only': 'Confirm password must match new password' })
 });

@@ -1,21 +1,25 @@
-import * as grpc from "@grpc/grpc-js";
-import OtpRoute from "./user/user.route";
+import express from 'express';
+import userRoutes from './user/user.route';
 
-const server = new grpc.Server({
-  "grpc.max_receive_message_length": 10 * 1024 * 1024,
-  "grpc.max_send_message_length": 10 * 1024 * 1024,
+const router = express.Router();
+
+// Health check route
+router.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString()
+  });
 });
 
-const controllers: {
-  service: grpc.ServiceDefinition;
-  implementation: grpc.UntypedServiceImplementation;
-}[] = [
-    OtpRoute,
-];
+// API Routes
+router.use('/auth', userRoutes);
 
-// Dynamically add each service to the server
-controllers.forEach(({ service, implementation }) => {
-  server.addService(service, implementation);
+// Handle 404 routes
+router.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
 });
 
-export default server;
+export default router;
