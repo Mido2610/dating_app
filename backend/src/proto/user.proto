@@ -2,22 +2,22 @@ syntax = "proto3";
 
 package user;
 
+// User messages
 message User {
   string id = 1;
   string email = 2;
-  string password = 3;
-  string fullName = 4;
-  string gender = 5;
-  int64 birthday = 6;
-  repeated string interests = 7;
-  repeated string photos = 8;
+  string name = 3;
+  string avatar = 4;
+  string bio = 5;
+  string status = 6;
+  bool emailVerified = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+  repeated string interests = 10;
+  repeated string photos = 11;
 }
 
-message AccessToken {
-  string token = 1;
-  string expiresAt = 2;
-}
-
+// Authentication messages
 message LoginRequest {
   string email = 1;
   string password = 2;
@@ -26,52 +26,23 @@ message LoginRequest {
 message LoginResponse {
   int32 code = 1;
   string message = 2;
-  LoginResponseResult loginResult = 3;
-}
-
-message LoginResponseResult {
-  User user = 1;
-  AccessToken accessToken = 2;
+  User user = 3;
+  string token = 4;
 }
 
 message RegisterRequest {
   string email = 1;
   string password = 2;
-  string fullName = 3;
-  string gender = 4;
-  int64 birthday = 5;
-  repeated string interests = 6;
-  repeated string photos = 7;
 }
 
 message RegisterResponse {
   int32 code = 1;
   string message = 2;
   User user = 3;
+  string token = 4;
 }
 
-message SendOtpRequest {
-  string phone = 1;
-}
-
-message SendOtpResponse {
-  int32 code = 1;
-  string message = 2;
-  string verificationId = 3;
-  string smsCode = 4; // For development mode only
-}
-
-message VerifyOtpRequest {
-  string verificationId = 1;
-  string smsCode = 2;
-}
-
-message VerifyOtpResponse {
-  int32 code = 1;
-  string message = 2;
-  User user = 3;
-}
-
+// Email OTP messages
 message SendEmailOtpRequest {
   string email = 1;
 }
@@ -80,7 +51,6 @@ message SendEmailOtpResponse {
   int32 code = 1;
   string message = 2;
   string verificationId = 3;
-  string otpCode = 4; // For development mode only
 }
 
 message VerifyEmailOtpRequest {
@@ -93,20 +63,13 @@ message VerifyEmailOtpResponse {
   int32 code = 1;
   string message = 2;
   User user = 3;
+  string token = 4;
 }
 
-message UserOtpVerification {
-  string userId = 1;
-  string otpCode = 2;
-  string createdAt = 3; // Using string for Date type
-  string expiresAt = 4; // Using string for Date type
-}
-
+// User Routes service
 service UserRoutes {
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc Register(RegisterRequest) returns (RegisterResponse);
-  rpc SendOtp(SendOtpRequest) returns (SendOtpResponse);
-  rpc VerifyOtp(VerifyOtpRequest) returns (VerifyOtpResponse);
   rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
   rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (VerifyEmailOtpResponse);
 }
