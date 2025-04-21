@@ -34,71 +34,46 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-/**
- * User Schema - matches exactly with IUser interface
- */
 const UserSchema = new mongoose_1.Schema({
-    /**
-     * User's phone number (required)
-     */
     phone: {
         type: String,
         required: true,
         unique: true,
-        trim: true
     },
-    /**
-     * User's email address
-     */
     email: {
         type: String,
         required: false,
-        unique: true,
         lowercase: true,
-        trim: true
     },
-    /**
-     * User's hashed password
-     */
+    emailVerified: {
+        type: Boolean,
+        default: false,
+    },
     password: {
         type: String,
-        required: false
+        required: false,
     },
-    /**
-     * User's full name
-     */
     name: {
         type: String,
         required: false,
-        trim: true
+        trim: true,
     },
-    /**
-     * URL to user's avatar image
-     */
     avatar: {
         type: String,
-        required: false
+        required: false,
     },
-    /**
-     * User's biography or description
-     */
     bio: {
         type: String,
-        required: false
+        required: false,
     },
-    /**
-     * User's account status
-     */
     status: {
         type: String,
-        enum: ['active', 'inactive', 'banned'],
-        default: 'active'
-    }
+        enum: ["active", "inactive", "banned"],
+        default: "active",
+    },
 }, {
-    /**
-     * Automatically add createdAt and updatedAt fields
-     */
-    timestamps: true
+    timestamps: true,
 });
-exports.default = mongoose_1.default.model('User', UserSchema);
+const User = mongoose_1.default.model("User", UserSchema);
+exports.default = User;
 //# sourceMappingURL=user.schema.js.map

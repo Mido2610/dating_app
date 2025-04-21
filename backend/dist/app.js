@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
-const user_route_1 = __importDefault(require("./src/user/user.route"));
-const otp_route_1 = __importDefault(require("./src/otp/otp.route"));
 const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -21,9 +19,6 @@ app.use((req, res, next) => {
         next();
     }
 });
-// Main routes
-app.use('/', user_route_1.default);
-app.use('/otp', otp_route_1.default);
 // Server health check route
 app.get('/server-info', (req, res) => {
     res.json({

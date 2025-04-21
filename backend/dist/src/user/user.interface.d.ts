@@ -4,13 +4,17 @@ import { Document } from 'mongoose';
  */
 export interface IUser extends Document {
     /**
-     * User's phone number (required)
+     * User's phone number
      */
-    phone: string;
+    phone?: string;
     /**
      * User's email address
      */
     email?: string;
+    /**
+     * Whether the email has been verified
+     */
+    emailVerified?: boolean;
     /**
      * User's hashed password
      */

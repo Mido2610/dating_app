@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
-import userRoutes from './src/user/user.route';
-import otpRoutes from './src/otp/otp.route';
 import bodyParser from 'body-parser';
 
 dotenv.config();
@@ -20,9 +18,6 @@ app.use((req, res, next) => {
   }
 });
 
-// Main routes
-app.use('/', userRoutes);
-app.use('/otp', otpRoutes);
 
 // Server health check route
 app.get('/server-info', (req: Request, res: Response) => {
