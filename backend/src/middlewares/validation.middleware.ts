@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import * as grpc from '@grpc/grpc-js';
-import { throwBadRequest } from 'src/common/utils/errorHandler.util';
+import { throwBadRequest } from '../common/utils/errorHandler.util';
 import { ValidationType } from '../common/utils/type.util';
 
 const Validation = (requestSchema: Joi.Schema): ValidationType => {

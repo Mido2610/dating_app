@@ -5,9 +5,8 @@ import bcrypt from 'bcryptjs';
 
 class UserService {
   static async registerUser(request: RegisterRequest): Promise<void> {
-    const { email, password, fullName } = request;
+    const { email, password } = request;
     // Simulate user registration logic
-    console.log(`Registering user: ${email}, ${fullName}`);
     // Here you would typically hash the password and save the user to the database
     // For demonstration, we are just logging the user details
     // Hash the password
@@ -19,7 +18,6 @@ class UserService {
     const user = {
       email,
       password: hashedPassword,
-      fullName,
     };
   }
 }

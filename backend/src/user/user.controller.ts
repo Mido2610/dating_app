@@ -19,7 +19,6 @@ class UserController {
       // Type guard to check if call is a ServerUnaryCall
       if ('request' in call) {
         const request = call.request as RegisterRequest;
-        const { email, password, fullName, gender, birthday, interests, photos } = request;
         
         // Register the user through the service layer
         await UserService.registerUser(request);

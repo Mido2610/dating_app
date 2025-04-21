@@ -16,9 +16,8 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class UserService {
     static registerUser(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { email, password, fullName } = request;
+            const { email, password } = request;
             // Simulate user registration logic
-            console.log(`Registering user: ${email}, ${fullName}`);
             // Here you would typically hash the password and save the user to the database
             // For demonstration, we are just logging the user details
             // Hash the password
@@ -30,7 +29,6 @@ class UserService {
             const user = {
                 email,
                 password: hashedPassword,
-                fullName,
             };
         });
     }

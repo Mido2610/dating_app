@@ -1,7 +1,7 @@
 import express from 'express';
 import UserLoader from '../proto/loaders/user.loader';
-import CatchAsync from 'src/middlewares/catchAsync.middleware';
-import Validation from 'src/middlewares/validation.middleware';
+import CatchAsync from '../middlewares/catchAsync.middleware';
+import Validation from '../middlewares/validation.middleware';
 import * as UserValidation from './user.validation';
 import UserController from './user.controller';
 

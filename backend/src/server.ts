@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import * as grpc from '@grpc/grpc-js';
-import * as config from '../src/common/configs/env.config'
+import * as config from './common/configs/env.config';
 import server from './routes';
 
 function main() {
