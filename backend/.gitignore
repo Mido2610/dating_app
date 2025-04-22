@@ -32,3 +32,6 @@ src/proto/loaders
 
 # dependencies
 /node_modules
+
+# production
+/dist/
