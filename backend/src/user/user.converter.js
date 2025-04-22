@@ -1,7 +1,7 @@
 const appRoot = require(require.resolve('app-root-path'));
+const httpStatus = require('http-status');
 const _ = require('lodash');
 const protobuf = require('protobufjs');
-const httpStatus = require('http-status');
 const { getMessageByLocale } = require('../common/utils/locale.util');
 
 let root;

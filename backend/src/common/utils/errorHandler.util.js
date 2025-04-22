@@ -1,36 +1,40 @@
-class CustomError extends Error {
-  constructor(message, status) {
+class AppError extends Error {
+  constructor(message, statusCode) {
     super(message);
-    this.status = status;
+    this.statusCode = statusCode;
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.isOperational = true;
+
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
 const throwBadRequest = (condition, message) => {
   if (condition) {
-    throw new CustomError(message, 400);
+    throw new AppError(message, 400);
   }
 };
 
 const throwUnauthorized = (condition, message) => {
   if (condition) {
-    throw new CustomError(message, 401);
+    throw new AppError(message, 401);
   }
 };
 
 const throwForbidden = (condition, message) => {
   if (condition) {
-    throw new CustomError(message, 403);
+    throw new AppError(message, 403);
   }
 };
 
 const throwNotFound = (condition, message) => {
   if (condition) {
-    throw new CustomError(message, 404);
+    throw new AppError(message, 404);
   }
 };
 
 module.exports = {
-  CustomError,
+  AppError,
   throwBadRequest,
   throwUnauthorized,
   throwForbidden,

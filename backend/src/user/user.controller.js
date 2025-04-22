@@ -1,6 +1,6 @@
 const CatchAsync = require('../middlewares/catchAsync.middleware');
 const AuthService = require('./user.service');
-const { generateOTPCode } = require('../common/utils/otpGenerator');
+const { generateOTPCode } = require('../common/utils/secretGenerator');
 const {
   convertLoginRequest,
   convertLoginResponse,
@@ -37,9 +37,27 @@ const verifyEmailOtp = CatchAsync(async (req, res) => {
   res.status(200).send(response);
 });
 
+const getProfile = CatchAsync(async (req, res) => {
+  const result = await AuthService.getProfile(req.user.id);
+  res.status(200).send(result);
+});
+
+const updateProfile = CatchAsync(async (req, res) => {
+  const result = await AuthService.updateProfile(req.user.id, req.body);
+  res.status(200).send(result);
+});
+
+const changePassword = CatchAsync(async (req, res) => {
+  const result = await AuthService.changePassword(req.user.id, req.body);
+  res.status(200).send(result);
+});
+
 module.exports = {
   register,
   login,
   sendEmailOtp,
-  verifyEmailOtp
+  verifyEmailOtp,
+  getProfile,
+  updateProfile,
+  changePassword
 };

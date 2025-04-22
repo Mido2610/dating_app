@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate } = require('../common/plugins/plugin');
 
 const UserSchema = new mongoose.Schema(
   {
