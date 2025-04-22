@@ -1,13 +1,10 @@
 const express = require('express');
-const userRoutes = require('./user/user.route');
+const path = require('path');
+const { loadRoutes } = require('./common/utils/route.util');
 
 const router = express.Router();
 
-// Mount routes
-router.use('/users', userRoutes);
-
-// Add other route groups here
-// router.use('/posts', postRoutes);
-// router.use('/messages', messageRoutes);
+// Auto-load all routes from feature directories
+router.use('/', loadRoutes(path.join(__dirname)));
 
 module.exports = router;
