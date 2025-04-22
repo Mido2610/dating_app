@@ -15,7 +15,8 @@ dist/
 logs
 *.log
 npm-debug.log*
-
+error.log
+package-lock.json
 # IDE files
 .idea/
 .vscode/
