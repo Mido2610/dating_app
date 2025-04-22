@@ -1,10 +1,10 @@
-import crypto from 'crypto';
+const crypto = require('crypto');
 
 /**
  * Generates a random JWT secret
- * @returns A random JWT secret string
+ * @returns {string} A random JWT secret string
  */
-function generateJwtSecret(): string {
+function generateJwtSecret() {
   return crypto.randomBytes(32).toString('base64');
 }
 
@@ -13,4 +13,4 @@ if (require.main === module) {
   console.log('Generated JWT_SECRET:', generateJwtSecret());
 }
 
-export default generateJwtSecret; 
+module.exports = generateJwtSecret;

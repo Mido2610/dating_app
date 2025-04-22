@@ -1,4 +1,4 @@
-// Set default timeout for tests to 10 seconds for integration tests
+import { jest } from '@jest/globals';
 jest.setTimeout(10000);
 
 // Global setup for testing environment

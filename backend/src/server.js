@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import { config } from './common/configs/env.config';
-import app from './app';
+const mongoose = require('mongoose');
+const { config } = require('./common/configs/env.config');
+const app = require('./app');
 
 async function main() {
   try {

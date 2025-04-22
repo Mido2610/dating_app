@@ -1,7 +1,6 @@
-import mongoose, { Schema } from "mongoose";
-import { IAuth } from "./user.interface";
+const mongoose = require('mongoose');
 
-const AuthSchema: Schema<IAuth> = new Schema<IAuth>(
+const AuthSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -40,6 +39,6 @@ const AuthSchema: Schema<IAuth> = new Schema<IAuth>(
   }
 );
 
-const User = mongoose.model<IAuth>("User", AuthSchema);
+const User = mongoose.model('User', AuthSchema);
 
-export default User;
+module.exports = User;

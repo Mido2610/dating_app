@@ -2,7 +2,10 @@ import importPlugin from 'eslint-plugin-import';
 
 export default [
   {
-    ignores: ['node_modules/**'],
+    ignores: [
+      'node_modules/**',
+      'dist/**'
+    ],
   },
   {
     files: ['**/*.js'],

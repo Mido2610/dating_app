@@ -1,8 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import routes from './routes';
-import { config } from './common/configs/env.config';
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const routes = require('./routes');
 
 const app = express();
 
@@ -23,4 +22,4 @@ app.get('/server-info', (req, res) => {
   });
 });
 
-export default app;
+module.exports = app;
