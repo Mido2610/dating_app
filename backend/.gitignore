@@ -29,3 +29,6 @@ Thumbs.db
 #generated
 src/proto/generated
 src/proto/loaders
+
+# dependencies
+/node_modules
