@@ -1,172 +1,173 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const User = require('./user.schema');
-const { config } = require('../common/configs/env.config');
-const { throwBadRequest } = require('../common/utils/errorHandler.util');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const _ = require("lodash");
+const User = require("./user.model");
+const { config } = require("../common/configs/env.config");
+const { throwBadRequest } = require("../common/utils/errorHandler.util");
+const { getMessageByLocale } = require("../common/utils/locale.util");
 
-class AuthService {
-  static async register(data) {
-    const { email, password } = data;
+const register = async (request) => {
+  const email = _.get(request, "email");
+  const password = _.get(request, "password");
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throwBadRequest(true, "User with this email already exists");
-    }
+  const existingUser = await User.findOne({ email });
+  throwBadRequest(
+    existingUser,
+    getMessageByLocale({ key: "userAlreadyExists" })
+  );
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
-    const user = await User.create({
-      email,
-      password: hashedPassword,
-    });
+  const user = await User.create({
+    email,
+    password: hashedPassword,
+  });
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    );
+  const token = jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "30d" }
+  );
 
-    return {
-      user: {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        avatar: user.avatar,
-        emailVerified: user.emailVerified,
-      },
-      token,
-    };
+  return {
+    user: _.pick(user, ["_id", "email", "name", "avatar", "emailVerified"]),
+    token,
+  };
+};
+
+const login = async (request) => {
+  const email = _.get(request, "email");
+  const password = _.get(request, "password");
+
+  const user = await User.findOne({ email });
+  throwBadRequest(!user, getMessageByLocale({ key: "invalidCredentials" }));
+
+  const isValidPassword = await bcrypt.compare(
+    password,
+    _.get(user, "password", "")
+  );
+  throwBadRequest(
+    !isValidPassword,
+    getMessageByLocale({ key: "invalidCredentials" })
+  );
+
+  const token = jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "30d" }
+  );
+
+  return {
+    user: _.pick(user, ["_id", "email", "name", "avatar", "emailVerified"]),
+    token,
+  };
+};
+
+const sendEmailOtp = async (request, otpCode) => {
+  const email = _.get(request, "email");
+
+  let user = await User.findOne({ email });
+  if (_.isNil(user)) {
+    user = await User.create({ email });
   }
 
-  static async login(data) {
-    const { email, password } = data;
+  const verificationId = Date.now().toString();
 
-    const user = await User.findOne({ email });
-    if (!user || !user.password) {
-      throwBadRequest(true, "Invalid email or password");
-    }
+  const transporter = nodemailer.createTransport({
+    service: _.get(config, "email.service"),
+    auth: {
+      user: _.get(config, "email.user"),
+      pass: _.get(config, "email.password"),
+    },
+  });
 
-    const isValidPassword = await bcrypt.compare(password, user.password || "");
-    if (!isValidPassword) {
-      throwBadRequest(true, "Invalid email or password");
-    }
+  await transporter.sendMail({
+    from: _.get(config, "email.from"),
+    to: email,
+    subject: "Email Verification OTP",
+    text: `Your verification code is: ${otpCode}`,
+  });
 
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    );
+  return verificationId;
+};
 
-    return {
-      user: {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        avatar: user.avatar,
-        emailVerified: user.emailVerified,
-      },
-      token,
-    };
-  }
+const verifyEmailOtp = async (request) => {
+  const email = _.get(request, "email");
 
-  static async sendEmailOtp(data, otpCode) {
-    const { email } = data;
+  const user = await User.findOne({ email });
+  throwBadRequest(!user, getMessageByLocale({ key: "userNotFound" }));
 
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = await User.create({ email });
-    }
+  await User.findOneAndUpdate(
+    { email },
+    { emailVerified: true },
+    { new: true }
+  );
 
-    const verificationId = Date.now().toString();
+  return true;
+};
 
-    const transporter = nodemailer.createTransport({
-      service: config.email.service,
-      auth: {
-        user: config.email.user,
-        pass: config.email.password,
-      },
-    });
+const getProfile = async (userId) => {
+  const user = await User.findById(userId).select("-password");
+  throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
 
-    await transporter.sendMail({
-      from: config.email.from,
-      to: email,
-      subject: "Email Verification OTP",
-      text: `Your verification code is: ${otpCode}`,
-    });
+  return _.omit(user.toJSON(), ["password"]);
+};
 
-    return verificationId;
-  }
+const updateProfile = async (userId, updateData) => {
+  const sanitizedData = _.pick(updateData, [
+    "name",
+    "avatar",
+    "bio",
+    "interests",
+    "gender",
+    "birthday",
+  ]);
 
-  static async verifyEmailOtp(data) {
-    const { email } = data;
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { $set: sanitizedData },
+    { new: true }
+  ).select("-password");
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      throwBadRequest(true, "User not found");
-    }
+  throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
 
-    await User.findOneAndUpdate(
-      { email },
-      { emailVerified: true },
-      { new: true }
-    );
+  return _.omit(user.toJSON(), ["password"]);
+};
 
-    return true;
-  }
+const changePassword = async (userId, request) => {
+  const currentPassword = _.get(request, "currentPassword");
+  const newPassword = _.get(request, "newPassword");
 
-  static async getProfile(userId) {
-    const user = await User.findById(userId).select("-password");
-    if (!user) {
-      throwBadRequest(true, "User not found");
-    }
-    return user;
-  }
+  const user = await User.findById(userId);
+  throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
 
-  static async updateProfile(userId, updateData) {
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { $set: updateData },
-      { new: true }
-    ).select("-password");
+  const isValidPassword = await bcrypt.compare(
+    currentPassword,
+    _.get(user, "password", "")
+  );
+  throwBadRequest(
+    !isValidPassword,
+    getMessageByLocale({ key: "incorrectPassword" })
+  );
 
-    if (!user) {
-      throwBadRequest(true, "User not found");
-    }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    return user;
-  }
+  await User.findByIdAndUpdate(userId, {
+    password: hashedPassword,
+  });
 
-  static async changePassword(userId, data) {
-    const { currentPassword, newPassword } = data;
+  return true;
+};
 
-    const user = await User.findById(userId);
-    if (!user) {
-      throwBadRequest(true, "User not found");
-    }
-
-    const isValidPassword = await bcrypt.compare(
-      currentPassword,
-      user.password || ""
-    );
-    if (!isValidPassword) {
-      throwBadRequest(true, "Current password is incorrect");
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-    await User.findByIdAndUpdate(userId, {
-      password: hashedPassword,
-    });
-
-    return true;
-  }
-}
-
-module.exports = AuthService;
+module.exports = {
+  register,
+  login,
+  sendEmailOtp,
+  verifyEmailOtp,
+  getProfile,
+  updateProfile,
+  changePassword,
+};

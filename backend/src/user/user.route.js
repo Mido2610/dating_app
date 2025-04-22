@@ -1,43 +1,71 @@
 const express = require('express');
-const AuthController = require('./user.controller');
-const CatchAsync = require('../middlewares/catchAsync.middleware');
-const { validateRequest } = require('../middlewares/validation.middleware');
+const validate = require('../middlewares/validation.middleware');
 const authenticate = require('../middlewares/authorization.middleware');
-const UserValidation = require('./user.validation');
+const userController = require('./user.controller');
+const userValidation = require('./user.validation');
 
 const router = express.Router();
 
 // Public routes
-router.post('/register', 
-  validateRequest(UserValidation.registerUser),
-  CatchAsync(AuthController.register)
+
+// POST: /api/users/register
+// Register new user with email and password
+router.post(
+  '/register',
+  validate(userValidation.registerUser),
+  userController.register
 );
 
-router.post('/login',
-  validateRequest(UserValidation.login),
-  CatchAsync(AuthController.login)
+// POST: /api/users/login
+// Login with email and password
+router.post(
+  '/login',
+  validate(userValidation.login),
+  userController.login
 );
 
-router.post('/send-email-otp',
-  validateRequest(UserValidation.sendEmailOtp),
-  CatchAsync(AuthController.sendEmailOtp)
+// POST: /api/users/send-email-otp
+// Send OTP verification code to email
+router.post(
+  '/send-email-otp',
+  validate(userValidation.sendEmailOtp),
+  userController.sendEmailOtp
 );
 
-// Protected routes
-router.use(authenticate);
-
-router.get('/profile',
-  CatchAsync(AuthController.getProfile)
+// POST: /api/users/verify-email-otp
+// Verify email with OTP code
+router.post(
+  '/verify-email-otp',
+  validate(userValidation.verifyEmailOtp),
+  userController.verifyEmailOtp
 );
 
-router.put('/profile',
-  validateRequest(UserValidation.updateProfile),
-  CatchAsync(AuthController.updateProfile)
+// Protected routes (require authentication)
+
+// GET: /api/users/profile
+// Get current user's profile
+router.get(
+  '/profile',
+  authenticate,
+  userController.getProfile
 );
 
-router.post('/change-password',
-  validateRequest(UserValidation.changePassword),
-  CatchAsync(AuthController.changePassword)
+// PUT: /api/users/profile
+// Update current user's profile
+router.put(
+  '/profile',
+  authenticate,
+  validate(userValidation.updateProfile),
+  userController.updateProfile
+);
+
+// POST: /api/users/change-password
+// Change current user's password
+router.post(
+  '/change-password',
+  authenticate,
+  validate(userValidation.changePassword),
+  userController.changePassword
 );
 
 module.exports = router;
