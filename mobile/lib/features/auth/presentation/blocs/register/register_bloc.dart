@@ -2,7 +2,7 @@ import 'package:dating_app/core/di/inection.dart';
 import 'package:dating_app/core/utils/api_error.dart';
 import 'package:dating_app/core/utils/validate.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -92,7 +92,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
       emit(_LoadedState(state.data.copyWith(loadingButton: true)));
 
       await _userRepository.register(
-        registerRequest: RegisterRequest(password: password, email: email),
+        registerRequest: RegisterRequest(email: email),
       );
 
       emit(

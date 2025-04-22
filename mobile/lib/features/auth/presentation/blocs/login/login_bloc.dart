@@ -4,7 +4,7 @@ import 'package:dating_app/core/di/inection.dart';
 import 'package:dating_app/core/utils/api_error.dart';
 import 'package:dating_app/features/auth/data/client/https_client.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:dating_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +29,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with ApiError {
       final loginResponse = await _userRepository.login(
         registerRequest: RegisterRequest(
           email: event.email,
-          password: event.password,
         ),
       );
       await _saveUserAndJWT(response: loginResponse);
@@ -43,7 +42,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with ApiError {
     if (response == null) {
       return;
     }
-    await _userService.setJwt(response.token);
+    await _userService.setJwt(response.accessToken.token);
     await _userService.setUser(response.user);
 
     httpsClient.setJwtInHeader();

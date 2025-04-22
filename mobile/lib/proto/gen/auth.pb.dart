@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: user.proto
+//  source: auth.proto
 //
 // @dart = 3.3
 
@@ -11,6 +11,7 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -29,6 +30,8 @@ class User extends $pb.GeneratedMessage {
     $core.String? updatedAt,
     $core.Iterable<$core.String>? interests,
     $core.Iterable<$core.String>? photos,
+    $core.String? gender,
+    $core.String? birthday,
   }) {
     final $result = create();
     if (id != null) {
@@ -64,13 +67,19 @@ class User extends $pb.GeneratedMessage {
     if (photos != null) {
       $result.photos.addAll(photos);
     }
+    if (gender != null) {
+      $result.gender = gender;
+    }
+    if (birthday != null) {
+      $result.birthday = birthday;
+    }
     return $result;
   }
   User._() : super();
   factory User.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory User.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'User', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'User', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'email')
     ..aOS(3, _omitFieldNames ? '' : 'name')
@@ -82,6 +91,8 @@ class User extends $pb.GeneratedMessage {
     ..aOS(9, _omitFieldNames ? '' : 'updatedAt', protoName: 'updatedAt')
     ..pPS(10, _omitFieldNames ? '' : 'interests')
     ..pPS(11, _omitFieldNames ? '' : 'photos')
+    ..aOS(12, _omitFieldNames ? '' : 'gender')
+    ..aOS(13, _omitFieldNames ? '' : 'birthday')
     ..hasRequiredFields = false
   ;
 
@@ -192,6 +203,88 @@ class User extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(11)
   $pb.PbList<$core.String> get photos => $_getList(10);
+
+  @$pb.TagNumber(12)
+  $core.String get gender => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set gender($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasGender() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearGender() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get birthday => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set birthday($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasBirthday() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearBirthday() => $_clearField(13);
+}
+
+class AccessToken extends $pb.GeneratedMessage {
+  factory AccessToken({
+    $core.String? token,
+    $fixnum.Int64? expireTime,
+  }) {
+    final $result = create();
+    if (token != null) {
+      $result.token = token;
+    }
+    if (expireTime != null) {
+      $result.expireTime = expireTime;
+    }
+    return $result;
+  }
+  AccessToken._() : super();
+  factory AccessToken.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccessToken.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccessToken', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'token')
+    ..aInt64(2, _omitFieldNames ? '' : 'expireTime')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AccessToken clone() => AccessToken()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccessToken copyWith(void Function(AccessToken) updates) => super.copyWith((message) => updates(message as AccessToken)) as AccessToken;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AccessToken create() => AccessToken._();
+  AccessToken createEmptyInstance() => create();
+  static $pb.PbList<AccessToken> createRepeated() => $pb.PbList<AccessToken>();
+  @$core.pragma('dart2js:noInline')
+  static AccessToken getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccessToken>(create);
+  static AccessToken? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get token => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set token($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearToken() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expireTime => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expireTime($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasExpireTime() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpireTime() => $_clearField(2);
 }
 
 /// Authentication messages
@@ -213,7 +306,7 @@ class LoginRequest extends $pb.GeneratedMessage {
   factory LoginRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory LoginRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
     ..aOS(2, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
@@ -264,7 +357,7 @@ class LoginResponse extends $pb.GeneratedMessage {
     $core.int? code,
     $core.String? message,
     User? user,
-    $core.String? token,
+    AccessToken? accessToken,
   }) {
     final $result = create();
     if (code != null) {
@@ -276,8 +369,8 @@ class LoginResponse extends $pb.GeneratedMessage {
     if (user != null) {
       $result.user = user;
     }
-    if (token != null) {
-      $result.token = token;
+    if (accessToken != null) {
+      $result.accessToken = accessToken;
     }
     return $result;
   }
@@ -285,11 +378,11 @@ class LoginResponse extends $pb.GeneratedMessage {
   factory LoginResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory LoginResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'message')
     ..aOM<User>(3, _omitFieldNames ? '' : 'user', subBuilder: User.create)
-    ..aOS(4, _omitFieldNames ? '' : 'token')
+    ..aOM<AccessToken>(4, _omitFieldNames ? '' : 'accessToken', subBuilder: AccessToken.create)
     ..hasRequiredFields = false
   ;
 
@@ -344,26 +437,24 @@ class LoginResponse extends $pb.GeneratedMessage {
   User ensureUser() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.String get token => $_getSZ(3);
+  AccessToken get accessToken => $_getN(3);
   @$pb.TagNumber(4)
-  set token($core.String v) { $_setString(3, v); }
+  set accessToken(AccessToken v) { $_setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasToken() => $_has(3);
+  $core.bool hasAccessToken() => $_has(3);
   @$pb.TagNumber(4)
-  void clearToken() => $_clearField(4);
+  void clearAccessToken() => $_clearField(4);
+  @$pb.TagNumber(4)
+  AccessToken ensureAccessToken() => $_ensure(3);
 }
 
 class RegisterRequest extends $pb.GeneratedMessage {
   factory RegisterRequest({
     $core.String? email,
-    $core.String? password,
   }) {
     final $result = create();
     if (email != null) {
       $result.email = email;
-    }
-    if (password != null) {
-      $result.password = password;
     }
     return $result;
   }
@@ -371,9 +462,8 @@ class RegisterRequest extends $pb.GeneratedMessage {
   factory RegisterRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory RegisterRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RegisterRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RegisterRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
-    ..aOS(2, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
   ;
 
@@ -406,15 +496,6 @@ class RegisterRequest extends $pb.GeneratedMessage {
   $core.bool hasEmail() => $_has(0);
   @$pb.TagNumber(1)
   void clearEmail() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get password => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set password($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasPassword() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearPassword() => $_clearField(2);
 }
 
 class RegisterResponse extends $pb.GeneratedMessage {
@@ -443,7 +524,7 @@ class RegisterResponse extends $pb.GeneratedMessage {
   factory RegisterResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory RegisterResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RegisterResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RegisterResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'message')
     ..aOM<User>(3, _omitFieldNames ? '' : 'user', subBuilder: User.create)
@@ -526,7 +607,7 @@ class SendEmailOtpRequest extends $pb.GeneratedMessage {
   factory SendEmailOtpRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory SendEmailOtpRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SendEmailOtpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SendEmailOtpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
     ..hasRequiredFields = false
   ;
@@ -584,7 +665,7 @@ class SendEmailOtpResponse extends $pb.GeneratedMessage {
   factory SendEmailOtpResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory SendEmailOtpResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SendEmailOtpResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SendEmailOtpResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'message')
     ..aOS(3, _omitFieldNames ? '' : 'verificationId', protoName: 'verificationId')
@@ -662,7 +743,7 @@ class VerifyEmailOtpRequest extends $pb.GeneratedMessage {
   factory VerifyEmailOtpRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory VerifyEmailOtpRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifyEmailOtpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifyEmailOtpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'verificationId', protoName: 'verificationId')
     ..aOS(2, _omitFieldNames ? '' : 'otpCode', protoName: 'otpCode')
     ..aOS(3, _omitFieldNames ? '' : 'email')
@@ -744,7 +825,7 @@ class VerifyEmailOtpResponse extends $pb.GeneratedMessage {
   factory VerifyEmailOtpResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory VerifyEmailOtpResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifyEmailOtpResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifyEmailOtpResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'message')
     ..aOM<User>(3, _omitFieldNames ? '' : 'user', subBuilder: User.create)

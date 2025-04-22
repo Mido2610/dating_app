@@ -1,4 +1,4 @@
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/proto/gen/auth.pb.dart';
 
 abstract class UserRepository {
   Future<RegisterResponse> register({required RegisterRequest registerRequest});

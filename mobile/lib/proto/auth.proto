@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package user;
+package auth;
 
 // User messages
 message User {
@@ -15,7 +15,15 @@ message User {
   string updatedAt = 9;
   repeated string interests = 10;
   repeated string photos = 11;
+  string gender = 12;
+  string birthday = 13;
 }
+
+message AccessToken {
+  string token = 1;
+  int64 expire_time = 2;
+}
+
 
 // Authentication messages
 message LoginRequest {
@@ -27,12 +35,11 @@ message LoginResponse {
   int32 code = 1;
   string message = 2;
   User user = 3;
-  string token = 4;
+  AccessToken access_token = 4;
 }
 
 message RegisterRequest {
   string email = 1;
-  string password = 2;
 }
 
 message RegisterResponse {

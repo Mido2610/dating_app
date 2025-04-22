@@ -1,5 +1,5 @@
 import 'package:dating_app/core/di/inection.dart';
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:dating_app/services/local_storage.dart';
 
 class UserService {

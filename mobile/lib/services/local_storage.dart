@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

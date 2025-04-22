@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: user.proto
+//  source: auth.proto
 //
 // @dart = 3.3
 
@@ -28,6 +28,8 @@ const User$json = {
     {'1': 'updatedAt', '3': 9, '4': 1, '5': 9, '10': 'updatedAt'},
     {'1': 'interests', '3': 10, '4': 3, '5': 9, '10': 'interests'},
     {'1': 'photos', '3': 11, '4': 3, '5': 9, '10': 'photos'},
+    {'1': 'gender', '3': 12, '4': 1, '5': 9, '10': 'gender'},
+    {'1': 'birthday', '3': 13, '4': 1, '5': 9, '10': 'birthday'},
   ],
 };
 
@@ -38,7 +40,22 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'dGF0dXMYBiABKAlSBnN0YXR1cxIkCg1lbWFpbFZlcmlmaWVkGAcgASgIUg1lbWFpbFZlcmlmaW'
     'VkEhwKCWNyZWF0ZWRBdBgIIAEoCVIJY3JlYXRlZEF0EhwKCXVwZGF0ZWRBdBgJIAEoCVIJdXBk'
     'YXRlZEF0EhwKCWludGVyZXN0cxgKIAMoCVIJaW50ZXJlc3RzEhYKBnBob3RvcxgLIAMoCVIGcG'
-    'hvdG9z');
+    'hvdG9zEhYKBmdlbmRlchgMIAEoCVIGZ2VuZGVyEhoKCGJpcnRoZGF5GA0gASgJUghiaXJ0aGRh'
+    'eQ==');
+
+@$core.Deprecated('Use accessTokenDescriptor instead')
+const AccessToken$json = {
+  '1': 'AccessToken',
+  '2': [
+    {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'expire_time', '3': 2, '4': 1, '5': 3, '10': 'expireTime'},
+  ],
+};
+
+/// Descriptor for `AccessToken`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List accessTokenDescriptor = $convert.base64Decode(
+    'CgtBY2Nlc3NUb2tlbhIUCgV0b2tlbhgBIAEoCVIFdG9rZW4SHwoLZXhwaXJlX3RpbWUYAiABKA'
+    'NSCmV4cGlyZVRpbWU=');
 
 @$core.Deprecated('Use loginRequestDescriptor instead')
 const LoginRequest$json = {
@@ -60,30 +77,28 @@ const LoginResponse$json = {
   '2': [
     {'1': 'code', '3': 1, '4': 1, '5': 5, '10': 'code'},
     {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
-    {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.user.User', '10': 'user'},
-    {'1': 'token', '3': 4, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.auth.User', '10': 'user'},
+    {'1': 'access_token', '3': 4, '4': 1, '5': 11, '6': '.auth.AccessToken', '10': 'accessToken'},
   ],
 };
 
 /// Descriptor for `LoginResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List loginResponseDescriptor = $convert.base64Decode(
     'Cg1Mb2dpblJlc3BvbnNlEhIKBGNvZGUYASABKAVSBGNvZGUSGAoHbWVzc2FnZRgCIAEoCVIHbW'
-    'Vzc2FnZRIeCgR1c2VyGAMgASgLMgoudXNlci5Vc2VyUgR1c2VyEhQKBXRva2VuGAQgASgJUgV0'
-    'b2tlbg==');
+    'Vzc2FnZRIeCgR1c2VyGAMgASgLMgouYXV0aC5Vc2VyUgR1c2VyEjQKDGFjY2Vzc190b2tlbhgE'
+    'IAEoCzIRLmF1dGguQWNjZXNzVG9rZW5SC2FjY2Vzc1Rva2Vu');
 
 @$core.Deprecated('Use registerRequestDescriptor instead')
 const RegisterRequest$json = {
   '1': 'RegisterRequest',
   '2': [
     {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
-    {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
   ],
 };
 
 /// Descriptor for `RegisterRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List registerRequestDescriptor = $convert.base64Decode(
-    'Cg9SZWdpc3RlclJlcXVlc3QSFAoFZW1haWwYASABKAlSBWVtYWlsEhoKCHBhc3N3b3JkGAIgAS'
-    'gJUghwYXNzd29yZA==');
+    'Cg9SZWdpc3RlclJlcXVlc3QSFAoFZW1haWwYASABKAlSBWVtYWls');
 
 @$core.Deprecated('Use registerResponseDescriptor instead')
 const RegisterResponse$json = {
@@ -91,7 +106,7 @@ const RegisterResponse$json = {
   '2': [
     {'1': 'code', '3': 1, '4': 1, '5': 5, '10': 'code'},
     {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
-    {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.user.User', '10': 'user'},
+    {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.auth.User', '10': 'user'},
     {'1': 'token', '3': 4, '4': 1, '5': 9, '10': 'token'},
   ],
 };
@@ -99,7 +114,7 @@ const RegisterResponse$json = {
 /// Descriptor for `RegisterResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List registerResponseDescriptor = $convert.base64Decode(
     'ChBSZWdpc3RlclJlc3BvbnNlEhIKBGNvZGUYASABKAVSBGNvZGUSGAoHbWVzc2FnZRgCIAEoCV'
-    'IHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgoudXNlci5Vc2VyUgR1c2VyEhQKBXRva2VuGAQgASgJ'
+    'IHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgouYXV0aC5Vc2VyUgR1c2VyEhQKBXRva2VuGAQgASgJ'
     'UgV0b2tlbg==');
 
 @$core.Deprecated('Use sendEmailOtpRequestDescriptor instead')
@@ -150,7 +165,7 @@ const VerifyEmailOtpResponse$json = {
   '2': [
     {'1': 'code', '3': 1, '4': 1, '5': 5, '10': 'code'},
     {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
-    {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.user.User', '10': 'user'},
+    {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.auth.User', '10': 'user'},
     {'1': 'token', '3': 4, '4': 1, '5': 9, '10': 'token'},
   ],
 };
@@ -158,6 +173,6 @@ const VerifyEmailOtpResponse$json = {
 /// Descriptor for `VerifyEmailOtpResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List verifyEmailOtpResponseDescriptor = $convert.base64Decode(
     'ChZWZXJpZnlFbWFpbE90cFJlc3BvbnNlEhIKBGNvZGUYASABKAVSBGNvZGUSGAoHbWVzc2FnZR'
-    'gCIAEoCVIHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgoudXNlci5Vc2VyUgR1c2VyEhQKBXRva2Vu'
+    'gCIAEoCVIHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgouYXV0aC5Vc2VyUgR1c2VyEhQKBXRva2Vu'
     'GAQgASgJUgV0b2tlbg==');
 
