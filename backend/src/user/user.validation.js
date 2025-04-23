@@ -4,28 +4,18 @@ const Joi = require('joi');
 const passwordSchema = Joi.string().min(8).required();
 const emailSchema = Joi.string().email().required();
 
-// User profile schemas
-const profileSchema = Joi.object({
-  name: Joi.string().min(2).max(50),
-  avatar: Joi.string().uri(),
-  bio: Joi.string().max(500),
-  interests: Joi.array().items(Joi.string()),
-  gender: Joi.string().valid('male', 'female', 'other'),
-  birthday: Joi.date().iso()
-});
-
-// OTP verification schemas
-const otpSchema = Joi.object({
-  verificationId: Joi.string().required(),
-  otpCode: Joi.string().length(6).required(),
-  email: emailSchema
-});
-
-// Authentication validation objects
 const registerUser = {
   body: Joi.object({
     email: emailSchema,
-    password: passwordSchema
+    password: passwordSchema,
+    userName: Joi.string()  // use camelCase for API requests
+      .min(3)
+      .max(30)
+      .pattern(/^[a-zA-Z0-9_]+$/)
+      .required()
+      .messages({
+        'string.pattern.base': 'Username can only contain letters, numbers and underscores'
+      })
   })
 };
 
@@ -36,36 +26,26 @@ const login = {
   })
 };
 
-const sendEmailOtp = {
-  body: Joi.object({
-    email: emailSchema
-  })
-};
-
-const verifyEmailOtp = {
-  body: otpSchema
-};
-
 const updateProfile = {
-  body: profileSchema.min(1)
+  body: Joi.object({
+    name: Joi.string().min(2).max(50),
+    avatar: Joi.string().uri(),
+    bio: Joi.string().max(500),
+    interests: Joi.array().items(Joi.string()),
+    gender: Joi.string().valid('male', 'female', 'other'),
+    birthday: Joi.date().iso()
+  }).min(1)
 };
 
-const changePassword = {
+const verifyEmail = {
   body: Joi.object({
-    currentPassword: Joi.string().required(),
-    newPassword: passwordSchema,
-    confirmPassword: Joi.string()
-      .valid(Joi.ref('newPassword'))
-      .required()
-      .messages({ 'any.only': 'Confirm password must match new password' })
+    otpCode: Joi.string().length(6).required()
   })
 };
 
 module.exports = {
   registerUser,
   login,
-  sendEmailOtp,
-  verifyEmailOtp,
-  updateProfile,
-  changePassword
+  verifyEmail,
+  updateProfile
 };

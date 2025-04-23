@@ -49,7 +49,11 @@ const convertLoginResponse = async (userData, accessToken) => {
 const convertRegisterRequest = async (requestBody) => {
   await init();
   const message = root.lookupType('auth.RegisterRequest');
-  const payload = _.cloneDeep(requestBody);
+  const payload = {
+    email: _.get(requestBody, 'email'),
+    password: _.get(requestBody, 'password'),
+    user_name: _.get(requestBody, 'userName')  // convert from userName to user_name
+  };
 
   const err = message.verify(payload);
   if (err) {
@@ -65,7 +69,13 @@ const convertRegisterResponse = async (userData, token) => {
   const payload = {
     code: httpStatus.CREATED,
     message: getMessageByLocale('register_success'),
-    user: userData,
+    user: {
+      id: userData._id.toString(),
+      email: userData.email,
+      name: userData.name,  // use name from MongoDB
+      avatar: userData.avatar || '',
+      emailVerified: userData.emailVerified
+    },
     token
   };
 

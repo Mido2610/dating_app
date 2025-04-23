@@ -1,12 +1,14 @@
 const logger = require("../common/utils/logger");
 
 const handleErrors = (res, error) => {
-  const { status = 500, message, stack } = error;
-  logger.error(`Error occurred: ${stack}`);
+  // Default to 500 if status is not a valid HTTP status code
+  const status = (error.status >= 100 && error.status < 600) ? error.status : 500;
+  
+  logger.error(`Error occurred: ${error.stack}`);
 
   res.status(status).json({
     success: false,
-    message: message || "Internal server error",
+    message: error.message || "Internal server error"
   });
 };
 

@@ -32,6 +32,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
     on<_RegisterEvent>((event, emit) async {
       await _register(
         emit,
+        userName: event.userName,
         password: event.password,
         confirmPassword: event.confirmPassword,
         email: event.email,
@@ -75,6 +76,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
 
   Future<void> _register(
     Emitter<RegisterState> emit, {
+    required String userName,
     required String password,
     required String confirmPassword,
     required String email,
@@ -92,7 +94,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
       emit(_LoadedState(state.data.copyWith(loadingButton: true)));
 
       await _userRepository.register(
-        registerRequest: RegisterRequest(email: email),
+        registerRequest: RegisterRequest(
+          email: email,
+          password: password,
+          userName: userName,
+        ),
       );
 
       emit(

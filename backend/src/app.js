@@ -7,8 +7,36 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(express.json());
+
+// Configure body parser
+app.use(bodyParser.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf;
+  }
+}));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Add debug middleware
+app.use((req, res, next) => {
+  console.log('Request body:', req.body);
+  next();
+});
+
+// Support for Protocol Buffers
+app.use((req, res, next) => {
+  if (req.headers['content-type'] === 'application/protobuf') {
+    let data = [];
+    req.on('data', chunk => {
+      data.push(chunk);
+    });
+    req.on('end', () => {
+      req.rawBody = Buffer.concat(data);
+      next();
+    });
+  } else {
+    next();
+  }
+});
 
 // API Routes
 app.use('/api', routes);

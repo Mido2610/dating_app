@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/styles.dart';
+import 'package:dating_app/features/auth/presentation/screens/register/register_with_email_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/register_with_phone_page.dart';
 import 'package:dating_app/widgets/button_common.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +156,7 @@ class _SplashPageState extends State<SplashPage> {
               maxWidth: double.infinity,
               onTapButton: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => PhoneInputPage.provider()),
+                  MaterialPageRoute(builder: (context) => RegisterWithEmailPage.provider()),
                 );
               },
               titleButton: 'Create an account',

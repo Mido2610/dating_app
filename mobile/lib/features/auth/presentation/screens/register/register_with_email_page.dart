@@ -25,11 +25,20 @@ class RegisterWithEmailPage extends StatefulWidget {
 
 class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
     with CustomToast {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _nameController = TextEditingController();
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+  late TextEditingController _confirmPasswordController;
+  late TextEditingController _nameController;
   bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+    _nameController = TextEditingController();
+  }
 
   @override
   void dispose() {
@@ -149,6 +158,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
                       onPressed:
                           () => _onTapRegisterButton(
                             context,
+                            userName: _nameController.text,
                             password: _passwordController.text,
                             confirmPassword: _confirmPasswordController.text,
                             email: _emailController.text,
@@ -188,11 +198,13 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
 
   _onTapRegisterButton(
     BuildContext context, {
+    required String userName,
     required String password,
     required String confirmPassword,
     required String email,
   }) => context.read<RegisterBloc>().add(
     RegisterEvent.register(
+      userName: userName,
       password: password,
       confirmPassword: confirmPassword,
       email: email,
