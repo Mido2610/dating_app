@@ -1,5 +1,6 @@
 const CatchAsync = require('../middlewares/catchAsync.middleware');
 const AuthService = require('./user.service');
+const { getMessageByLocale } = require('../common/utils/locale.util');
 const {
   convertLoginRequest,
   convertLoginResponse,
@@ -7,6 +8,8 @@ const {
   convertRegisterResponse,
   convertVerifyEmailOtpRequest,
   convertVerifyEmailOtpResponse,
+  convertAddInfoUserRequest,
+  convertAddInfoUserResponse,
 } = require('./user.converter');
 
 const register = CatchAsync(async (req, res) => {
@@ -47,9 +50,21 @@ const updateProfile = CatchAsync(async (req, res) => {
   res.status(200).send(result);
 });
 
+const addInfoUser = CatchAsync(async (req, res) => {
+  const requestPayload = await convertAddInfoUserRequest(req.body);
+  const result = await AuthService.addInfoUser(req.user.id, requestPayload);
+  const response = await convertAddInfoUserResponse(
+    200,
+    getMessageByLocale({ key: 'update_success' }),
+    result
+  );
+  res.status(200).send(response);
+});
+
 module.exports = {
   register,
   login,
   verifyEmail,
-  updateProfile
+  updateProfile,
+  addInfoUser,
 };

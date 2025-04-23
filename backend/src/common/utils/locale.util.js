@@ -9,6 +9,7 @@ const messages = {
       invalidOTP: 'Invalid or expired verification code',
       emailVerificationSuccess: 'Email verified successfully',
       emailAlreadyVerified: 'Email is already verified',
+      update_success: 'Profile updated successfully'
     },
     vi: {
       userNotFound: 'Không tìm thấy người dùng',
@@ -20,6 +21,7 @@ const messages = {
       invalidOTP: 'Mã xác thực không hợp lệ hoặc đã hết hạn',
       emailVerificationSuccess: 'Xác thực email thành công',
       emailAlreadyVerified: 'Email đã được xác thực trước đó',
+      update_success: 'Cập nhật thông tin thành công'
     }
   };
   

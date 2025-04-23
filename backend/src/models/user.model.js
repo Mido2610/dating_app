@@ -34,7 +34,21 @@ const userSchema = new mongoose.Schema({
   verificationCodeExpires: {
     type: Date,
     select: false
-  }
+  },
+  // Thêm các trường mới
+  birthday: {
+    type: Date
+  },
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other']
+  },
+  interests: [{
+    type: String
+  }],
+  photos: [{
+    type: String
+  }]
 }, {
   timestamps: true
 });

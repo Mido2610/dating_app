@@ -43,9 +43,24 @@ const verifyEmail = {
   }).required()
 };
 
+const addInfoUser = {
+  body: Joi.object({
+    userName: Joi.string()
+      .min(3)
+      .max(30)
+      .pattern(/^[a-zA-Z0-9_]+$/)
+      .required(),
+    birthday: Joi.date().iso().required(),
+    gender: Joi.string().valid('male', 'female', 'other').required(),
+    interests: Joi.array().items(Joi.string()).required(),
+    photos: Joi.array().items(Joi.string().uri()).required()
+  })
+};
+
 module.exports = {
   registerUser,
   login,
   verifyEmail,
-  updateProfile
+  updateProfile,
+  addInfoUser
 };

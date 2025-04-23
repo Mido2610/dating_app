@@ -35,4 +35,12 @@ router.patch(
   userController.updateProfile
 );
 
+// Add info user
+router.post(
+  '/add-info',
+  authenticate,
+  validate(userValidation.addInfoUser),
+  userController.addInfoUser
+);
+
 module.exports = router;

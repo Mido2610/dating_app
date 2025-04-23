@@ -196,6 +196,26 @@ const changePassword = async (userId, request) => {
   return true;
 };
 
+const addInfoUser = async (userId, userData) => {
+  const sanitizedData = {
+    name: userData.user_name,
+    birthday: new Date(userData.birthday),
+    gender: userData.gender,
+    interests: userData.interests,
+    photos: userData.photos
+  };
+
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { $set: sanitizedData },
+    { new: true }
+  ).select('-password');
+
+  throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
+
+  return user;
+};
+
 module.exports = {
   register,
   verifyEmail,
@@ -203,4 +223,5 @@ module.exports = {
   getProfile,
   updateProfile,
   changePassword,
+  addInfoUser
 };

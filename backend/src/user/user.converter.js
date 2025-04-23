@@ -100,22 +100,6 @@ const convertSendEmailOtpRequest = async (requestBody) => {
   return message.create(payload).toJSON();
 };
 
-const convertSendEmailOtpResponse = async (verificationId) => {
-  await init();
-  const message = root.lookupType('auth.SendEmailOtpResponse');
-  const payload = {
-    code: httpStatus.OK,
-    message: getMessageByLocale('otp_sent'),
-    verificationId
-  };
-
-  const err = message.verify(payload);
-  if (err) {
-    throw new Error(`Error in SendEmailOtpResponse protobuf: ${err}`);
-  }
-
-  return message.create(payload).toJSON();
-};
 
 const convertVerifyEmailOtpRequest = async (requestBody) => {
   await init();
@@ -164,7 +148,9 @@ const convertUserToProto = async (user) => {
     interests: user.interests || [],
     photos: user.photos || [],
     gender: user.gender || '',
-    birthday: user.birthday ? user.birthday.toISOString() : ''
+    birthday: user.birthday ? user.birthday.toISOString() : '',
+    createdAt: user.createdAt ? user.createdAt.toISOString() : '',
+    updatedAt: user.updatedAt ? user.updatedAt.toISOString() : ''
   };
 
   const err = message.verify(payload);
@@ -175,14 +161,55 @@ const convertUserToProto = async (user) => {
   return message.create(payload).toJSON();
 };
 
+const convertAddInfoUserRequest = async (requestBody) => {
+  await init();
+  const message = root.lookupType('auth.AddInfoUserRequest');
+  const payload = {
+    user_name: requestBody.userName,
+    birthday: requestBody.birthday,
+    gender: requestBody.gender,
+    interests: requestBody.interests,
+    photos: requestBody.photos
+  };
+
+  const err = message.verify(payload);
+  if (err) {
+    throw new Error(`Error in AddInfoUserRequest protobuf: ${err}`);
+  }
+
+  return message.create(payload).toJSON();
+};
+
+const convertAddInfoUserResponse = async (code, message, userData) => {
+  await init();
+  const messageType = root.lookupType('auth.AddInfoUserResponse');
+  
+  // Convert user data to proto format
+  const userProto = await convertUserToProto(userData);
+  
+  const payload = {
+    code,
+    message,
+    user: userProto
+  };
+
+  const err = messageType.verify(payload);
+  if (err) {
+    throw new Error(`Error in AddInfoUserResponse protobuf: ${err}`);
+  }
+
+  return messageType.create(payload).toJSON();
+};
+
 module.exports = {
   convertLoginRequest,
   convertLoginResponse,
   convertRegisterRequest,
   convertRegisterResponse,
   convertSendEmailOtpRequest,
-  convertSendEmailOtpResponse,
   convertVerifyEmailOtpRequest,
   convertVerifyEmailOtpResponse,
-  convertUserToProto
+  convertUserToProto,
+  convertAddInfoUserRequest,
+  convertAddInfoUserResponse
 };
