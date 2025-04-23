@@ -40,7 +40,7 @@ const updateProfile = {
 const verifyEmail = {
   body: Joi.object({
     otpCode: Joi.string().length(6).required()
-  })
+  }).required()
 };
 
 module.exports = {

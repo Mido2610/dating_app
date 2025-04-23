@@ -15,6 +15,7 @@ const envVarsSchema = Joi.object()
     TWILIO_ACCOUNT_SID: Joi.string().required(),
     TWILIO_AUTH_TOKEN: Joi.string().required(),
     TWILIO_PHONE_NUMBER: Joi.string().required(),
+    JWT_SECRET: Joi.string().required().description('JWT secret key'),
     EMAIL_SERVICE: Joi.string().required(),
     EMAIL_USER: Joi.string().required(),
     EMAIL_APP_PASSWORD: Joi.string().required(),
@@ -48,6 +49,10 @@ const config = {
     accountSid: envVars.TWILIO_ACCOUNT_SID,
     authToken: envVars.TWILIO_AUTH_TOKEN,
     phoneNumber: envVars.TWILIO_PHONE_NUMBER,
+  },
+  jwt: {
+    secret: envVars.JWT_SECRET,
+    accessExpirationMinutes: 30,
   },
   email: {
     service: envVars.EMAIL_SERVICE,

@@ -22,8 +22,8 @@ function loadRoutes(baseDir) {
           const route = require(routeFile);
           // Mount route using directory name as path prefix
           // Example: /user/user.route.js -> /api/users/...
-          router.use(`/${dir.name}s`, route);
-          console.log(`✅ Loaded route: /${dir.name}s`);
+          router.use(`/${dir.name}`, route);
+          console.log(`✅ Loaded route: /${dir.name}`);
         } catch (error) {
           console.error(`❌ Failed to load route ${routeFile}:`, error);
         }

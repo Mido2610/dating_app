@@ -6,7 +6,8 @@ const messages = {
       incorrectPassword: 'Current password is incorrect',
       invalidToken: 'Invalid or expired token',
       unauthorized: 'Unauthorized access',
-      invalidOTP: 'Invalid or expired OTP',
+      invalidOTP: 'Invalid or expired verification code',
+      emailVerificationSuccess: 'Email verified successfully',
       emailAlreadyVerified: 'Email is already verified',
     },
     vi: {
@@ -16,8 +17,9 @@ const messages = {
       incorrectPassword: 'Mật khẩu hiện tại không đúng',
       invalidToken: 'Token không hợp lệ hoặc đã hết hạn',
       unauthorized: 'Không có quyền truy cập',
-      invalidOTP: 'OTP không hợp lệ hoặc đã hết hạn',
-      emailAlreadyVerified: 'Email đã được xác thực',
+      invalidOTP: 'Mã xác thực không hợp lệ hoặc đã hết hạn',
+      emailVerificationSuccess: 'Xác thực email thành công',
+      emailAlreadyVerified: 'Email đã được xác thực trước đó',
     }
   };
   

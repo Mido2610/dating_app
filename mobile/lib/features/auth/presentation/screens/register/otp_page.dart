@@ -14,34 +14,34 @@ import 'dart:async';
 
 import '../../../../../core/utils/platform.dart';
 
-class OtpPage extends StatefulWidget {
-  final String phoneNumber;
+class VerifyEmailOtpPage extends StatefulWidget {
+  final String email;
 
-  const OtpPage({super.key, required this.phoneNumber});
+  const VerifyEmailOtpPage({super.key, required this.email});
 
-  static BlocProvider<OtpBloc> provider({required String phoneNumber}) {
+  static BlocProvider<OtpBloc> provider({required String email}) {
     return BlocProvider(
       create: (context) => OtpBloc(userRepository: getIt<UserRepository>()),
-      child: OtpPage(phoneNumber: phoneNumber),
+      child: VerifyEmailOtpPage(email: email),
     );
   }
 
   @override
-  State<OtpPage> createState() => _OtpPageState();
+  State<VerifyEmailOtpPage> createState() => _VerifyEmailOtpPageState();
 }
 
-class _OtpPageState extends State<OtpPage> with CustomToast {
-  late String _currentOtp;
+class _VerifyEmailOtpPageState extends State<VerifyEmailOtpPage>
+    with CustomToast {
   late int secondsRemaining;
   Timer? countdownTimer;
+  late TextEditingController _otpController;
 
   @override
   void initState() {
-    _currentOtp = '';
     secondsRemaining = 60;
     super.initState();
     _startCountdown();
-    _listenForOtp();
+    _otpController = TextEditingController();
   }
 
   void _startCountdown() {
@@ -55,19 +55,10 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
     });
   }
 
-  void _listenForOtp() async {
-    if (!getIt<Platform>().isAndroid()) {
-      return;
-    }
-    // Chỉ áp dụng cho Android
-    await SmsAutoFill().getAppSignature;
-
-    await SmsAutoFill().listenForCode();
-  }
-
   @override
   void dispose() {
     countdownTimer?.cancel();
+    _otpController.dispose();
     super.dispose();
   }
 
@@ -101,17 +92,6 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: BlocBuilder<OtpBloc, OtpState>(
               builder: (context, state) {
-                // Tự động cập nhật UI từ state của bloc
-                state.maybeMap(
-                  loaded: (loadedState) {
-                    if (loadedState.data.smsCode.isNotEmpty &&
-                        loadedState.data.smsCode != _currentOtp) {
-                      _currentOtp = loadedState.data.smsCode;
-                    }
-                  },
-                  orElse: () {},
-                );
-
                 return state.maybeMap(
                   orElse: () {
                     return Column(
@@ -131,7 +111,7 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          "Nhập mã xác thực được gửi đến\n${widget.phoneNumber}",
+                          "Nhập mã xác thực được gửi đến\n${widget.email}",
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 15,
@@ -146,7 +126,7 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
                           child: Column(
                             children: [
                               PinFieldAutoFill(
-                                currentCode: _currentOtp,
+                                currentCode: _otpController.text,
                                 codeLength: 6,
                                 autoFocus: true,
                                 cursor: Cursor(
@@ -168,18 +148,14 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
                                 onCodeChanged: (String? otpCode) {
                                   if (otpCode != null) {
                                     setState(() {
-                                      _currentOtp = otpCode;
+                                      _otpController.text = otpCode;
                                     });
-
-                                    context.read<OtpBloc>().add(
-                                      OtpEvent.changeRequestOtp(
-                                        otpCode: otpCode,
-                                      ),
-                                    );
 
                                     if (otpCode.length == 6) {
                                       context.read<OtpBloc>().add(
-                                        OtpEvent.verifyOtp(otpCode: otpCode),
+                                        OtpEvent.verifyEmailOtp(
+                                          otpCode: otpCode,
+                                        ),
                                       );
                                     }
                                   }
@@ -194,8 +170,8 @@ class _OtpPageState extends State<OtpPage> with CustomToast {
                           onTap:
                               secondsRemaining == 0
                                   ? () => context.read<OtpBloc>().add(
-                                    OtpEvent.sendOtp(
-                                      phoneNumber: widget.phoneNumber,
+                                    OtpEvent.verifyEmailOtp(
+                                      otpCode: _otpController.text,
                                     ),
                                   )
                                   : null,

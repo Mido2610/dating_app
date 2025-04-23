@@ -620,150 +620,13 @@ class RegisterResponse extends $pb.GeneratedMessage {
   void clearToken() => $_clearField(4);
 }
 
-/// Email OTP messages
-class SendEmailOtpRequest extends $pb.GeneratedMessage {
-  factory SendEmailOtpRequest({
-    $core.String? email,
-  }) {
-    final $result = create();
-    if (email != null) {
-      $result.email = email;
-    }
-    return $result;
-  }
-  SendEmailOtpRequest._() : super();
-  factory SendEmailOtpRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory SendEmailOtpRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SendEmailOtpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'email')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  SendEmailOtpRequest clone() => SendEmailOtpRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  SendEmailOtpRequest copyWith(void Function(SendEmailOtpRequest) updates) => super.copyWith((message) => updates(message as SendEmailOtpRequest)) as SendEmailOtpRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static SendEmailOtpRequest create() => SendEmailOtpRequest._();
-  SendEmailOtpRequest createEmptyInstance() => create();
-  static $pb.PbList<SendEmailOtpRequest> createRepeated() => $pb.PbList<SendEmailOtpRequest>();
-  @$core.pragma('dart2js:noInline')
-  static SendEmailOtpRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SendEmailOtpRequest>(create);
-  static SendEmailOtpRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get email => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set email($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasEmail() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearEmail() => $_clearField(1);
-}
-
-class SendEmailOtpResponse extends $pb.GeneratedMessage {
-  factory SendEmailOtpResponse({
-    $core.int? code,
-    $core.String? message,
-    $core.String? verificationId,
-  }) {
-    final $result = create();
-    if (code != null) {
-      $result.code = code;
-    }
-    if (message != null) {
-      $result.message = message;
-    }
-    if (verificationId != null) {
-      $result.verificationId = verificationId;
-    }
-    return $result;
-  }
-  SendEmailOtpResponse._() : super();
-  factory SendEmailOtpResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory SendEmailOtpResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SendEmailOtpResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
-    ..aOS(2, _omitFieldNames ? '' : 'message')
-    ..aOS(3, _omitFieldNames ? '' : 'verificationId', protoName: 'verificationId')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  SendEmailOtpResponse clone() => SendEmailOtpResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  SendEmailOtpResponse copyWith(void Function(SendEmailOtpResponse) updates) => super.copyWith((message) => updates(message as SendEmailOtpResponse)) as SendEmailOtpResponse;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static SendEmailOtpResponse create() => SendEmailOtpResponse._();
-  SendEmailOtpResponse createEmptyInstance() => create();
-  static $pb.PbList<SendEmailOtpResponse> createRepeated() => $pb.PbList<SendEmailOtpResponse>();
-  @$core.pragma('dart2js:noInline')
-  static SendEmailOtpResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SendEmailOtpResponse>(create);
-  static SendEmailOtpResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.int get code => $_getIZ(0);
-  @$pb.TagNumber(1)
-  set code($core.int v) { $_setSignedInt32(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasCode() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearCode() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get message => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set message($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMessage() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMessage() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get verificationId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set verificationId($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasVerificationId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearVerificationId() => $_clearField(3);
-}
-
 class VerifyEmailOtpRequest extends $pb.GeneratedMessage {
   factory VerifyEmailOtpRequest({
-    $core.String? verificationId,
     $core.String? otpCode,
-    $core.String? email,
   }) {
     final $result = create();
-    if (verificationId != null) {
-      $result.verificationId = verificationId;
-    }
     if (otpCode != null) {
       $result.otpCode = otpCode;
-    }
-    if (email != null) {
-      $result.email = email;
     }
     return $result;
   }
@@ -772,9 +635,7 @@ class VerifyEmailOtpRequest extends $pb.GeneratedMessage {
   factory VerifyEmailOtpRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifyEmailOtpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'verificationId', protoName: 'verificationId')
-    ..aOS(2, _omitFieldNames ? '' : 'otpCode', protoName: 'otpCode')
-    ..aOS(3, _omitFieldNames ? '' : 'email')
+    ..aOS(1, _omitFieldNames ? '' : 'otpCode', protoName: 'otpCode')
     ..hasRequiredFields = false
   ;
 
@@ -800,31 +661,13 @@ class VerifyEmailOtpRequest extends $pb.GeneratedMessage {
   static VerifyEmailOtpRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get verificationId => $_getSZ(0);
+  $core.String get otpCode => $_getSZ(0);
   @$pb.TagNumber(1)
-  set verificationId($core.String v) { $_setString(0, v); }
+  set otpCode($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasVerificationId() => $_has(0);
+  $core.bool hasOtpCode() => $_has(0);
   @$pb.TagNumber(1)
-  void clearVerificationId() => $_clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get otpCode => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set otpCode($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasOtpCode() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearOtpCode() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get email => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set email($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasEmail() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearEmail() => $_clearField(3);
+  void clearOtpCode() => $_clearField(1);
 }
 
 class VerifyEmailOtpResponse extends $pb.GeneratedMessage {
@@ -832,7 +675,6 @@ class VerifyEmailOtpResponse extends $pb.GeneratedMessage {
     $core.int? code,
     $core.String? message,
     User? user,
-    $core.String? token,
   }) {
     final $result = create();
     if (code != null) {
@@ -844,9 +686,6 @@ class VerifyEmailOtpResponse extends $pb.GeneratedMessage {
     if (user != null) {
       $result.user = user;
     }
-    if (token != null) {
-      $result.token = token;
-    }
     return $result;
   }
   VerifyEmailOtpResponse._() : super();
@@ -857,7 +696,6 @@ class VerifyEmailOtpResponse extends $pb.GeneratedMessage {
     ..a<$core.int>(1, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'message')
     ..aOM<User>(3, _omitFieldNames ? '' : 'user', subBuilder: User.create)
-    ..aOS(4, _omitFieldNames ? '' : 'token')
     ..hasRequiredFields = false
   ;
 
@@ -910,15 +748,6 @@ class VerifyEmailOtpResponse extends $pb.GeneratedMessage {
   void clearUser() => $_clearField(3);
   @$pb.TagNumber(3)
   User ensureUser() => $_ensure(2);
-
-  @$pb.TagNumber(4)
-  $core.String get token => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set token($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasToken() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearToken() => $_clearField(4);
 }
 
 

@@ -120,7 +120,9 @@ const convertSendEmailOtpResponse = async (verificationId) => {
 const convertVerifyEmailOtpRequest = async (requestBody) => {
   await init();
   const message = root.lookupType('auth.VerifyEmailOtpRequest');
-  const payload = _.cloneDeep(requestBody);
+  const payload = {
+    otp_code: requestBody.otpCode // convert từ camelCase sang snake_case
+  };
 
   const err = message.verify(payload);
   if (err) {
@@ -130,22 +132,20 @@ const convertVerifyEmailOtpRequest = async (requestBody) => {
   return message.create(payload).toJSON();
 };
 
-const convertVerifyEmailOtpResponse = async (userData, token) => {
+const convertVerifyEmailOtpResponse = async (code, message) => {
   await init();
-  const message = root.lookupType('auth.VerifyEmailOtpResponse');
+  const messageType = root.lookupType('auth.VerifyEmailOtpResponse');
   const payload = {
-    code: httpStatus.OK,
-    message: getMessageByLocale('email_verified'),
-    user: userData,
-    token
+    code,
+    message
   };
 
-  const err = message.verify(payload);
+  const err = messageType.verify(payload);
   if (err) {
     throw new Error(`Error in VerifyEmailOtpResponse protobuf: ${err}`);
   }
 
-  return message.create(payload).toJSON();
+  return messageType.create(payload).toJSON();
 };
 
 const convertUserToProto = async (user) => {

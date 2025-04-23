@@ -5,11 +5,14 @@ const {
   convertLoginResponse,
   convertRegisterRequest,
   convertRegisterResponse,
+  convertVerifyEmailOtpRequest,
+  convertVerifyEmailOtpResponse,
 } = require('./user.converter');
 
 const register = CatchAsync(async (req, res) => {
   const result = await AuthService.register(req.body);
   const response = await convertRegisterResponse(result.user, result.token);
+  
   res.status(201).send(response);
 });
 
@@ -21,11 +24,22 @@ const login = CatchAsync(async (req, res) => {
 });
 
 const verifyEmail = CatchAsync(async (req, res) => {
-  const result = await AuthService.verifyEmail(req.user.id, req.body.otpCode);
-  res.status(200).json({
-    success: true,
-    message: 'Email verified successfully'
-  });
+  const { otpCode } = req.body;
+  console.log('Request user:', req.user); // Debug log
+  console.log('OTP Code:', otpCode); // Debug log
+  
+  // Ensure we're using the correct user ID from JWT
+  const userId = req.user.id;
+  
+  const result = await AuthService.verifyEmail(userId, otpCode);
+  
+  const response = await convertVerifyEmailOtpResponse(
+    200,
+    result.message,
+    result.user
+  );
+  
+  res.status(200).send(response);
 });
 
 const updateProfile = CatchAsync(async (req, res) => {

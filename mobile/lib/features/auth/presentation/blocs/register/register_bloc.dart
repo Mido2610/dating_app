@@ -1,8 +1,10 @@
 import 'package:dating_app/core/di/inection.dart';
 import 'package:dating_app/core/utils/api_error.dart';
 import 'package:dating_app/core/utils/validate.dart';
+import 'package:dating_app/features/auth/data/client/https_client.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
 import 'package:dating_app/proto/gen/auth.pb.dart';
+import 'package:dating_app/services/local_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,6 +15,9 @@ part 'register_bloc.freezed.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
   final _userRepository = getIt<UserRepository>();
+  final LocalStorage localStorage = getIt<LocalStorage>();
+  final httpsClient = getIt<HttpsClient>();
+
   RegisterBloc() : super(const _LoadedState(_Data())) {
     // change error message
     on<_RegisterUpdateErrorMessageEvent>((event, emit) {
@@ -93,13 +98,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
 
       emit(_LoadedState(state.data.copyWith(loadingButton: true)));
 
-      await _userRepository.register(
+      final registerResponse = await _userRepository.register(
         registerRequest: RegisterRequest(
           email: email,
           password: password,
           userName: userName,
         ),
       );
+
+      await localStorage.setJWT(registerResponse.token);
+      httpsClient.setJwtInHeader(jwt: registerResponse.token);
 
       emit(
         _RegisterSuccessState(

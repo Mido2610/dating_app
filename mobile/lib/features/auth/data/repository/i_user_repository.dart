@@ -3,6 +3,7 @@ import 'package:dating_app/features/auth/data/client/end_point.dart';
 import 'package:dating_app/features/auth/data/client/https_client.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
 import 'package:dating_app/proto/gen/auth.pb.dart';
+import 'package:dio/dio.dart';
 
 class IUserRepository implements UserRepository {
   final HttpsClient _httpsClient;
@@ -31,17 +32,6 @@ class IUserRepository implements UserRepository {
       ..mergeFromProto3Json(json, ignoreUnknownFields: true);
   }
 
-  @override
-  Future<SendEmailOtpResponse> sendOtp({
-    required SendEmailOtpRequest sendOtpRequest,
-  }) async {
-    final json = await _httpsClient.post(
-      EndPoint.sendOtp,
-      body: protoToRequest(sendOtpRequest),
-    );
-    return SendEmailOtpResponse.create()
-      ..mergeFromProto3Json(json, ignoreUnknownFields: true);
-  }
 
   @override
   Future<VerifyEmailOtpResponse> verifyOtp({

@@ -120,47 +120,17 @@ final $typed_data.Uint8List registerResponseDescriptor = $convert.base64Decode(
     'IHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgouYXV0aC5Vc2VyUgR1c2VyEhQKBXRva2VuGAQgASgJ'
     'UgV0b2tlbg==');
 
-@$core.Deprecated('Use sendEmailOtpRequestDescriptor instead')
-const SendEmailOtpRequest$json = {
-  '1': 'SendEmailOtpRequest',
-  '2': [
-    {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
-  ],
-};
-
-/// Descriptor for `SendEmailOtpRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List sendEmailOtpRequestDescriptor = $convert.base64Decode(
-    'ChNTZW5kRW1haWxPdHBSZXF1ZXN0EhQKBWVtYWlsGAEgASgJUgVlbWFpbA==');
-
-@$core.Deprecated('Use sendEmailOtpResponseDescriptor instead')
-const SendEmailOtpResponse$json = {
-  '1': 'SendEmailOtpResponse',
-  '2': [
-    {'1': 'code', '3': 1, '4': 1, '5': 5, '10': 'code'},
-    {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
-    {'1': 'verificationId', '3': 3, '4': 1, '5': 9, '10': 'verificationId'},
-  ],
-};
-
-/// Descriptor for `SendEmailOtpResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List sendEmailOtpResponseDescriptor = $convert.base64Decode(
-    'ChRTZW5kRW1haWxPdHBSZXNwb25zZRISCgRjb2RlGAEgASgFUgRjb2RlEhgKB21lc3NhZ2UYAi'
-    'ABKAlSB21lc3NhZ2USJgoOdmVyaWZpY2F0aW9uSWQYAyABKAlSDnZlcmlmaWNhdGlvbklk');
-
 @$core.Deprecated('Use verifyEmailOtpRequestDescriptor instead')
 const VerifyEmailOtpRequest$json = {
   '1': 'VerifyEmailOtpRequest',
   '2': [
-    {'1': 'verificationId', '3': 1, '4': 1, '5': 9, '10': 'verificationId'},
-    {'1': 'otpCode', '3': 2, '4': 1, '5': 9, '10': 'otpCode'},
-    {'1': 'email', '3': 3, '4': 1, '5': 9, '10': 'email'},
+    {'1': 'otpCode', '3': 1, '4': 1, '5': 9, '10': 'otpCode'},
   ],
 };
 
 /// Descriptor for `VerifyEmailOtpRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List verifyEmailOtpRequestDescriptor = $convert.base64Decode(
-    'ChVWZXJpZnlFbWFpbE90cFJlcXVlc3QSJgoOdmVyaWZpY2F0aW9uSWQYASABKAlSDnZlcmlmaW'
-    'NhdGlvbklkEhgKB290cENvZGUYAiABKAlSB290cENvZGUSFAoFZW1haWwYAyABKAlSBWVtYWls');
+    'ChVWZXJpZnlFbWFpbE90cFJlcXVlc3QSGAoHb3RwQ29kZRgBIAEoCVIHb3RwQ29kZQ==');
 
 @$core.Deprecated('Use verifyEmailOtpResponseDescriptor instead')
 const VerifyEmailOtpResponse$json = {
@@ -169,13 +139,11 @@ const VerifyEmailOtpResponse$json = {
     {'1': 'code', '3': 1, '4': 1, '5': 5, '10': 'code'},
     {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
     {'1': 'user', '3': 3, '4': 1, '5': 11, '6': '.auth.User', '10': 'user'},
-    {'1': 'token', '3': 4, '4': 1, '5': 9, '10': 'token'},
   ],
 };
 
 /// Descriptor for `VerifyEmailOtpResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List verifyEmailOtpResponseDescriptor = $convert.base64Decode(
     'ChZWZXJpZnlFbWFpbE90cFJlc3BvbnNlEhIKBGNvZGUYASABKAVSBGNvZGUSGAoHbWVzc2FnZR'
-    'gCIAEoCVIHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgouYXV0aC5Vc2VyUgR1c2VyEhQKBXRva2Vu'
-    'GAQgASgJUgV0b2tlbg==');
+    'gCIAEoCVIHbWVzc2FnZRIeCgR1c2VyGAMgASgLMgouYXV0aC5Vc2VyUgR1c2Vy');
 

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { config } = require('../common/configs/env.config');
 const logger = require('../common/utils/logger');
 
 const authenticate = (req, res, next) => {
@@ -10,8 +11,15 @@ const authenticate = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Attach user info to request
+    console.log('Verifying token:', token); // Debug log
+    const decoded = jwt.verify(token, config.jwt.secret);
+    console.log('Decoded token:', decoded); // Debug log
+
+    req.user = {
+      id: decoded.id,
+      email: decoded.email
+    };
+    console.log('Set req.user:', req.user); // Debug log
     next();
   } catch (err) {
     logger.error('Token verification failed:', err);

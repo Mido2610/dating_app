@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/features/auth/presentation/blocs/register/register_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/discover/discover_screen.dart';
+import 'package:dating_app/features/auth/presentation/screens/register/otp_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/colors.dart';
@@ -60,9 +61,14 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
               message: stateSuccess.successMessage,
               toastType: ToastType.success,
             );
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (context) => DiscoverScreen()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder:
+                    (context) => VerifyEmailOtpPage.provider(
+                      email: _emailController.text,
+                    ),
+              ),
+            );
           },
         );
       },
