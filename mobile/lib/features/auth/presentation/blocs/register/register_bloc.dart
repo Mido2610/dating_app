@@ -37,7 +37,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
     on<_RegisterEvent>((event, emit) async {
       await _register(
         emit,
-        userName: event.userName,
+        userName: event.name,
         password: event.password,
         confirmPassword: event.confirmPassword,
         email: event.email,
@@ -102,7 +102,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with ApiError {
         registerRequest: RegisterRequest(
           email: email,
           password: password,
-          userName: userName,
+          name: userName,
         ),
       );
 

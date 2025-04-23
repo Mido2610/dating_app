@@ -32,6 +32,7 @@ class User extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? photos,
     $core.String? gender,
     $core.String? birthday,
+    $core.String? userName,
   }) {
     final $result = create();
     if (id != null) {
@@ -73,6 +74,9 @@ class User extends $pb.GeneratedMessage {
     if (birthday != null) {
       $result.birthday = birthday;
     }
+    if (userName != null) {
+      $result.userName = userName;
+    }
     return $result;
   }
   User._() : super();
@@ -93,6 +97,7 @@ class User extends $pb.GeneratedMessage {
     ..pPS(11, _omitFieldNames ? '' : 'photos')
     ..aOS(12, _omitFieldNames ? '' : 'gender')
     ..aOS(13, _omitFieldNames ? '' : 'birthday')
+    ..aOS(14, _omitFieldNames ? '' : 'userName')
     ..hasRequiredFields = false
   ;
 
@@ -221,6 +226,15 @@ class User extends $pb.GeneratedMessage {
   $core.bool hasBirthday() => $_has(12);
   @$pb.TagNumber(13)
   void clearBirthday() => $_clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.String get userName => $_getSZ(13);
+  @$pb.TagNumber(14)
+  set userName($core.String v) { $_setString(13, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasUserName() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearUserName() => $_clearField(14);
 }
 
 class AccessToken extends $pb.GeneratedMessage {
@@ -452,7 +466,7 @@ class RegisterRequest extends $pb.GeneratedMessage {
   factory RegisterRequest({
     $core.String? email,
     $core.String? password,
-    $core.String? userName,
+    $core.String? name,
   }) {
     final $result = create();
     if (email != null) {
@@ -461,8 +475,8 @@ class RegisterRequest extends $pb.GeneratedMessage {
     if (password != null) {
       $result.password = password;
     }
-    if (userName != null) {
-      $result.userName = userName;
+    if (name != null) {
+      $result.name = name;
     }
     return $result;
   }
@@ -473,7 +487,7 @@ class RegisterRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RegisterRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'auth'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
     ..aOS(2, _omitFieldNames ? '' : 'password')
-    ..aOS(3, _omitFieldNames ? '' : 'userName')
+    ..aOS(3, _omitFieldNames ? '' : 'name')
     ..hasRequiredFields = false
   ;
 
@@ -517,13 +531,13 @@ class RegisterRequest extends $pb.GeneratedMessage {
   void clearPassword() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get userName => $_getSZ(2);
+  $core.String get name => $_getSZ(2);
   @$pb.TagNumber(3)
-  set userName($core.String v) { $_setString(2, v); }
+  set name($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasUserName() => $_has(2);
+  $core.bool hasName() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUserName() => $_clearField(3);
+  void clearName() => $_clearField(3);
 }
 
 class RegisterResponse extends $pb.GeneratedMessage {

@@ -30,6 +30,7 @@ const User$json = {
     {'1': 'photos', '3': 11, '4': 3, '5': 9, '10': 'photos'},
     {'1': 'gender', '3': 12, '4': 1, '5': 9, '10': 'gender'},
     {'1': 'birthday', '3': 13, '4': 1, '5': 9, '10': 'birthday'},
+    {'1': 'user_name', '3': 14, '4': 1, '5': 9, '10': 'userName'},
   ],
 };
 
@@ -41,7 +42,7 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'VkEhwKCWNyZWF0ZWRBdBgIIAEoCVIJY3JlYXRlZEF0EhwKCXVwZGF0ZWRBdBgJIAEoCVIJdXBk'
     'YXRlZEF0EhwKCWludGVyZXN0cxgKIAMoCVIJaW50ZXJlc3RzEhYKBnBob3RvcxgLIAMoCVIGcG'
     'hvdG9zEhYKBmdlbmRlchgMIAEoCVIGZ2VuZGVyEhoKCGJpcnRoZGF5GA0gASgJUghiaXJ0aGRh'
-    'eQ==');
+    'eRIbCgl1c2VyX25hbWUYDiABKAlSCHVzZXJOYW1l');
 
 @$core.Deprecated('Use accessTokenDescriptor instead')
 const AccessToken$json = {
@@ -94,14 +95,14 @@ const RegisterRequest$json = {
   '2': [
     {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
     {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'user_name', '3': 3, '4': 1, '5': 9, '10': 'userName'},
+    {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
 /// Descriptor for `RegisterRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List registerRequestDescriptor = $convert.base64Decode(
     'Cg9SZWdpc3RlclJlcXVlc3QSFAoFZW1haWwYASABKAlSBWVtYWlsEhoKCHBhc3N3b3JkGAIgAS'
-    'gJUghwYXNzd29yZBIbCgl1c2VyX25hbWUYAyABKAlSCHVzZXJOYW1l');
+    'gJUghwYXNzd29yZBISCgRuYW1lGAMgASgJUgRuYW1l');
 
 @$core.Deprecated('Use registerResponseDescriptor instead')
 const RegisterResponse$json = {

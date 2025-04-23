@@ -10,7 +10,7 @@ class RegisterEvent with _$RegisterEvent {
   }) = _RegisterUpdateErrorMessageEvent;
 
   const factory RegisterEvent.register({
-    required String userName,
+    required String name,
     required String email,
     required String password,
     required String confirmPassword,

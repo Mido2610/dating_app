@@ -4,9 +4,7 @@ const { getMessageByLocale } = require('../common/utils/locale.util');
 const {
   convertLoginRequest,
   convertLoginResponse,
-  convertRegisterRequest,
   convertRegisterResponse,
-  convertVerifyEmailOtpRequest,
   convertVerifyEmailOtpResponse,
   convertAddInfoUserRequest,
   convertAddInfoUserResponse,
@@ -28,10 +26,6 @@ const login = CatchAsync(async (req, res) => {
 
 const verifyEmail = CatchAsync(async (req, res) => {
   const { otpCode } = req.body;
-  console.log('Request user:', req.user); // Debug log
-  console.log('OTP Code:', otpCode); // Debug log
-  
-  // Ensure we're using the correct user ID from JWT
   const userId = req.user.id;
   
   const result = await AuthService.verifyEmail(userId, otpCode);

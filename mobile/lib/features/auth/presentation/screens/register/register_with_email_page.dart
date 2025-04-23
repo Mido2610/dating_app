@@ -164,7 +164,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
                       onPressed:
                           () => _onTapRegisterButton(
                             context,
-                            userName: _nameController.text,
+                            name: _nameController.text,
                             password: _passwordController.text,
                             confirmPassword: _confirmPasswordController.text,
                             email: _emailController.text,
@@ -204,13 +204,13 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
 
   _onTapRegisterButton(
     BuildContext context, {
-    required String userName,
+    required String name,
     required String password,
     required String confirmPassword,
     required String email,
   }) => context.read<RegisterBloc>().add(
     RegisterEvent.register(
-      userName: userName,
+      name: name,
       password: password,
       confirmPassword: confirmPassword,
       email: email,

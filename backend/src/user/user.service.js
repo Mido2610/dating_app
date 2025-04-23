@@ -111,14 +111,6 @@ const verifyEmail = async (userId, otpCode) => {
   const userWithVerification = await User.findById(userId)
     .select('+verificationCode +verificationCodeExpires');
   
-  console.log('Verification details:', {
-    providedOTP: otpCode,
-    storedOTP: userWithVerification.verificationCode,
-    expiresAt: userWithVerification.verificationCodeExpires,
-    currentTime: new Date(),
-    isExpired: Date.now() > userWithVerification.verificationCodeExpires
-  });
-
   // Check if OTP is valid and not expired
   if (userWithVerification.verificationCode !== otpCode || 
       Date.now() > userWithVerification.verificationCodeExpires) {

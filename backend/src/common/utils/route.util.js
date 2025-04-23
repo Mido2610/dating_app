@@ -23,7 +23,6 @@ function loadRoutes(baseDir) {
           // Mount route using directory name as path prefix
           // Example: /user/user.route.js -> /api/users/...
           router.use(`/${dir.name}`, route);
-          console.log(`✅ Loaded route: /${dir.name}`);
         } catch (error) {
           console.error(`❌ Failed to load route ${routeFile}:`, error);
         }

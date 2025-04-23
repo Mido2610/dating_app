@@ -22,22 +22,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Support for Protocol Buffers
-app.use((req, res, next) => {
-  if (req.headers['content-type'] === 'application/protobuf') {
-    let data = [];
-    req.on('data', chunk => {
-      data.push(chunk);
-    });
-    req.on('end', () => {
-      req.rawBody = Buffer.concat(data);
-      next();
-    });
-  } else {
-    next();
-  }
-});
-
 // API Routes
 app.use('/api', routes);
 

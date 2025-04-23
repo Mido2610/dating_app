@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
     type: Date,
     select: false
   },
-  // Thêm các trường mới
   birthday: {
     type: Date
   },

@@ -19,12 +19,6 @@ const generateOTPCode = (length = 6) => {
   return OTP;
 };
 
-
-// Check if file is being run directly
-if (require.main === module) {
-  console.log('Generated JWT_SECRET:', generateJwtSecret());
-}
-
 module.exports = {
   generateJwtSecret,
   generateOTPCode
