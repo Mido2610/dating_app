@@ -2,18 +2,6 @@ const mongoose = require('mongoose');
 const { toJSON, paginate } = require('../common/plugins/plugin');
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true,
-    private: true
-  },
   name: {
     type: String,
     required: true,
@@ -22,18 +10,6 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: ''
-  },
-  emailVerified: {
-    type: Boolean,
-    default: false
-  },
-  verificationCode: {
-    type: String,
-    select: false
-  },
-  verificationCodeExpires: {
-    type: Date,
-    select: false
   },
   birthday: {
     type: Date
@@ -47,7 +23,16 @@ const userSchema = new mongoose.Schema({
   }],
   photos: [{
     type: String
-  }]
+  }],
+  bio: {
+    type: String,
+    maxLength: 500
+  },
+  status: {
+    type: String,
+    enum: ['online', 'offline', 'away'],
+    default: 'offline'
+  }
 }, {
   timestamps: true
 });

@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package dating;
+
+message Profile {
+  string id = 1;
+  string name = 2;
+  int32 age = 3;
+  string bio = 4;
+  repeated string photos = 5;
+  string gender = 6;
+  repeated string interests = 7;
+}
+
+enum SwipeAction {
+  DISLIKE = 0;
+  LIKE = 1;
+}
+
+message SwipeRequest {
+  string target_profile_id = 1;
+  SwipeAction action = 2;
+}
+
+message SwipeResponse {
+  int32 code = 1;
+  string message = 2;
+  bool is_match = 3;
+  Match match = 4;
+}
+
+message SuggestProfilesRequest {
+  string user_id = 1;
+  int32 limit = 2;
+  repeated string excluded_ids = 3;
+}
+
+message SuggestProfilesResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Profile profiles = 3;
+}
+
+message ListMatchesRequest {
+  string user_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message Match {
+  string match_id = 1;
+  Profile profile = 2;
+  string matched_at = 3;
+  string last_message = 4;
+  string last_message_time = 5;
+}
+
+message ListMatchesResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated Match matches = 3;
+  int32 total = 4;
+  bool has_more = 5;
+}
+
+message UnmatchProfileRequest {
+  string match_id = 1;
+}
+
+message UnmatchProfileResponse {
+  int32 code = 1;
+  string message = 2;
+}

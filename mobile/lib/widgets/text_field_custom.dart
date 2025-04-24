@@ -51,6 +51,7 @@ class TextFieldCustom extends StatelessWidget {
     this.descriptionText,
     this.newTooltipMessage,
     this.headerTitle,
+    this.border,
   });
   final OnTapTextField? onTap;
   final String? initialValue;
@@ -94,6 +95,7 @@ class TextFieldCustom extends StatelessWidget {
   final String? descriptionText;
   final String? newTooltipMessage;
   final String? headerTitle;
+  final InputBorder? border;
   @override
   Widget build(BuildContext context) {
     if (focusChange != null) {
@@ -180,12 +182,12 @@ class TextFieldCustom extends StatelessWidget {
               suffixIconConstraints: const BoxConstraints(),
               fillColor: fillColor ?? ThemeColor.input,
               filled: true,
-              border: _outlineBorder(),
-              errorBorder: _outlineBorder(),
-              enabledBorder: _outlineBorder(),
-              focusedBorder: _outlineBorder(),
-              disabledBorder: _outlineBorder(),
-              focusedErrorBorder: _outlineBorder(),
+              border:  border ?? _outlineBorder(),
+              errorBorder: border ??_outlineBorder(),
+              enabledBorder: border ?? _outlineBorder(),
+              focusedBorder: border ?? _outlineBorder(),
+              disabledBorder:border ?? _outlineBorder(),
+              focusedErrorBorder: border ??_outlineBorder(),
               hintText: hintText,
               hintStyle:
                   hintTextStyle ??
@@ -210,7 +212,7 @@ class TextFieldCustom extends StatelessWidget {
   }
 
   InputBorder _outlineBorder() {
-    return OutlineInputBorder(
+    return UnderlineInputBorder(
       borderSide: borderSide ?? BorderSide.none,
       borderRadius: BorderRadius.circular(radius),
     );

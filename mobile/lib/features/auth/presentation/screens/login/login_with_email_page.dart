@@ -43,7 +43,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> with CustomToast {
       listener: (context, state) {
         state.mapOrNull(
           loginSuccess: (stateSuccess) {
-            // Handle successful registration
             showToastTop(
               context,
               message: stateSuccess.successMessage,
@@ -52,6 +51,13 @@ class _EmailLoginPageState extends State<EmailLoginPage> with CustomToast {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (context) => DiscoverScreen()));
+          },
+          loginFailed: (stateFailed) {
+            showToastTop(
+              context,
+              message: stateFailed.errorMessage,
+              toastType: ToastType.warning,
+            );
           },
         );
       },

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/styles.dart';
+import 'package:dating_app/features/auth/presentation/screens/login/login_with_email_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/first_name_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/register_with_email_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/register_with_phone_page.dart';
 import 'package:dating_app/widgets/button_common.dart';
@@ -156,7 +158,7 @@ class _SplashPageState extends State<SplashPage> {
               maxWidth: double.infinity,
               onTapButton: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => RegisterWithEmailPage.provider()),
+                  MaterialPageRoute(builder: (context) => FirstNamePage.provider()),
                 );
               },
               titleButton: 'Create an account',
@@ -164,7 +166,11 @@ class _SplashPageState extends State<SplashPage> {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => EmailLoginPage.provider()),
+                );
+              },
               child: const Text.rich(
                 TextSpan(
                   text: 'Already have an account? ',

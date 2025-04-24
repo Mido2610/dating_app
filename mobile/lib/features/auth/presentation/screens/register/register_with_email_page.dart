@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/features/auth/presentation/blocs/register/register_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/discover/discover_screen.dart';
+import 'package:dating_app/features/auth/presentation/screens/login/login_with_email_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/otp_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -187,7 +188,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage>
                       const Text('Already have an account?'),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context); // Quay về login
+                          EmailLoginPage.provider();
                         },
                         child: const Text('Login'),
                       ),

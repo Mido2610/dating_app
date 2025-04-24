@@ -19,4 +19,8 @@ class RegisterState with _$RegisterState {
   }) = _RegisterSuccessState;
 
   const factory RegisterState.loaded(RegisterData data) = _LoadedState;
+
+  const factory RegisterState.error(RegisterData data, {
+    required String errorMessage,
+  }) = _ErrorState;
 }

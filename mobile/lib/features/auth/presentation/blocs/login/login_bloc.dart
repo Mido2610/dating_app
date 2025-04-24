@@ -29,6 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with ApiError {
       final loginResponse = await _userRepository.login(
         registerRequest: RegisterRequest(
           email: event.email,
+          password: event.password
         ),
       );
       await _saveUserAndJWT(response: loginResponse);
