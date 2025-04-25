@@ -1,4 +1,4 @@
-import 'package:dating_app/features/auth/presentation/screens/profile%20user/add_photo_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/add_photo_page.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
 import 'package:flutter/material.dart';
 

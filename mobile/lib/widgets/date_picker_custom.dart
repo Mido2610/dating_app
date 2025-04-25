@@ -1,4 +1,6 @@
+import 'package:dating_app/core/extension/date_time_extension.dart';
 import 'package:dating_app/core/utils/colors.dart';
+import 'package:dating_app/core/utils/date_time_format.dart';
 import 'package:dating_app/core/utils/image_resource.dart';
 import 'package:dating_app/core/utils/string_extension.dart';
 import 'package:dating_app/core/utils/styles.dart';
@@ -42,10 +44,6 @@ class DatePickerCustom extends StatelessWidget {
   final String? hint;
   final TextStyle? textStyle;
 
-  static String toQuery({DateTime? dateTime, String? dateStr}) => DateFormat(
-    'yyyy-MM-dd',
-  ).format(dateTime ?? DateTime.tryParse(dateStr ?? '') ?? DateTime.now());
-
   @override
   Widget build(BuildContext context) {
     final initialDate = dateTime ?? dateTimeQuery?.toDateTime ?? DateTime.now();
@@ -76,7 +74,7 @@ class DatePickerCustom extends StatelessWidget {
         );
         if (dateTimePicker != null) {
           dateTimePickerCallBack(dateTimePicker);
-          dateTimeQueryPickerCallBack?.call(toQuery(dateTime: dateTimePicker));
+          dateTimeQueryPickerCallBack?.call(dateTimePicker.toQuery);
         }
       },
       child: Container(
@@ -98,9 +96,11 @@ class DatePickerCustom extends StatelessWidget {
             Flexible(
               fit: spaceBetween ? FlexFit.tight : FlexFit.loose,
               child: Text(
-                dateTime != null
-                    ? DateFormat.yMMMMd().format(dateTime!)
-                    : dateTimeQuery?.toDateTime.toString() ?? hint ?? '',
+                hint ??
+                    DateTimeFormatUtils.formatDateTimeDisplayByLanguage(
+                      initialDate,
+                      symbol: '/',
+                    ),
                 style:
                     textStyle ??
                     ThemeTextStyle.medium14.copyWith(

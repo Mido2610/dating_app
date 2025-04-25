@@ -14,16 +14,20 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'auth.pb.dart' as $0;
+import 'user.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+export 'user.pbenum.dart';
 
 class AddInfoUserRequest extends $pb.GeneratedMessage {
   factory AddInfoUserRequest({
     $core.String? userName,
     $core.String? birthday,
-    $core.String? gender,
+    AddInfoUserRequest_Gender? gender,
     $core.Iterable<$core.String>? interests,
     $core.Iterable<$core.String>? photos,
+    $core.bool? showGenderOnProfile,
   }) {
     final $result = create();
     if (userName != null) {
@@ -41,6 +45,9 @@ class AddInfoUserRequest extends $pb.GeneratedMessage {
     if (photos != null) {
       $result.photos.addAll(photos);
     }
+    if (showGenderOnProfile != null) {
+      $result.showGenderOnProfile = showGenderOnProfile;
+    }
     return $result;
   }
   AddInfoUserRequest._() : super();
@@ -50,9 +57,10 @@ class AddInfoUserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AddInfoUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userName')
     ..aOS(2, _omitFieldNames ? '' : 'birthday')
-    ..aOS(3, _omitFieldNames ? '' : 'gender')
+    ..e<AddInfoUserRequest_Gender>(3, _omitFieldNames ? '' : 'gender', $pb.PbFieldType.OE, defaultOrMaker: AddInfoUserRequest_Gender.UNSPECIFIED, valueOf: AddInfoUserRequest_Gender.valueOf, enumValues: AddInfoUserRequest_Gender.values)
     ..pPS(4, _omitFieldNames ? '' : 'interests')
     ..pPS(5, _omitFieldNames ? '' : 'photos')
+    ..aOB(6, _omitFieldNames ? '' : 'showGenderOnProfile')
     ..hasRequiredFields = false
   ;
 
@@ -96,9 +104,9 @@ class AddInfoUserRequest extends $pb.GeneratedMessage {
   void clearBirthday() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get gender => $_getSZ(2);
+  AddInfoUserRequest_Gender get gender => $_getN(2);
   @$pb.TagNumber(3)
-  set gender($core.String v) { $_setString(2, v); }
+  set gender(AddInfoUserRequest_Gender v) { $_setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasGender() => $_has(2);
   @$pb.TagNumber(3)
@@ -109,6 +117,15 @@ class AddInfoUserRequest extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get photos => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $core.bool get showGenderOnProfile => $_getBF(5);
+  @$pb.TagNumber(6)
+  set showGenderOnProfile($core.bool v) { $_setBool(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasShowGenderOnProfile() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearShowGenderOnProfile() => $_clearField(6);
 }
 
 class AddInfoUserResponse extends $pb.GeneratedMessage {

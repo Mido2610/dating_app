@@ -7,7 +7,14 @@ import "auth.proto";
 message AddInfoUserRequest {
   string user_name = 1;
   string birthday = 2;
-  string gender = 3;
+  enum Gender {
+    UNSPECIFIED = 0;
+    MALE = 1;
+    FEMALE = 2;
+    OTHER = 3;
+  }
+  Gender gender = 3;
+  optional bool show_gender_on_profile = 6;
   repeated string interests = 4;
   repeated string photos = 5;
 }

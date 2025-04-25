@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:dating_app/config/app/app_routes.dart';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/core/utils/date_time_format.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
-import 'package:dating_app/features/auth/presentation/screens/profile%20user/add_photo_page.dart';
-import 'package:dating_app/features/auth/presentation/screens/profile%20user/select_gender.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/add_photo_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/select_gender.dart';
 import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:dating_app/proto/gen/user.pb.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
@@ -14,26 +15,12 @@ import 'package:dating_app/widgets/button_common.dart';
 import 'package:dating_app/widgets/date_picker_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class SelectUserBirthDayPage extends StatefulWidget {
-  const SelectUserBirthDayPage({super.key});
-
-  static BlocProvider<AddInfoUserBloc> provider() {
-    return BlocProvider(
-      create: (context) => AddInfoUserBloc(),
-      child: SelectUserBirthDayPage(),
-    );
-  }
-
-  @override
-  State<SelectUserBirthDayPage> createState() => _SelectUserBirthDayPageState();
-}
-
-class _SelectUserBirthDayPageState extends State<SelectUserBirthDayPage>
-    with CustomToast {
-  DateTime? selectedDate;
+class SelectUserBirthDayPage extends StatelessWidget with CustomToast {
+  SelectUserBirthDayPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +77,12 @@ class _SelectUserBirthDayPageState extends State<SelectUserBirthDayPage>
                         ),
                       );
                     },
-                    dateTimeLimitPicker: DateTime.now(),
-                    color: Color(0xFFFFEBEE),
+                    color: const Color(0xFFFFEBEE),
                     textColor: ThemeColor.E94057,
-                    hint: 'Chọn ngày sinh của bạn',
+                    hint:
+                        state.data.addInfoUserRequest.birthday.isEmpty
+                            ? "Select your birthday"
+                            : state.data.addInfoUserRequest.birthday,
                     textStyle: ThemeTextStyle.bold16.copyWith(
                       color: ThemeColor.E94057,
                     ),
@@ -114,11 +103,7 @@ class _SelectUserBirthDayPageState extends State<SelectUserBirthDayPage>
                         );
                         return;
                       }
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const GenderSelectionPage(),
-                        ),
-                      );
+                      Navigator.of(context).pushNamed(Routes.GENDER);
                     },
                     titleButton: 'Continue',
                     paddingHorizontal: 16,

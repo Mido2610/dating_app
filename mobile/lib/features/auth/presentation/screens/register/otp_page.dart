@@ -4,7 +4,7 @@ import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
 import 'package:dating_app/features/auth/presentation/blocs/otp/otp_bloc.dart';
-import 'package:dating_app/features/auth/presentation/screens/profile%20user/first_name_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/first_name_page.dart';
 import 'package:dating_app/widgets/text_field_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

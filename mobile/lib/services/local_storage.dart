@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:dating_app/config/app/support_languague.dart';
 import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,21 +51,52 @@ class LocalStorage {
   Future<void> setJWT(String jwt) async {
     await _sharedPrefs.setString(LocalStorageKey.jwt, jwt);
   }
-  
+
   // Lấy verificationId từ local storage
   String getVerificationId() {
-    final verificationId = _sharedPrefs.getString(LocalStorageKey.verificationId);
+    final verificationId = _sharedPrefs.getString(
+      LocalStorageKey.verificationId,
+    );
     return verificationId ?? '';
   }
 
   // Lưu verificationId vào local storage
   Future<void> setVerificationId(String verificationId) async {
-    await _sharedPrefs.setString(LocalStorageKey.verificationId, verificationId);
+    await _sharedPrefs.setString(
+      LocalStorageKey.verificationId,
+      verificationId,
+    );
   }
 
   // Xóa verificationId khỏi local storage
   Future<void> removeVerificationId() async {
     await _sharedPrefs.remove(LocalStorageKey.verificationId);
+  }
+
+  Future<void> setLanguage(String langCode) async {
+    await _sharedPrefs.setString(LocalStorageKey.langCode, langCode);
+  }
+
+  Locale languageLocale() {
+    final languageCode = _sharedPrefs.getString(LocalStorageKey.langCode);
+    final Locale? locale = supportedLocales.firstWhereOrNull(
+      (element) => element.languageCode == languageCode,
+    );
+    return locale ?? _getOSSettingLanguage();
+  }
+
+  Locale _getOSSettingLanguage() {
+    if (supportedLocales.firstWhereOrNull(
+          (element) => element.languageCode == Get.deviceLocale?.languageCode,
+        ) !=
+        null) {
+      return Get.deviceLocale ?? const Locale('vi');
+    }
+    return const Locale('vi');
+  }
+
+  String getDeviceLanguageCode() {
+    return languageLocale().languageCode;
   }
 
   String getRandomString({required int stringLength}) {
@@ -83,4 +115,5 @@ class LocalStorageKey {
   static const String user = 'USER';
   static const String jwt = 'JWT';
   static const String verificationId = 'VERIFICATION_ID';
+  static const String langCode = 'LANG_CODE';
 }

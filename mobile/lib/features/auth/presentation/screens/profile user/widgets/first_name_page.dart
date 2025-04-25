@@ -1,26 +1,21 @@
 import 'dart:async';
 
+import 'package:dating_app/config/app/app_routes.dart';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
-import 'package:dating_app/features/auth/presentation/screens/profile%20user/birthday_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/birthday_page.dart';
 import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:dating_app/proto/gen/user.pb.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
 import 'package:dating_app/widgets/text_field_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class FirstNamePage extends StatelessWidget with CustomToast {
   FirstNamePage({super.key});
-
-  static BlocProvider<AddInfoUserBloc> provider() {
-    return BlocProvider(
-      create: (context) => AddInfoUserBloc(),
-      child: FirstNamePage(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +95,7 @@ class FirstNamePage extends StatelessWidget with CustomToast {
                             );
                             return;
                           }
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (context) =>
-                                      SelectUserBirthDayPage.provider(),
-                            ),
-                          );
+                          Navigator.of(context).pushNamed(Routes.BIRTHDAY);
                         },
                         child: Container(
                           width: double.infinity,

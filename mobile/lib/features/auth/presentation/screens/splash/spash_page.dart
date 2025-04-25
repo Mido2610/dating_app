@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'package:dating_app/config/app/app_routes.dart';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/presentation/screens/login/login_with_email_page.dart';
-import 'package:dating_app/features/auth/presentation/screens/profile%20user/first_name_page.dart';
+import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/first_name_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/register_with_email_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/register/register_with_phone_page.dart';
 import 'package:dating_app/widgets/button_common.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -157,9 +159,7 @@ class _SplashPageState extends State<SplashPage> {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               maxWidth: double.infinity,
               onTapButton: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => FirstNamePage.provider()),
-                );
+                Get.toNamed(Routes.ADD_INFO);
               },
               titleButton: 'Create an account',
               paddingHorizontal: 16,

@@ -17,7 +17,7 @@ class AddInfoUserBloc extends Bloc<AddInfoUserEvent, AddInfoUserState>
   final _userRepository = getIt<UserRepository>();
   AddInfoUserBloc()
     : super(
-        _LoadingState(
+        _LoadedState(
           _Data(
             addInfoUserRequest: AddInfoUserRequest().createEmptyInstance(),
             addInfoUserRespone: AddInfoUserResponse().createEmptyInstance(),
@@ -31,17 +31,9 @@ class AddInfoUserBloc extends Bloc<AddInfoUserEvent, AddInfoUserState>
     _ChangeRequestEvent event,
     Emitter<AddInfoUserState> emit,
   ) {
-    emit(_LoadingState(state.data));
-    final addInfoUserRequest = state.data.addInfoUserRequest.deepCopy();
-    addInfoUserRequest.mergeFromMessage(
-      AddInfoUserRequest(
-        userName: event.request.userName,
-        birthday: event.request.birthday,
-        gender: event.request.gender,
-        interests: event.request.interests,
-        photos: event.request.photos,
-      ),
-    );
+    final addInfoUserRequest =
+        state.data.addInfoUserRequest.deepCopy()
+          ..mergeFromMessage(event.request);
     emit(
       _LoadedState(state.data.copyWith(addInfoUserRequest: addInfoUserRequest)),
     );
@@ -53,7 +45,6 @@ class AddInfoUserBloc extends Bloc<AddInfoUserEvent, AddInfoUserState>
     _AddInfoUserEvent event,
     Emitter<AddInfoUserState> emit,
   ) async {
-    emit(_LoadingState(state.data));
     try {
       final addInfoUserResponse = await _userRepository.addInfoUser(
         addInfoUserRequest: state.data.addInfoUserRequest,
