@@ -48,7 +48,10 @@ class GenderSelectionPage extends StatelessWidget {
                   children: [
                     const Text(
                       'I am a',
-                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
 
                     const SizedBox(height: 32),
@@ -62,9 +65,7 @@ class GenderSelectionPage extends StatelessWidget {
                       onTap: () {
                         context.read<AddInfoUserBloc>().add(
                           AddInfoUserEvent.changeRequest(
-                            request: AddInfoUserRequest(
-                              gender: Gender.MALE,
-                            ),
+                            request: AddInfoUserRequest(gender: Gender.MALE),
                           ),
                         );
                       },
@@ -78,9 +79,7 @@ class GenderSelectionPage extends StatelessWidget {
                       onTap: () {
                         context.read<AddInfoUserBloc>().add(
                           AddInfoUserEvent.changeRequest(
-                            request: AddInfoUserRequest(
-                              gender: Gender.FEMALE,
-                            ),
+                            request: AddInfoUserRequest(gender: Gender.FEMALE),
                           ),
                         );
                       },
@@ -94,9 +93,7 @@ class GenderSelectionPage extends StatelessWidget {
                       onTap: () {
                         context.read<AddInfoUserBloc>().add(
                           AddInfoUserEvent.changeRequest(
-                            request: AddInfoUserRequest(
-                              gender: Gender.OTHER,
-                            ),
+                            request: AddInfoUserRequest(gender: Gender.OTHER),
                           ),
                         );
                       },
@@ -139,7 +136,8 @@ class GenderSelectionPage extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder:
-                                (context) => const InterestsSelectionScreen(),
+                                (context) =>
+                                    InterestsSelectionScreen(bloc: bloc),
                           ),
                         );
                       },

@@ -34,6 +34,9 @@ class AddInfoUserBloc extends Bloc<AddInfoUserEvent, AddInfoUserState>
     final addInfoUserRequest =
         state.data.addInfoUserRequest.deepCopy()
           ..mergeFromMessage(event.request);
+
+    addInfoUserRequest.interests.clear();
+    addInfoUserRequest.interests.addAll(event.request.interests);
     emit(
       _LoadedState(state.data.copyWith(addInfoUserRequest: addInfoUserRequest)),
     );
