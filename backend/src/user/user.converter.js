@@ -72,7 +72,54 @@ const convertAddInfoUserRequest = async (requestBody) => {
   return message.create(payload).toJSON();
 };
 
+const convertAddInfoUserResponse = async (code, message, userData) => {
+  await init();
+  const messageType = root.lookupType('auth.AddInfoUserResponse');
+  
+  // Convert user data to proto format
+  const userProto = await convertUserToProto(userData);
+  
+  const payload = {
+    code,
+    message,
+    user: userProto
+  };
+
+  const err = messageType.verify(payload);
+  if (err) {
+    throw new Error(`Error in AddInfoUserResponse protobuf: ${err}`);
+  }
+
+  return messageType.create(payload).toJSON();
+};
+
+const convertGetAllUsersResponse = async (code, message, users) => {
+  await init();
+  const messageType = root.lookupType('auth.GetAllUsersResponse');
+  
+  const payload = {
+    code,
+    message,
+    users: users.map(user => ({
+      id: user._id.toString(),
+      name: user.name,
+      age: user.age,
+      bio: user.bio || '',
+      photos: user.photos || []
+    }))
+  };
+
+  const err = messageType.verify(payload);
+  if (err) {
+    throw new Error(`Error in GetAllUsersResponse protobuf: ${err}`);
+  }
+
+  return messageType.create(payload).toJSON();
+};
+
 module.exports = {
   convertUserToProto,
   convertAddInfoUserRequest,
+  convertAddInfoUserResponse,
+  convertGetAllUsersResponse
 };

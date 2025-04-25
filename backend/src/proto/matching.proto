@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package dating;
+
+// Profile represents a user's dating profile information
+message Profile {
+  string id = 1;                    // Unique identifier for the profile
+  string name = 2;                  // User's display name
+  int32 age = 3;                    // User's age
+  string bio = 4;                   // User's self-description/biography
+  repeated string photos = 5;       // List of photo URLs
+  string gender = 6;                // User's gender (male/female/other)
+  repeated string interests = 7;    // List of user's interests/hobbies
+}
+
+// Possible swipe actions a user can take
+enum SwipeAction {
+  DISLIKE = 0;    // User swipes left to reject
+  LIKE = 1;       // User swipes right to like
+}
+
+// Request to swipe on a profile
+message SwipeRequest {
+  string target_profile_id = 1;     // ID of the profile being swiped on
+  SwipeAction action = 2;           // The swipe action (like/dislike)
+}
+
+// Response after swiping on a profile
+message SwipeResponse {
+  int32 code = 1;                   // Response status code
+  string message = 2;               // Response message
+  bool is_match = 3;                // True if both users liked each other
+  Match match = 4;                  // Match details if is_match is true
+}
+
+// Request to get suggested profiles
+message SuggestProfilesRequest {
+  string user_id = 1;               // ID of user requesting suggestions
+  int32 limit = 2;                  // Maximum number of profiles to return
+  repeated string excluded_ids = 3;  // IDs of profiles to exclude from results
+}
+
+// Response containing suggested profiles
+message SuggestProfilesResponse {
+  int32 code = 1;                   // Response status code
+  string message = 2;               // Response message
+  repeated Profile profiles = 3;     // List of suggested profiles
+}
+
+// Request to list user's matches
+message ListMatchesRequest {
+  string user_id = 1;               // ID of user requesting their matches
+  int32 page = 2;                   // Page number for pagination
+  int32 limit = 3;                  // Number of matches per page
+}
+
+// Represents a match between two users
+message Match {
+  string match_id = 1;              // Unique identifier for the match
+  Profile profile = 2;              // Matched user's profile
+  string matched_at = 3;            // Timestamp when match occurred
+  string last_message = 4;          // Most recent message in conversation
+  string last_message_time = 5;     // Timestamp of last message
+}
+
+// Response containing list of matches
+message ListMatchesResponse {
+  int32 code = 1;                   // Response status code
+  string message = 2;               // Response message
+  repeated Match matches = 3;       // List of matches
+  int32 total = 4;                  // Total number of matches
+  bool has_more = 5;                // Whether more matches exist
+}
+
+// Request to unmatch from a profile
+message UnmatchProfileRequest {
+  string match_id = 1;              // ID of match to remove
+}
+
+// Response after unmatching
+message UnmatchProfileResponse {
+  int32 code = 1;                   // Response status code
+  string message = 2;               // Response message
+}

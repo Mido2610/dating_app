@@ -32,6 +32,29 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['online', 'offline', 'away'],
     default: 'offline'
+  },
+  preferences: {
+    ageRange: {
+      min: { type: Number, default: 18 },
+      max: { type: Number, default: 50 }
+    },
+    genderPreference: {
+      type: String,
+      enum: ['male', 'female', 'both'],
+      default: 'both'
+    },
+    maxDistance: { type: Number, default: 50 }, // in kilometers
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point'
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      }
+    }
   }
 }, {
   timestamps: true
@@ -39,6 +62,9 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
+
+// Add geospatial index for location-based matching
+userSchema.index({ "preferences.location": "2dsphere" });
 
 const User = mongoose.model('User', userSchema);
 

@@ -56,7 +56,34 @@ const updateProfile = async (userId, updateData) => {
   return _.omit(user.toJSON(), ['password']);
 };
 
+const getAllUsers = async () => {
+  const users = await User.find()
+    .select('name birthday bio photos')
+    .lean();
+
+  return users.map(user => ({
+    ...user,
+    age: user.birthday ? calculateAge(user.birthday) : null
+  }));
+};
+
+// Helper function to calculate age
+const calculateAge = (birthday) => {
+  const today = new Date();
+  const birthDate = new Date(birthday);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  
+  return age;
+};
+
 module.exports = {
   addInfoUser,
   updateProfile,
+  addInfoUser,
+  getAllUsers,
 };

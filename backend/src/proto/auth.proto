@@ -18,6 +18,8 @@ message User {
   string gender = 12;
   string birthday = 13;
   string user_name = 14;
+  //địa chỉ
+  string address = 15;
 }
 
 message AccessToken {
