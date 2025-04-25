@@ -19,36 +19,23 @@ const AddInfoUserRequest$json = {
   '2': [
     {'1': 'user_name', '3': 1, '4': 1, '5': 9, '10': 'userName'},
     {'1': 'birthday', '3': 2, '4': 1, '5': 9, '10': 'birthday'},
-    {'1': 'gender', '3': 3, '4': 1, '5': 14, '6': '.user.AddInfoUserRequest.Gender', '10': 'gender'},
+    {'1': 'gender', '3': 3, '4': 1, '5': 14, '6': '.common.Gender', '10': 'gender'},
     {'1': 'show_gender_on_profile', '3': 6, '4': 1, '5': 8, '9': 0, '10': 'showGenderOnProfile', '17': true},
-    {'1': 'interests', '3': 4, '4': 3, '5': 9, '10': 'interests'},
+    {'1': 'interests', '3': 4, '4': 3, '5': 14, '6': '.common.Interest', '10': 'interests'},
     {'1': 'photos', '3': 5, '4': 3, '5': 9, '10': 'photos'},
   ],
-  '4': [AddInfoUserRequest_Gender$json],
   '8': [
     {'1': '_show_gender_on_profile'},
-  ],
-};
-
-@$core.Deprecated('Use addInfoUserRequestDescriptor instead')
-const AddInfoUserRequest_Gender$json = {
-  '1': 'Gender',
-  '2': [
-    {'1': 'UNSPECIFIED', '2': 0},
-    {'1': 'MALE', '2': 1},
-    {'1': 'FEMALE', '2': 2},
-    {'1': 'OTHER', '2': 3},
   ],
 };
 
 /// Descriptor for `AddInfoUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List addInfoUserRequestDescriptor = $convert.base64Decode(
     'ChJBZGRJbmZvVXNlclJlcXVlc3QSGwoJdXNlcl9uYW1lGAEgASgJUgh1c2VyTmFtZRIaCghiaX'
-    'J0aGRheRgCIAEoCVIIYmlydGhkYXkSNwoGZ2VuZGVyGAMgASgOMh8udXNlci5BZGRJbmZvVXNl'
-    'clJlcXVlc3QuR2VuZGVyUgZnZW5kZXISOAoWc2hvd19nZW5kZXJfb25fcHJvZmlsZRgGIAEoCE'
-    'gAUhNzaG93R2VuZGVyT25Qcm9maWxliAEBEhwKCWludGVyZXN0cxgEIAMoCVIJaW50ZXJlc3Rz'
-    'EhYKBnBob3RvcxgFIAMoCVIGcGhvdG9zIjoKBkdlbmRlchIPCgtVTlNQRUNJRklFRBAAEggKBE'
-    '1BTEUQARIKCgZGRU1BTEUQAhIJCgVPVEhFUhADQhkKF19zaG93X2dlbmRlcl9vbl9wcm9maWxl');
+    'J0aGRheRgCIAEoCVIIYmlydGhkYXkSJgoGZ2VuZGVyGAMgASgOMg4uY29tbW9uLkdlbmRlclIG'
+    'Z2VuZGVyEjgKFnNob3dfZ2VuZGVyX29uX3Byb2ZpbGUYBiABKAhIAFITc2hvd0dlbmRlck9uUH'
+    'JvZmlsZYgBARIuCglpbnRlcmVzdHMYBCADKA4yEC5jb21tb24uSW50ZXJlc3RSCWludGVyZXN0'
+    'cxIWCgZwaG90b3MYBSADKAlSBnBob3Rvc0IZChdfc2hvd19nZW5kZXJfb25fcHJvZmlsZQ==');
 
 @$core.Deprecated('Use addInfoUserResponseDescriptor instead')
 const AddInfoUserResponse$json = {

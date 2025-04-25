@@ -8,142 +8,148 @@ import 'package:dating_app/widgets/button_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../proto/gen/common.pbenum.dart';
+
 class GenderSelectionPage extends StatelessWidget {
-  const GenderSelectionPage({super.key});
+  final AddInfoUserBloc bloc;
+  const GenderSelectionPage({super.key, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarCommon(
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4),
-          child: Stack(
-            children: [
-              Container(
-                height: 4,
-                width: double.infinity,
-                color: Colors.grey[300],
-              ),
-              Container(
-                height: 4,
-                width: MediaQuery.of(context).size.width * 4 / 5,
-                color: Colors.pinkAccent,
-              ),
-            ],
+    return BlocProvider.value(
+      value: bloc,
+      child: Scaffold(
+        appBar: AppBarCommon(
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(4),
+            child: Stack(
+              children: [
+                Container(
+                  height: 4,
+                  width: double.infinity,
+                  color: Colors.grey[300],
+                ),
+                Container(
+                  height: 4,
+                  width: MediaQuery.of(context).size.width * 3 / 5,
+                  color: Colors.pinkAccent,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
-          child: BlocBuilder<AddInfoUserBloc, AddInfoUserState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'I am a',
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                  ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+            child: BlocBuilder<AddInfoUserBloc, AddInfoUserState>(
+              builder: (context, state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'I am a',
+                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
 
-                  const SizedBox(height: 32),
-                  // Gender buttons
-                  _SelectGenderWidget(
-                    gender: AddInfoUserRequest_Gender.MALE,
-                    isSelected:
-                        state.data.addInfoUserRequest.gender.name ==
-                        AddInfoUserRequest_Gender.MALE.name,
+                    const SizedBox(height: 32),
+                    // Gender buttons
+                    _SelectGenderWidget(
+                      gender: Gender.MALE,
+                      isSelected:
+                          state.data.addInfoUserRequest.gender.name ==
+                          Gender.MALE.name,
 
-                    onTap: () {
-                      context.read<AddInfoUserBloc>().add(
-                        AddInfoUserEvent.changeRequest(
-                          request: AddInfoUserRequest(
-                            gender: AddInfoUserRequest_Gender.MALE,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBoxCommon.height16,
-                  _SelectGenderWidget(
-                    gender: AddInfoUserRequest_Gender.FEMALE,
-                    isSelected:
-                        state.data.addInfoUserRequest.gender.name ==
-                        AddInfoUserRequest_Gender.FEMALE.name,
-                    onTap: () {
-                      context.read<AddInfoUserBloc>().add(
-                        AddInfoUserEvent.changeRequest(
-                          request: AddInfoUserRequest(
-                            gender: AddInfoUserRequest_Gender.FEMALE,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBoxCommon.height16,
-                  _SelectGenderWidget(
-                    gender: AddInfoUserRequest_Gender.OTHER,
-                    isSelected:
-                        state.data.addInfoUserRequest.gender.name ==
-                        AddInfoUserRequest_Gender.OTHER.name,
-                    onTap: () {
-                      context.read<AddInfoUserBloc>().add(
-                        AddInfoUserEvent.changeRequest(
-                          request: AddInfoUserRequest(
-                            gender: AddInfoUserRequest_Gender.OTHER,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const Spacer(),
-
-                  Row(
-                    children: [
-                      Checkbox(
-                        value:
-                            state.data.addInfoUserRequest.showGenderOnProfile,
-                        onChanged: (val) {
-                          context.read<AddInfoUserBloc>().add(
-                            AddInfoUserEvent.changeRequest(
-                              request: AddInfoUserRequest(
-                                showGenderOnProfile: val ?? false,
-                              ),
+                      onTap: () {
+                        context.read<AddInfoUserBloc>().add(
+                          AddInfoUserEvent.changeRequest(
+                            request: AddInfoUserRequest(
+                              gender: Gender.MALE,
                             ),
-                          );
-                        },
-                      ),
-                      const Expanded(
-                        child: Text('Show my gender on my profile'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBoxCommon.height16,
+                    _SelectGenderWidget(
+                      gender: Gender.FEMALE,
+                      isSelected:
+                          state.data.addInfoUserRequest.gender.name ==
+                          Gender.FEMALE.name,
+                      onTap: () {
+                        context.read<AddInfoUserBloc>().add(
+                          AddInfoUserEvent.changeRequest(
+                            request: AddInfoUserRequest(
+                              gender: Gender.FEMALE,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBoxCommon.height16,
+                    _SelectGenderWidget(
+                      gender: Gender.OTHER,
+                      isSelected:
+                          state.data.addInfoUserRequest.gender.name ==
+                          Gender.OTHER.name,
+                      onTap: () {
+                        context.read<AddInfoUserBloc>().add(
+                          AddInfoUserEvent.changeRequest(
+                            request: AddInfoUserRequest(
+                              gender: Gender.OTHER,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const Spacer(),
 
-                  ButtonCommon(
-                    buttonType: ButtonType.gradient,
-                    buttonColor:
-                        state.data.addInfoUserRequest.gender ==
-                                AddInfoUserRequest_Gender.UNSPECIFIED
-                            ? Colors.grey
-                            : ThemeColor.E94057,
-                    borderRadius: 12,
-                    height: 56,
-                    maxWidth: double.infinity,
-                    onTapButton: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder:
-                              (context) => const InterestsSelectionScreen(),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value:
+                              state.data.addInfoUserRequest.showGenderOnProfile,
+                          onChanged: (val) {
+                            context.read<AddInfoUserBloc>().add(
+                              AddInfoUserEvent.changeRequest(
+                                request: AddInfoUserRequest(
+                                  showGenderOnProfile: val ?? false,
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                    titleButton: 'Continue',
-                    paddingHorizontal: 16,
-                  ),
-                ],
-              );
-            },
+                        const Expanded(
+                          child: Text('Show my gender on my profile'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
+                    ButtonCommon(
+                      buttonType: ButtonType.gradient,
+                      buttonColor:
+                          state.data.addInfoUserRequest.gender ==
+                                  Gender.UNSPECIFIED
+                              ? Colors.grey
+                              : ThemeColor.E94057,
+                      borderRadius: 12,
+                      height: 56,
+                      maxWidth: double.infinity,
+                      onTapButton: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (context) => const InterestsSelectionScreen(),
+                          ),
+                        );
+                      },
+                      titleButton: 'Continue',
+                      paddingHorizontal: 16,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -159,7 +165,7 @@ class _SelectGenderWidget extends StatelessWidget {
   });
 
   final Function() onTap;
-  final AddInfoUserRequest_Gender gender;
+  final Gender gender;
   final bool isSelected;
 
   @override

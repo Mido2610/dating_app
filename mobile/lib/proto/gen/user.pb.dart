@@ -14,18 +14,16 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'auth.pb.dart' as $0;
-import 'user.pbenum.dart';
+import 'common.pbenum.dart' as $1;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
-
-export 'user.pbenum.dart';
 
 class AddInfoUserRequest extends $pb.GeneratedMessage {
   factory AddInfoUserRequest({
     $core.String? userName,
     $core.String? birthday,
-    AddInfoUserRequest_Gender? gender,
-    $core.Iterable<$core.String>? interests,
+    $1.Gender? gender,
+    $core.Iterable<$1.Interest>? interests,
     $core.Iterable<$core.String>? photos,
     $core.bool? showGenderOnProfile,
   }) {
@@ -57,8 +55,8 @@ class AddInfoUserRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AddInfoUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'user'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userName')
     ..aOS(2, _omitFieldNames ? '' : 'birthday')
-    ..e<AddInfoUserRequest_Gender>(3, _omitFieldNames ? '' : 'gender', $pb.PbFieldType.OE, defaultOrMaker: AddInfoUserRequest_Gender.UNSPECIFIED, valueOf: AddInfoUserRequest_Gender.valueOf, enumValues: AddInfoUserRequest_Gender.values)
-    ..pPS(4, _omitFieldNames ? '' : 'interests')
+    ..e<$1.Gender>(3, _omitFieldNames ? '' : 'gender', $pb.PbFieldType.OE, defaultOrMaker: $1.Gender.UNSPECIFIED, valueOf: $1.Gender.valueOf, enumValues: $1.Gender.values)
+    ..pc<$1.Interest>(4, _omitFieldNames ? '' : 'interests', $pb.PbFieldType.KE, valueOf: $1.Interest.valueOf, enumValues: $1.Interest.values, defaultEnumValue: $1.Interest.INTEREST_UNSPECIFIED)
     ..pPS(5, _omitFieldNames ? '' : 'photos')
     ..aOB(6, _omitFieldNames ? '' : 'showGenderOnProfile')
     ..hasRequiredFields = false
@@ -104,16 +102,16 @@ class AddInfoUserRequest extends $pb.GeneratedMessage {
   void clearBirthday() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  AddInfoUserRequest_Gender get gender => $_getN(2);
+  $1.Gender get gender => $_getN(2);
   @$pb.TagNumber(3)
-  set gender(AddInfoUserRequest_Gender v) { $_setField(3, v); }
+  set gender($1.Gender v) { $_setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasGender() => $_has(2);
   @$pb.TagNumber(3)
   void clearGender() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $pb.PbList<$core.String> get interests => $_getList(3);
+  $pb.PbList<$1.Interest> get interests => $_getList(3);
 
   @$pb.TagNumber(5)
   $pb.PbList<$core.String> get photos => $_getList(4);

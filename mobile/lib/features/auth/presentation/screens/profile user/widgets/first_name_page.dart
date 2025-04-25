@@ -14,38 +14,68 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-class FirstNamePage extends StatelessWidget with CustomToast {
-  FirstNamePage({super.key});
+class FirstNamePage extends StatelessWidget {
+  const FirstNamePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarCommon(
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4),
-          child: Stack(
-            children: [
-              Container(
-                height: 4,
-                width: double.infinity,
-                color: Colors.grey[300],
+    return BlocProvider(
+      create: (_) => AddInfoUserBloc(),
+      child: FirstNameContent(),
+    );
+  }
+}
+
+class FirstNameContent extends StatelessWidget with CustomToast {
+  FirstNameContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      child: BlocListener<AddInfoUserBloc, AddInfoUserState>(
+        listener: (context, state) {
+          state.maybeWhen(
+            success: (data, message) {
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
+            },
+            error: (data, message) {
+              showToastTop(
+                context,
+                message: message,
+                toastType: ToastType.warning,
+              );
+            },
+            orElse: () {},
+          );
+        },
+        child: Scaffold(
+          appBar: AppBarCommon(
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(4),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 4,
+                    width: double.infinity,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 4,
+                    width: MediaQuery.of(context).size.width * 1 / 5,
+                    color: Colors.pinkAccent,
+                  ),
+                ],
               ),
-              Container(
-                height: 4,
-                width: MediaQuery.of(context).size.width * 1 / 5,
-                color: Colors.pinkAccent,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: BlocBuilder<AddInfoUserBloc, AddInfoUserState>(
-            builder: (context, state) {
-              return state.maybeMap(
-                orElse: () {
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: BlocBuilder<AddInfoUserBloc, AddInfoUserState>(
+                builder: (context, state) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -95,7 +125,12 @@ class FirstNamePage extends StatelessWidget with CustomToast {
                             );
                             return;
                           }
-                          Navigator.of(context).pushNamed(Routes.BIRTHDAY);
+
+                          Get.to(
+                            () => SelectUserBirthDayPage(
+                              bloc: context.read<AddInfoUserBloc>(),
+                            ),
+                          );
                         },
                         child: Container(
                           width: double.infinity,
@@ -122,8 +157,8 @@ class FirstNamePage extends StatelessWidget with CustomToast {
                     ],
                   );
                 },
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),

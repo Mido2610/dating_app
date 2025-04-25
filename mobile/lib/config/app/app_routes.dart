@@ -4,7 +4,6 @@ import 'package:dating_app/features/auth/presentation/screens/profile%20user/wid
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/select_gender.dart';
 import 'package:dating_app/features/auth/presentation/screens/splash/spash_page.dart';
 import 'package:dating_app/features/auth/presentation/screens/welcome/welcome_screen.dart';
-import 'package:dating_app/features/auth/presentation/screens/profile user/add_info_user_wrapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
@@ -20,10 +19,7 @@ class AppRoutes {
       page: () => const SplashPage(),
       middlewares: [if (kIsWeb) EnsureNotAuthedMiddleware()],
     ),
-    
-    GetPage(
-      name: _Paths.addInfo,
-      page: () => const AddInfoWrapper(),
-    ),
+
+    GetPage(name: _Paths.addInfo, page: () => FirstNamePage()),
   ];
 }
