@@ -1,4 +1,4 @@
-import 'package:dating_app/core/di/inection.dart';
+import 'package:dating_app/core/di/injection.dart';
 import 'package:dating_app/services/local_storage.dart';
 import 'package:intl/intl.dart';
 

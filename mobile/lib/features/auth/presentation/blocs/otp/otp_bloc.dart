@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../../config/app/logger.dart';
-import '../../../../../core/di/inection.dart';
+import '../../../../../core/di/injection.dart';
 
 part 'otp_event.dart';
 part 'otp_state.dart';

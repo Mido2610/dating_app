@@ -7,4 +7,7 @@ class AddInfoUserEvent with _$AddInfoUserEvent {
   }) = _ChangeRequestEvent;
 
   const factory AddInfoUserEvent.addInfoUser() = _AddInfoUserEvent;
+
+  const factory AddInfoUserEvent.addImage({required ImageSource source}) =
+      _AddImageEvent;
 }

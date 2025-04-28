@@ -38,7 +38,9 @@ class _InterestsSelectionScreenState extends State<InterestsSelectionScreen> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const AddPhotoToProfilePage(),
+                    builder: (context) =>  AddPhotoToProfilePage(
+                      bloc: widget.bloc,
+                    ),
                   ),
                 );
               },
@@ -166,8 +168,9 @@ class _InterestsSelectionScreenState extends State<InterestsSelectionScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder:
-                                          (context) =>
-                                              const AddPhotoToProfilePage(),
+                                          (context) => AddPhotoToProfilePage(
+                                            bloc: widget.bloc,
+                                          ),
                                     ),
                                   );
                                 }

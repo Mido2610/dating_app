@@ -1,5 +1,5 @@
 import 'package:dating_app/config/app/app_routes.dart';
-import 'package:dating_app/core/di/inection.dart';
+import 'package:dating_app/core/di/injection.dart';
 import 'package:dating_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

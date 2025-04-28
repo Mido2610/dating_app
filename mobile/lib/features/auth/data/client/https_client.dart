@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:dating_app/core/di/inection.dart';
+import 'package:dating_app/core/di/injection.dart';
 import 'package:dating_app/core/utils/platform.dart';
 import 'package:dating_app/services/user_service.dart';
 import 'package:dio/dio.dart';
@@ -10,7 +10,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 class HttpsClient {
   late Dio dio;
 
-  String get _baseUrl {
+  String get baseUrl {
     if (kDebugMode) {
       return 'http://localhost:3000'; // Base URL cho môi trường phát triển
     }
@@ -56,7 +56,7 @@ class HttpsClient {
     Map<String, dynamic>? headers,
     Map<String, String> path = const {},
   }) async {
-    String url = _baseUrl + endPoint;
+    String url = baseUrl + endPoint;
     path.forEach((key, value) {
       url = url.replaceFirst('{$key}', value);
     });
@@ -88,7 +88,7 @@ class HttpsClient {
     Map<String, dynamic> body = const {},
     Map<String, String> path = const {},
   }) async {
-    String url = _baseUrl + endPoint;
+    String url = baseUrl + endPoint;
     path.forEach((key, value) {
       url = url.replaceFirst('{$key}', value);
     });
@@ -105,7 +105,7 @@ class HttpsClient {
     Map<String, dynamic> body = const {},
     Map<String, String> path = const {},
   }) async {
-    String url = _baseUrl + endPoint;
+    String url = baseUrl + endPoint;
     path.forEach((key, value) {
       url = url.replaceFirst('{$key}', value);
     });
@@ -118,7 +118,7 @@ class HttpsClient {
     Map<String, dynamic> body = const {},
     Map<String, String> path = const {},
   }) async {
-    String url = _baseUrl + endPoint;
+    String url = baseUrl + endPoint;
     path.forEach((key, value) {
       url = url.replaceFirst('{$key}', value);
     });
@@ -131,7 +131,7 @@ class HttpsClient {
     Map<String, dynamic> body = const {},
     Map<String, String> path = const {},
   }) async {
-    String url = _baseUrl + endPoint;
+    String url = baseUrl + endPoint;
     path.forEach((key, value) {
       url = url.replaceFirst('{$key}', value);
     });
@@ -147,8 +147,8 @@ class HttpsClient {
   setAppHeader() {
     dio.options.headers['appid'] =
         'mmenu-admin.${getIt<Platform>().currentPlatform.getPlatformString()}.${getIt<PackageInfo>().version}';
-    if (_baseUrl.isNotEmpty) {
-      dio.options.headers['baseUrl'] = _baseUrl;
+    if (baseUrl.isNotEmpty) {
+      dio.options.headers['baseUrl'] = baseUrl;
     }
     dio.options.followRedirects = true;
   }

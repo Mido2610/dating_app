@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dating_app/core/di/inection.dart';
+import 'package:dating_app/core/di/injection.dart';
 import 'package:dating_app/core/utils/api_error.dart';
 import 'package:dating_app/features/auth/data/client/https_client.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';

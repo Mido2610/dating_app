@@ -1,4 +1,4 @@
-import 'package:dating_app/core/di/inection.dart';
+import 'package:dating_app/core/di/injection.dart';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/deboucer.dart';
 import 'package:dating_app/core/utils/styles.dart';

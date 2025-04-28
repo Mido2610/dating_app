@@ -7,27 +7,11 @@
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
-import 'package:flutter/widgets.dart';
-
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// Directory path: assets/images/common
-  $AssetsImagesCommonGen get common => const $AssetsImagesCommonGen();
-
   /// Directory path: assets/images/svg
   $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
-}
-
-class $AssetsImagesCommonGen {
-  const $AssetsImagesCommonGen();
-
-  /// File path: assets/images/common/image_not_found.png
-  AssetGenImage get imageNotFound =>
-      const AssetGenImage('assets/images/common/image_not_found.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [imageNotFound];
 }
 
 class $AssetsImagesSvgGen {
@@ -36,85 +20,21 @@ class $AssetsImagesSvgGen {
   /// File path: assets/images/svg/calendar.svg
   String get calendar => 'assets/images/svg/calendar.svg';
 
+  /// File path: assets/images/svg/image-not-found.svg
+  String get imageNotFound => 'assets/images/svg/image-not-found.svg';
+
+  /// File path: assets/images/svg/mochi-logo.svg
+  String get mochiLogo => 'assets/images/svg/mochi-logo.svg';
+
   /// File path: assets/images/svg/trademark.svg
   String get trademark => 'assets/images/svg/trademark.svg';
 
   /// List of all assets
-  List<String> get values => [calendar, trademark];
+  List<String> get values => [calendar, imageNotFound, mochiLogo, trademark];
 }
 
 class Assets {
   const Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
-}
-
-class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
-
-  final String _assetName;
-
-  final Size? size;
-  final Set<String> flavors;
-
-  Image image({
-    Key? key,
-    AssetBundle? bundle,
-    ImageFrameBuilder? frameBuilder,
-    ImageErrorWidgetBuilder? errorBuilder,
-    String? semanticLabel,
-    bool excludeFromSemantics = false,
-    double? scale,
-    double? width,
-    double? height,
-    Color? color,
-    Animation<double>? opacity,
-    BlendMode? colorBlendMode,
-    BoxFit? fit,
-    AlignmentGeometry alignment = Alignment.center,
-    ImageRepeat repeat = ImageRepeat.noRepeat,
-    Rect? centerSlice,
-    bool matchTextDirection = false,
-    bool gaplessPlayback = true,
-    bool isAntiAlias = false,
-    String? package,
-    FilterQuality filterQuality = FilterQuality.medium,
-    int? cacheWidth,
-    int? cacheHeight,
-  }) {
-    return Image.asset(
-      _assetName,
-      key: key,
-      bundle: bundle,
-      frameBuilder: frameBuilder,
-      errorBuilder: errorBuilder,
-      semanticLabel: semanticLabel,
-      excludeFromSemantics: excludeFromSemantics,
-      scale: scale,
-      width: width,
-      height: height,
-      color: color,
-      opacity: opacity,
-      colorBlendMode: colorBlendMode,
-      fit: fit,
-      alignment: alignment,
-      repeat: repeat,
-      centerSlice: centerSlice,
-      matchTextDirection: matchTextDirection,
-      gaplessPlayback: gaplessPlayback,
-      isAntiAlias: isAntiAlias,
-      package: package,
-      filterQuality: filterQuality,
-      cacheWidth: cacheWidth,
-      cacheHeight: cacheHeight,
-    );
-  }
-
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
-  }
-
-  String get path => _assetName;
-
-  String get keyName => _assetName;
 }

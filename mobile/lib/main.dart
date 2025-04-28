@@ -13,7 +13,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'config/app/logger.dart';
-import 'core/di/inection.dart';
+import 'core/di/injection.dart';
 import 'features/auth/presentation/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 

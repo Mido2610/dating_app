@@ -3,6 +3,7 @@ import 'package:dating_app/features/auth/data/repository/i_user_repository.dart'
 import 'package:dating_app/services/local_storage.dart';
 import 'package:dating_app/services/user_service.dart';
 import 'package:dating_app/widgets/button_common.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -17,6 +18,9 @@ Future<void> configureDependencies() async {
   final localStorage = await LocalStorage.init();
   getIt.registerLazySingleton<LocalStorage>(() => localStorage);
 
+  getIt.registerLazySingleton<Dio>(() => Dio());
+
+
   // Initialize and register PackageInfo
   final packageInfo = await PackageInfo.fromPlatform();
   getIt.registerLazySingleton<PackageInfo>(() => packageInfo);
@@ -26,6 +30,7 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<Platform>(() => Platform(isWeb: kIsWeb));
   getIt.registerLazySingleton<HttpsClient>(() => HttpsClient());
   getIt.registerLazySingleton<UserService>(() => UserService());
+
 
   getIt.registerLazySingleton<ButtonManagement>(() => ButtonManagement(0));
 }
