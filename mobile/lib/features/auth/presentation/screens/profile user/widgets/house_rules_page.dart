@@ -1,6 +1,7 @@
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/image_resource.dart';
 import 'package:dating_app/core/utils/string_extension.dart';
+import 'package:dating_app/widgets/appbar_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,14 +11,7 @@ class HouseRulesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.grey),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      appBar: AppBarCommon(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
