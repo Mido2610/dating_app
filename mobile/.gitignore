@@ -117,6 +117,7 @@ backend/.env
 # Firebase related
 google-services.json
 GoogleService-Info.plist
+firebase.json
 
 # Flutter version manager related
 .fvm/
