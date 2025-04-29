@@ -3,8 +3,15 @@ const Joi = require('joi');
 const registerUser = {
   body: Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-    userName: Joi.string().min(3).max(30).required()
+    password: Joi.string().min(8).required(),
+    name: Joi.string()
+      .min(3)
+      .max(30)
+      .pattern(/^[a-zA-Z0-9_]+$/)
+      .required()
+      .messages({
+        'string.pattern.base': 'Username can only contain letters, numbers and underscores'
+      })
   })
 };
 

@@ -3,106 +3,145 @@ const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const User = require("../models/user.model");
 const Auth = require("../models/auth.model");
+const nodemailer = require("nodemailer");
 const { config } = require("../common/configs/env.config");
 const { throwBadRequest } = require("../common/utils/errorHandler.util");
 const { getMessageByLocale } = require("../common/utils/locale.util");
 const { generateOTPCode } = require("../common/utils/secretGenerator");
 
 const register = async (requestData) => {
-  const { email, password, userName } = _.pick(requestData, ['email', 'password', 'userName']);
+  const { email, password, name } = requestData;
 
   // Check if email exists
-  const existingAuth = await Auth.findOne({ email });
-  throwBadRequest(!_.isNil(existingAuth), "User with this email already exists");
+  const existingEmail = await User.findOne({ email });
+  if (existingEmail) {
+    throwBadRequest(true, "User with this email already exists");
+  }
 
   // Check if username exists
-  const existingUser = await User.findOne({ name: userName });
-  throwBadRequest(!_.isNil(existingUser), "Username already taken");
+  const existingUsername = await User.findOne({ name });
+  if (existingUsername) {
+    throwBadRequest(true, "Username already taken");
+  }
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
+
+  // Generate OTP
   const otpCode = generateOTPCode();
 
-  // Create user first
+  // Create user with emailVerified = false
   const user = await User.create({
-    name: userName
-  });
-
-  // Then create auth record
-  await Auth.create({
-    userId: user._id,
     email,
     password: hashedPassword,
+    name,
     emailVerified: false,
     verificationCode: otpCode,
-    verificationCodeExpires: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
+    verificationCodeExpires: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
   });
 
   // Generate JWT token
   const token = jwt.sign(
-    { userId: user._id, email },
+    { id: user._id, email: user.email },
     config.jwt.secret,
     { expiresIn: "30d" }
   );
 
-  return { 
-    user: user.toJSON(),
-    token 
-  };
-};
+  // Send verification email asynchronously
+  try {
+    const transporter = nodemailer.createTransport({
+      service: config.email.service,
+      auth: {
+        user: config.email.user,
+        pass: config.email.password,
+      },
+    });
 
-const verifyEmail = async (userId, otpCode) => {
-  const auth = await Auth.findOne({ userId })
-    .select('+verificationCode +verificationCodeExpires');
-  
-  throwBadRequest(
-    _.isNil(auth) || 
-    auth.verificationCode !== otpCode || 
-    Date.now() > auth.verificationCodeExpires,
-    getMessageByLocale({ key: "invalidOTP" })
-  );
+    transporter
+      .sendMail({
+        from: config.email.from,
+        to: email,
+        subject: "Email Verification OTP",
+        text: `Welcome to our platform! Your verification code is: ${otpCode}`,
+        html: `
+        <h1>Welcome to our platform!</h1>
+        <p>Your verification code is: <strong>${otpCode}</strong></p>
+        <p>This code will expire in 5 minutes.</p>
+      `,
+      })
+      .catch((error) => {
+        console.error("Failed to send verification email:", error);
+      });
+  } catch (error) {
+    console.error("Email service configuration error:", error);
+  }
 
-  await Auth.findOneAndUpdate(
-    { userId },
-    {
-      $set: { emailVerified: true },
-      $unset: { verificationCode: 1, verificationCodeExpires: 1 }
-    }
-  );
-
-  const user = await User.findById(userId);
-
+  // Return response immediately
   return {
-    success: true,
-    message: getMessageByLocale({ key: "emailVerificationSuccess" }),
-    user: user.toJSON()
+    user: _.pick(user, ["_id", "email", "name", "avatar", "emailVerified"]),
+    token,
   };
 };
 
 const login = async (email, password) => {
-  const auth = await Auth.findOne({ email }).select('+password');
-  throwBadRequest(_.isNil(auth), getMessageByLocale({ key: "invalidCredentials" }));
+  const auth = await Auth.findOne({ email }).select("+password");
+  throwBadRequest(
+    _.isNil(auth),
+    getMessageByLocale({ key: "invalidCredentials" })
+  );
 
   const isPasswordValid = await bcrypt.compare(password, auth.password);
-  throwBadRequest(!isPasswordValid, getMessageByLocale({ key: "invalidCredentials" }));
+  throwBadRequest(
+    !isPasswordValid,
+    getMessageByLocale({ key: "invalidCredentials" })
+  );
 
   // Update last login
   await Auth.findByIdAndUpdate(auth._id, {
-    $set: { lastLogin: new Date() }
+    $set: { lastLogin: new Date() },
   });
 
   const user = await User.findById(auth.userId);
   throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
 
-  const token = jwt.sign(
-    { userId: user._id, email },
-    config.jwt.secret,
-    { expiresIn: "30d" }
-  );
+  const token = jwt.sign({ userId: user._id, email }, config.jwt.secret, {
+    expiresIn: "30d",
+  });
 
   return {
     user: user.toJSON(),
-    token
+    token,
+  };
+};
+
+const verifyEmail = async (userId, otpCode) => {
+  // Get verification details
+  const userWithVerification = await User.findById(userId).select(
+    "+verificationCode +verificationCodeExpires"
+  );
+
+  // Check if OTP is valid and not expired
+  if (
+    userWithVerification.verificationCode !== otpCode ||
+    Date.now() > userWithVerification.verificationCodeExpires
+  ) {
+    throwBadRequest(true, getMessageByLocale({ key: "invalidOTP" }));
+  }
+
+  // Update user as verified
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      $set: { emailVerified: true },
+      $unset: { verificationCode: 1, verificationCodeExpires: 1 },
+    },
+    { new: true }
+  ).select("-password");
+
+  return {
+    success: true,
+    message: getMessageByLocale({ key: "emailVerificationSuccess" }),
+    user: updatedUser,
   };
 };
 
