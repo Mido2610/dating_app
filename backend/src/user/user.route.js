@@ -8,9 +8,8 @@ const router = express.Router();
 
 // Upload images route
 router.post(
-  '/upload-images',
-  authenticate,
-  userController.uploadConfig.array('photos', 5),
+  '/upload-image',
+  userController.uploadConfig.array('photo', 5),
   userController.uploadUserImages
 );
 
