@@ -1,9 +1,13 @@
+import 'package:dating_app/core/utils/colors.dart';
+import 'package:dating_app/core/utils/custom_toast.dart';
+import 'package:dating_app/core/utils/size.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/enum/interest_enum.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/add_photo_page.dart';
 import 'package:dating_app/proto/gen/common.pbenum.dart';
 import 'package:dating_app/proto/gen/user.pb.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
+import 'package:dating_app/widgets/button_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/utils.dart';
@@ -18,7 +22,8 @@ class InterestsSelectionScreen extends StatefulWidget {
       _InterestsSelectionScreenState();
 }
 
-class _InterestsSelectionScreenState extends State<InterestsSelectionScreen> {
+class _InterestsSelectionScreenState extends State<InterestsSelectionScreen>
+    with CustomToast {
   final Set<String> selectedInterests = {};
 
   final List<String> interests =
@@ -38,9 +43,8 @@ class _InterestsSelectionScreenState extends State<InterestsSelectionScreen> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>  AddPhotoToProfilePage(
-                      bloc: widget.bloc,
-                    ),
+                    builder:
+                        (context) => AddPhotoToProfilePage(bloc: widget.bloc),
                   ),
                 );
               },
@@ -156,38 +160,35 @@ class _InterestsSelectionScreenState extends State<InterestsSelectionScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBoxCommon.height24,
 
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed:
-                            selectedInterests.length >= 2
-                                ? () {
-                                  // Handle continue action
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => AddPhotoToProfilePage(
-                                            bloc: widget.bloc,
-                                          ),
-                                    ),
-                                  );
-                                }
-                                : null,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor:
-                              selectedInterests.length >= 2
-                                  ? Colors.pinkAccent
-                                  : Colors.grey.shade300,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                    ButtonCommon(
+                      buttonType: ButtonType.gradient,
+                      buttonColor: selectedInterests.length < 2
+                          ? Colors.grey
+                          : ThemeColor.E94057,
+                      borderRadius: 12,
+                      height: 56,
+                      paddingHorizontal: 16,
+                      maxWidth: double.infinity,
+                      onTapButton: () {
+                        if (selectedInterests.length < 2) {
+                          showToastTop(
+                            context,
+                            message: "Please select at least 2 interests",
+                            toastType: ToastType.warning,
+                          );
+                          return;
+                        }
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    AddPhotoToProfilePage(bloc: widget.bloc),
                           ),
-                        ),
-                        child: Text("CONTINUE ${selectedInterests.length}/5"),
-                      ),
+                        );
+                      },
+                      titleButton: "CONTINUE ${selectedInterests.length}/5",
                     ),
                   ],
                 );

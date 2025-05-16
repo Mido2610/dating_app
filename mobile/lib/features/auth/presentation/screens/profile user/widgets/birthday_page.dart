@@ -4,6 +4,7 @@ import 'package:dating_app/config/app/app_routes.dart';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/custom_toast.dart';
 import 'package:dating_app/core/utils/date_time_format.dart';
+import 'package:dating_app/core/utils/size.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/add_photo_page.dart';
@@ -63,7 +64,7 @@ class SelectUserBirthDayPage extends StatelessWidget with CustomToast {
                       "My birthday day is",
                       style: ThemeTextStyle.bold32,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBoxCommon.height20,
                     DatePickerCustom(
                       dateTime: DateTimeFormatUtils.yyyyMMddToDateTime(
                         birthday,

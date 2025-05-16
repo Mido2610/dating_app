@@ -15,7 +15,7 @@ class ThemeColor {
   static const transparent = Colors.transparent;
   static const grey = Colors.grey;
   static const redSolid = Color(0xffFF303C);
-
+  static const pinkAccent = Color(0xFFF50057);
   // gradient button
   static const gradientTop = Color(0xffF9555F);
   static const gradientBottom = Color(0xffE30A0D);

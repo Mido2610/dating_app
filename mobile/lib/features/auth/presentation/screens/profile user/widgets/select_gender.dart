@@ -54,7 +54,7 @@ class GenderSelectionPage extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 32),
+                    SizedBoxCommon.height32,
                     // Gender buttons
                     _SelectGenderWidget(
                       gender: Gender.MALE,
@@ -120,7 +120,7 @@ class GenderSelectionPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBoxCommon.height8,
 
                     ButtonCommon(
                       buttonType: ButtonType.gradient,

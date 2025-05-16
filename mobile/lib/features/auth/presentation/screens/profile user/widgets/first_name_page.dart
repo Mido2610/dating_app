@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:dating_app/config/app/app_routes.dart';
 import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/custom_toast.dart';
+import 'package:dating_app/core/utils/size.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/birthday_page.dart';
 import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:dating_app/proto/gen/user.pb.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
+import 'package:dating_app/widgets/button_common.dart';
 import 'package:dating_app/widgets/text_field_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -106,7 +108,7 @@ class FirstNameContent extends StatelessWidget with CustomToast {
                           },
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBoxCommon.height12,
                       const Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -115,45 +117,29 @@ class FirstNameContent extends StatelessWidget with CustomToast {
                         ),
                       ),
                       const Spacer(),
-                      GestureDetector(
-                        onTap: () {
+                      ButtonCommon(
+                        buttonType: ButtonType.gradient,
+                        buttonColor: ThemeColor.E94057,
+                        borderRadius: 12,
+                        height: 56,
+                        maxWidth: double.infinity,
+                        onTapButton: () {
                           if (state.data.addInfoUserRequest.userName.isEmpty) {
                             showToastTop(
                               context,
                               message: "Please enter your first name",
                               toastType: ToastType.warning,
                             );
-                            return;
                           }
-
                           Get.to(
                             () => SelectUserBirthDayPage(
                               bloc: context.read<AddInfoUserBloc>(),
                             ),
                           );
                         },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFFF5B5B), Color(0xFFFF7B7B)],
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "CONTINUE",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                          ),
-                        ),
+                        titleButton: "CONTINUE",
                       ),
-                      const SizedBox(height: 20),
+                      SizedBoxCommon.height20,
                     ],
                   );
                 },
