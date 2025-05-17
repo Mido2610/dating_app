@@ -2,25 +2,8 @@ syntax = "proto3";
 
 package auth;
 
-// User messages
-message User {
-  string id = 1;
-  string email = 2;
-  string name = 3;
-  string avatar = 4;
-  string bio = 5;
-  string status = 6;
-  bool emailVerified = 7;
-  string createdAt = 8;
-  string updatedAt = 9;
-  repeated string interests = 10;
-  repeated string photos = 11;
-  string gender = 12;
-  string birthday = 13;
-  string user_name = 14;
-  //địa chỉ
-  string address = 15;
-}
+import "user.proto";
+
 
 message AccessToken {
   string token = 1;
@@ -36,7 +19,7 @@ message LoginRequest {
 message LoginResponse {
   int32 code = 1;
   string message = 2;
-  User user = 3;
+  user.User user = 3;
   AccessToken access_token = 4;
 }
 
@@ -49,7 +32,7 @@ message RegisterRequest {
 message RegisterResponse {
   int32 code = 1;
   string message = 2;
-  User user = 3;
+  user.User user = 3;
   string token = 4;
 }
 
@@ -60,6 +43,6 @@ message VerifyEmailOtpRequest {
 message VerifyEmailOtpResponse {
   int32 code = 1;
   string message = 2;
-  User user = 3;
+  user.User user = 3;
 }
 

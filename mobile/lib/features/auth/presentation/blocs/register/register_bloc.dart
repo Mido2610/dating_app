@@ -3,7 +3,7 @@ import 'package:dating_app/core/utils/api_error.dart';
 import 'package:dating_app/core/utils/validate.dart';
 import 'package:dating_app/features/auth/data/client/https_client.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
-import 'package:dating_app/proto/gen/auth.pb.dart';
+import 'package:dating_app/gen/auth.pb.dart';
 import 'package:dating_app/services/local_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

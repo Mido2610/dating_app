@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package user;
+
+import "common.proto";
+
+// Moved from auth.proto
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string avatar = 4;
+  string bio = 5;
+  string status = 6;
+  bool emailVerified = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+  repeated string interests = 10;
+  repeated string photos = 11;
+  string gender = 12;
+  string birthday = 13;
+  string user_name = 14;
+  //địa chỉ
+  string address = 15;
+}
+
+message AddInfoUserRequest {
+  string user_id = 1;
+  string user_name = 2;
+  string birthday = 3;
+  common.Gender gender = 4;
+  optional bool show_gender_on_profile = 5;
+  repeated common.Interest interests = 6;
+  repeated string photos = 7;
+}
+
+message AddInfoUserResponse {
+  int32 code = 1;
+  string message = 2;
+  User user = 3;
+}
+
+message UploadUserImageRespone {
+  repeated string image = 2;
+  int32 code = 3;
+  string message = 4;
+}

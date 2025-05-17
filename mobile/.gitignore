@@ -30,8 +30,10 @@ migrate_working_dir/
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
-.pub/
 /build/
+
+# Generated proto files
+lib/gen/
 
 # Symbolication related
 app.*.symbols

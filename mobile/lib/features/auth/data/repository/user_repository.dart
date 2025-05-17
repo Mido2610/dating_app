@@ -1,5 +1,5 @@
-import 'package:dating_app/proto/gen/auth.pb.dart';
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/gen/auth.pb.dart';
+import 'package:dating_app/gen/user.pb.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class UserRepository {

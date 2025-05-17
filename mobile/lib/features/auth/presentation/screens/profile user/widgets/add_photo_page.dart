@@ -6,7 +6,6 @@ import 'package:dating_app/core/utils/size.dart';
 import 'package:dating_app/core/utils/styles.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/rules_and_regulation_page.dart';
-import 'package:dating_app/proto/gen/user.pb.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
 import 'package:dating_app/widgets/button_common.dart';
 import 'package:dating_app/widgets/photo_source_picker_bottom_sheet.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:protobuf/protobuf.dart';
 
 class AddPhotoToProfilePage extends StatelessWidget {
   final AddInfoUserBloc bloc;

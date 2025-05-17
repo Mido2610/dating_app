@@ -4,32 +4,28 @@ const { throwBadRequest } = require("../common/utils/errorHandler.util");
 const { getMessageByLocale } = require("../common/utils/locale.util");
 
 const addInfoUser = async (userId, userData) => {
-  const sanitizedData = _.pick(userData, [
-    'user_name',
-    'birthday',
-    'gender',
-    'interests',
-    'photos'
-  ]);
+  const { userName, birthday, gender, interests, photos } = userData;
 
-  // Transform data if needed
-  const transformedData = {
-    name: sanitizedData.user_name,
-    birthday: new Date(sanitizedData.birthday),
-    gender: sanitizedData.gender,
-    interests: sanitizedData.interests,
-    photos: sanitizedData.photos
-  };
+  // Find user first to check if it exists
+  const existingUser = await User.findById(userId);
+  throwBadRequest(_.isNil(existingUser), getMessageByLocale({ key: "userNotFound" }));
 
+  // Update user with new information
   const user = await User.findByIdAndUpdate(
     userId,
-    { $set: transformedData },
+    {
+      $set: {
+        name: userName, // Assuming we're updating the name field with userName
+        birthday: new Date(birthday),
+        gender,
+        interests,
+        photos
+      }
+    },
     { new: true }
-  ).select('-password');
+  );
 
-  throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
-
-  return _.omit(user.toJSON(), ['password']);
+  return user.toJSON();
 };
 
 const updateProfile = async (userId, updateData) => {
@@ -49,11 +45,11 @@ const updateProfile = async (userId, updateData) => {
     userId,
     { $set: cleanData },
     { new: true }
-  ).select("-password");
+  );
 
   throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
 
-  return _.omit(user.toJSON(), ['password']);
+  return user.toJSON();
 };
 
 const getAllUsers = async () => {
@@ -84,6 +80,5 @@ const calculateAge = (birthday) => {
 module.exports = {
   addInfoUser,
   updateProfile,
-  addInfoUser,
   getAllUsers,
 };

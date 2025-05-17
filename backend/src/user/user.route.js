@@ -1,30 +1,27 @@
-const express = require('express');
-const { validate } = require('../middlewares/validation.middleware');
-const authenticate = require('../middlewares/authorization.middleware');
-const userController = require('./user.controller');
-const userValidation = require('./user.validation');
+const express = require("express");
+const { validate } = require("../middlewares/validation.middleware");
+const userController = require("./user.controller");
+const userValidation = require("./user.validation");
 
 const router = express.Router();
 
 // Upload images route
 router.post(
-  '/upload-image',
-  userController.uploadConfig.array('photo', 5),
+  "/upload-image",
+  userController.uploadConfig.array("photo", 5),
   userController.uploadUserImages
 );
 
 // Add user info route
 router.post(
-  '/add-info',
-  authenticate,
+  "/:userId/add-info",
   validate(userValidation.addInfoUser),
   userController.addInfoUser
 );
 
 // Update profile route
 router.patch(
-  '/profile',
-  authenticate,
+  "/:userId/profile",
   validate(userValidation.updateProfile),
   userController.updateProfile
 );

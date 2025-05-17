@@ -1,6 +1,6 @@
 import 'package:dating_app/core/di/injection.dart';
-import 'package:dating_app/proto/gen/auth.pb.dart';
 import 'package:dating_app/services/local_storage.dart';
+import 'package:dating_app/gen/user.pb.dart';
 
 class UserService {
   late LocalStorage _localStorage;

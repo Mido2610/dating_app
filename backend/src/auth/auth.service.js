@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const User = require("../models/user.model");
-const Auth = require("../models/auth.model");
 const nodemailer = require("nodemailer");
 const { config } = require("../common/configs/env.config");
 const { throwBadRequest } = require("../common/utils/errorHandler.util");
@@ -12,7 +11,7 @@ const { generateOTPCode } = require("../common/utils/secretGenerator");
 const register = async (requestData) => {
   const { email, password, name } = requestData;
 
-  // Check if email exists
+  // Check if email already exists
   const existingEmail = await User.findOne({ email });
   if (existingEmail) {
     throwBadRequest(true, "User with this email already exists");
@@ -30,11 +29,11 @@ const register = async (requestData) => {
   // Generate OTP
   const otpCode = generateOTPCode();
 
-  // Create user with emailVerified = false
+  // Create user with all information in one document
   const user = await User.create({
     email,
-    password: hashedPassword,
     name,
+    password: hashedPassword,
     emailVerified: false,
     verificationCode: otpCode,
     verificationCodeExpires: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
@@ -42,7 +41,7 @@ const register = async (requestData) => {
 
   // Generate JWT token
   const token = jwt.sign(
-    { id: user._id, email: user.email },
+    { userId: user._id, email: user.email },
     config.jwt.secret,
     { expiresIn: "30d" }
   );
@@ -76,7 +75,7 @@ const register = async (requestData) => {
     console.error("Email service configuration error:", error);
   }
 
-  // Return response immediately
+  // Return response immediately (without password)
   return {
     user: _.pick(user, ["_id", "email", "name", "avatar", "emailVerified"]),
     token,
@@ -84,51 +83,53 @@ const register = async (requestData) => {
 };
 
 const login = async (email, password) => {
-  const auth = await Auth.findOne({ email }).select("+password");
+  // Use select('+password') to include password field which is excluded by default
+  const user = await User.findOne({ email }).select("+password");
   throwBadRequest(
-    _.isNil(auth),
+    _.isNil(user),
     getMessageByLocale({ key: "invalidCredentials" })
   );
 
-  const isPasswordValid = await bcrypt.compare(password, auth.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
   throwBadRequest(
     !isPasswordValid,
     getMessageByLocale({ key: "invalidCredentials" })
   );
 
   // Update last login
-  await Auth.findByIdAndUpdate(auth._id, {
+  await User.findByIdAndUpdate(user._id, {
     $set: { lastLogin: new Date() },
   });
-
-  const user = await User.findById(auth.userId);
-  throwBadRequest(_.isNil(user), getMessageByLocale({ key: "userNotFound" }));
 
   const token = jwt.sign({ userId: user._id, email }, config.jwt.secret, {
     expiresIn: "30d",
   });
 
   return {
-    user: user.toJSON(),
+    user: _.omit(user.toJSON(), ["password", "verificationCode", "verificationCodeExpires"]),
     token,
   };
 };
 
 const verifyEmail = async (userId, otpCode) => {
-  // Get verification details
-  const userWithVerification = await User.findById(userId).select(
+  // Get verification details from User model
+  const user = await User.findById(userId).select(
     "+verificationCode +verificationCodeExpires"
   );
 
+  if (!user) {
+    throwBadRequest(true, getMessageByLocale({ key: "userNotFound" }));
+  }
+
   // Check if OTP is valid and not expired
   if (
-    userWithVerification.verificationCode !== otpCode ||
-    Date.now() > userWithVerification.verificationCodeExpires
+    user.verificationCode !== otpCode ||
+    Date.now() > user.verificationCodeExpires
   ) {
     throwBadRequest(true, getMessageByLocale({ key: "invalidOTP" }));
   }
 
-  // Update user as verified
+  // Update user as verified and remove verification fields
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
@@ -136,7 +137,7 @@ const verifyEmail = async (userId, otpCode) => {
       $unset: { verificationCode: 1, verificationCodeExpires: 1 },
     },
     { new: true }
-  ).select("-password");
+  );
 
   return {
     success: true,

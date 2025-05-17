@@ -2,13 +2,13 @@ import 'package:dating_app/core/utils/colors.dart';
 import 'package:dating_app/core/utils/size.dart';
 import 'package:dating_app/features/auth/presentation/blocs/add_info_user/add_info_user_bloc.dart';
 import 'package:dating_app/features/auth/presentation/screens/profile%20user/widgets/hobby_page.dart';
-import 'package:dating_app/proto/gen/user.pb.dart';
+import 'package:dating_app/gen/common.pbenum.dart';
+import 'package:dating_app/gen/user.pb.dart';
 import 'package:dating_app/widgets/appbar_common.dart';
 import 'package:dating_app/widgets/button_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../proto/gen/common.pbenum.dart';
 
 class GenderSelectionPage extends StatelessWidget {
   final AddInfoUserBloc bloc;

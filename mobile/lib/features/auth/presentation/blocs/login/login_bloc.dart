@@ -4,7 +4,7 @@ import 'package:dating_app/core/di/injection.dart';
 import 'package:dating_app/core/utils/api_error.dart';
 import 'package:dating_app/features/auth/data/client/https_client.dart';
 import 'package:dating_app/features/auth/data/repository/user_repository.dart';
-import 'package:dating_app/proto/gen/auth.pb.dart';
+import 'package:dating_app/gen/auth.pb.dart';
 import 'package:dating_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

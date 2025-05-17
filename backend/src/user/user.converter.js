@@ -1,13 +1,16 @@
 const _ = require('lodash');
 const protobuf = require('protobufjs');
 const appRoot = require(require.resolve('app-root-path'));
+const path = require('path');
 
 let root;
 const init = async () => {
   if (!root) {
+    // Go up one level from backend to find the proto dir
+    const protoDir = path.join(appRoot.toString(), '../proto');
     root = await protobuf.load([
-      `${appRoot}/src/proto/auth.proto`,
-      `${appRoot}/src/proto/user.proto`
+      path.join(protoDir, 'auth.proto'),
+      path.join(protoDir, 'user.proto')
     ]);
   }
 };
@@ -56,13 +59,13 @@ const convertAddInfoUserRequest = async (requestBody) => {
   await init();
   const message = root.lookupType('user.AddInfoUserRequest');
   
-  const payload = _.pick(requestBody, [
-    'userName',
-    'birthday',
-    'gender',
-    'interests',
-    'photos'
-  ]);
+  const payload = {
+    user_name: requestBody.userName,
+    birthday: requestBody.birthday,
+    gender: requestBody.gender,
+    interests: requestBody.interests,
+    photos: requestBody.photos
+  };
 
   const err = message.verify(payload);
   if (err) {
@@ -74,7 +77,7 @@ const convertAddInfoUserRequest = async (requestBody) => {
 
 const convertAddInfoUserResponse = async (code, message, userData) => {
   await init();
-  const messageType = root.lookupType('auth.AddInfoUserResponse');
+  const messageType = root.lookupType('user.AddInfoUserResponse');
   
   // Convert user data to proto format
   const userProto = await convertUserToProto(userData);

@@ -2,10 +2,42 @@ const mongoose = require('mongoose');
 const { toJSON, paginate } = require('../common/plugins/plugin');
 
 const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false // Hidden from query results by default
+  },
   name: {
     type: String,
     required: true,
     trim: true
+  },
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
+  verificationCode: {
+    type: String,
+    select: false
+  },
+  verificationCodeExpires: {
+    type: Date,
+    select: false
+  },
+  lastLogin: {
+    type: Date
+  },
+  accountStatus: {
+    type: String,
+    enum: ['active', 'blocked', 'deleted'],
+    default: 'active'
   },
   avatar: {
     type: String,

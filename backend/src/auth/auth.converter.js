@@ -1,4 +1,5 @@
 const appRoot = require(require.resolve("app-root-path"));
+const path = require("path");
 const httpStatus = require("http-status");
 const protobuf = require("protobufjs");
 const { getMessageByLocale } = require("../common/utils/locale.util");
@@ -7,7 +8,8 @@ const _ = require("lodash");
 let root;
 const init = async () => {
   if (!root) {
-    root = await protobuf.load(`${appRoot}/src/proto/auth.proto`);
+    const protoPath = path.join(appRoot.toString(), '../proto/auth.proto');
+    root = await protobuf.load(protoPath);
   }
 };
 init();

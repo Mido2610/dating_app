@@ -1,4 +1,4 @@
-import 'package:dating_app/proto/gen/common.pbenum.dart';
+import 'package:dating_app/gen/common.pbenum.dart';
 
 extension InterestExtension on Interest {
   Map<Interest, Map<String, String>> get _data => {
