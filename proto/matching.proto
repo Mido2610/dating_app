@@ -2,83 +2,78 @@ syntax = "proto3";
 
 package dating;
 
-// Profile represents a user's dating profile information
+// Hồ sơ người dùng trong ứng dụng
 message Profile {
-  string id = 1;                    // Unique identifier for the profile
-  string name = 2;                  // User's display name
-  int32 age = 3;                    // User's age
-  string bio = 4;                   // User's self-description/biography
-  repeated string photos = 5;       // List of photo URLs
-  string gender = 6;                // User's gender (male/female/other)
-  repeated string interests = 7;    // List of user's interests/hobbies
+  string id = 1;                    // ID duy nhất
+  string name = 2;                  // Tên hiển thị
+  int32 age = 3;                    // Tuổi
+  string bio = 4;                   // Tiểu sử
+  repeated string photos = 5;       // URL ảnh đại diện
+  string gender = 6;                // Giới tính (male/female/other)
+  repeated string interests = 7;    // Sở thích/hobbies
 }
 
-// Possible swipe actions a user can take
+// Các hành động khi vuốt (trái/phải)
 enum SwipeAction {
-  DISLIKE = 0;    // User swipes left to reject
-  LIKE = 1;       // User swipes right to like
+  DISLIKE = 0;    // Vuốt trái (không thích)
+  LIKE = 1;       // Vuốt phải (thích)
 }
 
-// Request to swipe on a profile
+// Yêu cầu vuốt trên một hồ sơ
 message SwipeRequest {
-  string target_profile_id = 1;     // ID of the profile being swiped on
-  SwipeAction action = 2;           // The swipe action (like/dislike)
+  string user_id = 1;               // ID của người dùng hiện tại
+  string target_profile_id = 2;     // ID của hồ sơ bị vuốt
+  SwipeAction action = 3;           // Hành động vuốt (like/dislike)
 }
 
-// Response after swiping on a profile
+// Phản hồi sau khi vuốt
 message SwipeResponse {
-  int32 code = 1;                   // Response status code
-  string message = 2;               // Response message
-  bool is_match = 3;                // True if both users liked each other
-  Match match = 4;                  // Match details if is_match is true
+  bool is_match = 1;                // true nếu hai bên thích nhau
+  Match match = 2;                  // Chi tiết nếu có Match
 }
 
-// Request to get suggested profiles
-message SuggestProfilesRequest {
-  string user_id = 1;               // ID of user requesting suggestions
-  int32 limit = 2;                  // Maximum number of profiles to return
-  repeated string excluded_ids = 3;  // IDs of profiles to exclude from results
+// Yêu cầu lấy danh sách gợi ý
+message GetSuggestedProfilesRequest {
+  string user_id = 1;               // ID của người yêu cầu
+  int32 limit = 2;                  // Số lượng kết quả tối đa
+  repeated string excluded_ids = 3; // Danh sách ID đã vuốt qua
 }
 
-// Response containing suggested profiles
-message SuggestProfilesResponse {
-  int32 code = 1;                   // Response status code
-  string message = 2;               // Response message
-  repeated Profile profiles = 3;     // List of suggested profiles
+// Phản hồi danh sách gợi ý
+message GetSuggestedProfilesResponse {
+  repeated Profile profiles = 1;    // Danh sách hồ sơ gợi ý
 }
 
-// Request to list user's matches
+
+// Yêu cầu lấy danh sách Matches
 message ListMatchesRequest {
-  string user_id = 1;               // ID of user requesting their matches
-  int32 page = 2;                   // Page number for pagination
-  int32 limit = 3;                  // Number of matches per page
+  string user_id = 1;               // ID của người yêu cầu
+  int32 page = 2;                   // Trang số (phân trang)
+  int32 limit = 3;                  // Số lượng kết quả trên mỗi trang
 }
 
-// Represents a match between two users
+// Thông tin về một cặp Match
 message Match {
-  string match_id = 1;              // Unique identifier for the match
-  Profile profile = 2;              // Matched user's profile
-  string matched_at = 3;            // Timestamp when match occurred
-  string last_message = 4;          // Most recent message in conversation
-  string last_message_time = 5;     // Timestamp of last message
+  string match_id = 1;              // ID của Match
+  Profile profile = 2;              // Hồ sơ người đã Match
+  string matched_at = 3;            // Thời gian Match
+  string last_message = 4;          // Tin nhắn gần nhất
+  string last_message_time = 5;     // Thời gian gửi tin nhắn gần nhất
 }
 
-// Response containing list of matches
+// Phản hồi danh sách Matches
 message ListMatchesResponse {
-  int32 code = 1;                   // Response status code
-  string message = 2;               // Response message
-  repeated Match matches = 3;       // List of matches
-  int32 total = 4;                  // Total number of matches
-  bool has_more = 5;                // Whether more matches exist
+  repeated Match matches = 1;       // Danh sách Matches
+  int32 total = 2;                  // Tổng số Matches
+  bool has_more = 3;                // Có thêm kết quả không
 }
 
-// Request to unmatch from a profile
+// Yêu cầu hủy kết nối với người dùng đã Match
 message UnmatchProfileRequest {
-  string match_id = 1;              // ID of match to remove
+  string match_id = 1;              // ID của Match cần hủy
 }
 
-// Response after unmatching
+// Phản hồi sau khi hủy kết nối
 message UnmatchProfileResponse {
-  int32 code = 1;                   // Response status code
-  string message = 2;               // Response message
+  bool success = 1;                 // true nếu hủy thành công
 }
