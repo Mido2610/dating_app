@@ -5,40 +5,52 @@ const matchingController = require('./matching.controller');
 const matchingValidation = require('./matching.validation');
 
 const router = express.Router();
-//end point
-// GET /api/matching/suggestions - Get suggested profiles
-// POST /api/matching/action - Perform like/pass action
-// GET /api/matching/matches - Get user's matches
-// DELETE /api/matching/matches/:matchId - Unmatch with a user
-// All matching routes require authentication
+
+// Tất cả các route matching đều yêu cầu xác thực
 router.use(authenticate);
 
-// Get suggested profiles
+/**
+ * @route GET /api/matching/suggestions
+ * @desc Lấy danh sách hồ sơ gợi ý
+ * @access Private
+ */
 router.get(
   '/suggestions',
   validate(matchingValidation.suggestProfiles),
   matchingController.getSuggestedProfiles
 );
 
-// Perform like/pass action
+/**
+ * @route POST /api/matching/swipe
+ * @desc Thực hiện hành động vuốt (like/dislike)
+ * @access Private
+ */
 router.post(
-  '/action',
-  validate(matchingValidation.performAction),
-  matchingController.performAction
+  '/swipe',
+  validate(matchingValidation.swipe),
+  matchingController.swipe
 );
 
-// Get user's matches
+/**
+ * @route GET /api/matching/matches
+ * @desc Lấy danh sách matches của người dùng
+ * @access Private
+ */
 router.get(
   '/matches',
   validate(matchingValidation.listMatches),
   matchingController.listMatches
 );
 
-// Unmatch with a user
+/**
+ * @route DELETE /api/matching/matches/:matchId
+ * @desc Hủy kết nối với một match
+ * @access Private
+ */
 router.delete(
   '/matches/:matchId',
-  validate(matchingValidation.unmatch),
-  matchingController.unmatch
+  validate(matchingValidation.unmatchProfile),
+  matchingController.unmatchProfile
 );
 
 module.exports = router;

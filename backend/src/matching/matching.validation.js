@@ -1,5 +1,8 @@
 const Joi = require('joi');
 
+/**
+ * Validation cho việc lấy danh sách gợi ý
+ */
 const suggestProfiles = {
   query: Joi.object().keys({
     limit: Joi.number().integer().min(1).max(100).default(10),
@@ -7,24 +10,33 @@ const suggestProfiles = {
   })
 };
 
-const performAction = {
+/**
+ * Validation cho việc thực hiện swipe
+ * Chú ý: action dựa trên SwipeAction trong proto (DISLIKE=0, LIKE=1)
+ */
+const swipe = {
   body: Joi.object().keys({
-    targetUserId: Joi.string().required(),
-    action: Joi.string().valid('like', 'pass').required()
+    targetProfileId: Joi.string().required(),
+    action: Joi.number().valid(0, 1).required().messages({
+      'any.only': 'Action must be 0 (DISLIKE) or 1 (LIKE)'
+    })
   })
 };
 
+/**
+ * Validation cho việc lấy danh sách matches
+ */
 const listMatches = {
   query: Joi.object().keys({
     page: Joi.number().min(1).default(1),
-    limit: Joi.number().min(1).max(100).default(10),
-    sortBy: Joi.string(),
-    sortOrder: Joi.string().valid('asc', 'desc'),
-    status: Joi.string().valid('pending', 'matched', 'unmatched')
+    limit: Joi.number().min(1).max(100).default(10)
   })
 };
 
-const unmatch = {
+/**
+ * Validation cho việc unmatch profile
+ */
+const unmatchProfile = {
   params: Joi.object().keys({
     matchId: Joi.string().required()
   })
@@ -32,7 +44,7 @@ const unmatch = {
 
 module.exports = {
   suggestProfiles,
-  performAction,
+  swipe,
   listMatches,
-  unmatch
+  unmatchProfile
 };

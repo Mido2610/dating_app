@@ -4,6 +4,13 @@ const User = require('../models/user.model');
 const { throwBadRequest } = require('../common/utils/errorHandler.util');
 const { getMessageByLocale } = require('../common/utils/locale.util');
 
+/**
+ * Lấy danh sách hồ sơ gợi ý cho người dùng
+ * @param {string} userId - ID của người dùng hiện tại
+ * @param {number} limit - Số lượng kết quả tối đa
+ * @param {Array<string>} excludedIds - Danh sách ID đã vuốt qua
+ * @returns {Promise<Array>} Danh sách hồ sơ gợi ý
+ */
 const getSuggestedProfiles = async (userId, limit = 10, excludedIds = []) => {
   try {
     // Get user's preferences and info
@@ -12,19 +19,12 @@ const getSuggestedProfiles = async (userId, limit = 10, excludedIds = []) => {
       throwBadRequest(true, getMessageByLocale({ key: 'userNotFound' }));
     }
 
-    console.log('Current user:', {
-      id: user._id,
-      gender: user.gender,
-      preferences: user.preferences
-    });
-
     // Get existing matches/actions to exclude
     const existingMatches = await Match.find({
       users: userId
     }).distinct('users');
 
-    const excludeUsers = [...excludedIds, userId, ...existingMatches];
-    console.log('Excluded users:', excludeUsers);
+    const excludeUsers = [...excludedIds, userId, ...existingMatches.filter(id => id.toString() !== userId)];
 
     // Build gender query based on preference
     const genderPreference = user.preferences?.genderPreference || 'both';
@@ -36,63 +36,60 @@ const getSuggestedProfiles = async (userId, limit = 10, excludedIds = []) => {
       genderQuery = { gender: genderPreference };
     }
 
-    console.log('Gender preference:', genderPreference);
-    console.log('Gender query:', genderQuery);
-
     const query = {
       _id: { $nin: excludeUsers },
       emailVerified: true,
       ...genderQuery
     };
 
-    console.log('MongoDB query:', query);
-
     const suggestedProfiles = await User.find(query)
-      .limit(limit)
+      .limit(parseInt(limit, 10))
       .select('name age bio photos interests gender birthday')
       .lean();
-
-    console.log('Found profiles count:', suggestedProfiles.length);
-    console.log('Found profiles:', suggestedProfiles.map(p => ({
-      id: p._id,
-      name: p.name,
-      gender: p.gender,
-      emailVerified: p.emailVerified
-    })));
 
     // Calculate age for each profile
     const profilesWithAge = suggestedProfiles.map(profile => ({
       ...profile,
+      id: profile._id.toString(),
       age: profile.birthday ? Math.floor((new Date() - new Date(profile.birthday)) / (365.25 * 24 * 60 * 60 * 1000)) : null
     }));
 
     return profilesWithAge;
-
   } catch (error) {
     console.error('Error in getSuggestedProfiles:', error);
     throw error;
   }
 };
 
-const performAction = async (userId, targetUserId, action) => {
+/**
+ * Thực hiện hành động vuốt (like/dislike)
+ * @param {string} userId - ID của người dùng hiện tại
+ * @param {string} targetProfileId - ID của hồ sơ bị vuốt
+ * @param {string} action - Hành động (like/dislike)
+ * @returns {Promise<Object>} Kết quả thực hiện
+ */
+const swipe = async (userId, targetProfileId, action) => {
   // Validate users exist
   const [user, targetUser] = await Promise.all([
     User.findById(userId),
-    User.findById(targetUserId)
+    User.findById(targetProfileId)
   ]);
 
   if (!user || !targetUser) {
     throwBadRequest(true, getMessageByLocale({ key: 'userNotFound' }));
   }
 
+  // Convert action from proto to database format
+  const dbAction = action === 1 ? 'like' : 'pass';
+
   // Find or create match document
   let match = await Match.findOne({
-    users: { $all: [userId, targetUserId] }
+    users: { $all: [userId, targetProfileId] }
   });
 
   if (!match) {
     match = new Match({
-      users: [userId, targetUserId],
+      users: [userId, targetProfileId],
       actions: []
     });
   }
@@ -100,52 +97,102 @@ const performAction = async (userId, targetUserId, action) => {
   // Add action
   match.actions.push({
     userId,
-    action,
+    action: dbAction,
     timestamp: new Date()
   });
 
   // Check if both users liked each other
-  if (action === 'like') {
+  let isMatch = false;
+  if (dbAction === 'like') {
     const targetUserLiked = match.actions.some(a => 
-      a.userId.toString() === targetUserId && a.action === 'like'
+      a.userId.toString() === targetProfileId && a.action === 'like'
     );
 
     if (targetUserLiked) {
       match.status = 'matched';
       match.matchedAt = new Date();
+      isMatch = true;
     }
   }
 
   await match.save();
-  return match;
+  
+  // Return match information if it's a match
+  return {
+    isMatch,
+    match: isMatch ? {
+      matchId: match._id.toString(),
+      profile: targetUser,
+      matchedAt: match.matchedAt.toISOString(),
+      lastMessage: match.lastMessage || '',
+      lastMessageTime: match.lastMessageTime ? match.lastMessageTime.toISOString() : ''
+    } : null
+  };
 };
 
+/**
+ * Lấy danh sách matches của người dùng
+ * @param {string} userId - ID của người dùng
+ * @param {Object} filter - Bộ lọc
+ * @param {Object} options - Tùy chọn phân trang
+ * @returns {Promise<Object>} Danh sách matches và thông tin phân trang
+ */
 const listMatches = async (userId, filter = {}, options = {}) => {
+  const page = options.page || 1;
+  const limit = options.limit || 10;
+  const skip = (page - 1) * limit;
+
   const matches = await Match.find({
     users: userId,
     status: filter.status || 'matched'
   })
     .sort({ matchedAt: -1 })
-    .skip(options.skip)
-    .limit(options.limit)
-    .populate('users', 'name photos bio');
+    .skip(skip)
+    .limit(limit)
+    .populate('users', 'name photos bio gender age interests');
 
   const total = await Match.countDocuments({
     users: userId,
     status: filter.status || 'matched'
   });
 
+  // Format matches according to proto definition
+  const formattedMatches = matches.map(match => {
+    // Find the other user in the match
+    const otherUser = match.users.find(user => user._id.toString() !== userId);
+    
+    return {
+      matchId: match._id.toString(),
+      profile: otherUser ? {
+        id: otherUser._id.toString(),
+        name: otherUser.name,
+        photos: otherUser.photos || [],
+        bio: otherUser.bio || '',
+        gender: otherUser.gender,
+        age: otherUser.age || 0,
+        interests: otherUser.interests || []
+      } : null,
+      matchedAt: match.matchedAt ? match.matchedAt.toISOString() : '',
+      lastMessage: match.lastMessage || '',
+      lastMessageTime: match.lastMessageTime ? match.lastMessageTime.toISOString() : ''
+    };
+  });
+
   return {
-    matches,
+    matches: formattedMatches,
     total,
-    hasMore: total > (options.skip + matches.length)
+    hasMore: total > (skip + matches.length)
   };
 };
 
-const unmatch = async (userId, matchId) => {
+/**
+ * Hủy kết nối với một match
+ * @param {string} matchId - ID của match cần hủy
+ * @returns {Promise<boolean>} Kết quả thực hiện
+ */
+const unmatchProfile = async (matchId) => {
   const match = await Match.findOne({
     _id: matchId,
-    users: userId,
     status: 'matched'
   });
 
@@ -156,12 +203,12 @@ const unmatch = async (userId, matchId) => {
   match.status = 'unmatched';
   await match.save();
 
-  return true;
+  return { success: true };
 };
 
 module.exports = {
   getSuggestedProfiles,
-  performAction,
+  swipe,
   listMatches,
-  unmatch
+  unmatchProfile
 };
